@@ -1,0 +1,403 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "36102d28ca603d9e7150ed6eba7e6a8c",
+    "packages": [
+        {
+            "name": "nikic/php-parser",
+            "version": "v5.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "8eea230464783aa9671db8eea6f8c6ac5285794b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/8eea230464783aa9671db8eea6f8c6ac5285794b",
+                "reference": "8eea230464783aa9671db8eea6f8c6ac5285794b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "ircmaxell/php-yacc": "^0.0.7",
+                "phpunit/phpunit": "^9.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/nikic/PHP-Parser/issues",
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.3.1"
+            },
+            "time": "2024-10-08T18:51:32+00:00"
+        },
+        {
+            "name": "spriebsch/event-generator",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/event-generator.git",
+                "reference": "ecba883e220b4269fdd4a1174a16dbcf90cb875e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/event-generator/zipball/ecba883e220b4269fdd4a1174a16dbcf90cb875e",
+                "reference": "ecba883e220b4269fdd4a1174a16dbcf90cb875e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "nikic/php-parser": "^5.0",
+                "php": "^8.3",
+                "spriebsch/eventstore": "^1.0",
+                "spriebsch/filesystem": "^1.0",
+                "spriebsch/sqlite": "^1.0",
+                "spriebsch/timestamp": "^1.0",
+                "spriebsch/uuid": "^1.0"
+            },
+            "bin": [
+                "src/generate-events.php"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Code generator for domain events.",
+            "support": {
+                "issues": "https://github.com/spriebsch/event-generator/issues",
+                "source": "https://github.com/spriebsch/event-generator/tree/1.1.3"
+            },
+            "time": "2024-09-09T21:02:37+00:00"
+        },
+        {
+            "name": "spriebsch/eventstore",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/eventstore.git",
+                "reference": "3f8035b860b2357f77c160d741912aed555eee67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/3f8035b860b2357f77c160d741912aed555eee67",
+                "reference": "3f8035b860b2357f77c160d741912aed555eee67",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "php": "^8.3",
+                "spriebsch/sqlite": "^1.0",
+                "spriebsch/timestamp": "^1.0",
+                "spriebsch/uuid": "^1.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Lightweight Sqlite-based Event Store.",
+            "support": {
+                "issues": "https://github.com/spriebsch/eventstore/issues",
+                "source": "https://github.com/spriebsch/eventstore/tree/1.6.0"
+            },
+            "time": "2024-12-03T13:06:15+00:00"
+        },
+        {
+            "name": "spriebsch/filesystem",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/filesystem.git",
+                "reference": "a888f2797039245dfc06638aadf443e9f4fe2404"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/filesystem/zipball/a888f2797039245dfc06638aadf443e9f4fe2404",
+                "reference": "a888f2797039245dfc06638aadf443e9f4fe2404",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Lightweight object-oriented API to the filesystem.",
+            "support": {
+                "issues": "https://github.com/spriebsch/filesystem/issues",
+                "source": "https://github.com/spriebsch/filesystem/tree/1.0.6"
+            },
+            "time": "2024-10-23T21:23:35+00:00"
+        },
+        {
+            "name": "spriebsch/identifier-generator",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/identifier-generator.git",
+                "reference": "98f2d112568ef16dd7e7444d2aad8112b8165dfb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/identifier-generator/zipball/98f2d112568ef16dd7e7444d2aad8112b8165dfb",
+                "reference": "98f2d112568ef16dd7e7444d2aad8112b8165dfb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "php": "^8.3",
+                "spriebsch/eventstore": "^1.0",
+                "spriebsch/filesystem": "^1.0",
+                "spriebsch/uuid": "^1.0"
+            },
+            "bin": [
+                "src/generate-identifiers.php"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Code generator for UUID-based indentifier value objects.",
+            "support": {
+                "issues": "https://github.com/spriebsch/identifier-generator/issues",
+                "source": "https://github.com/spriebsch/identifier-generator/tree/1.0.3"
+            },
+            "time": "2024-09-09T21:51:25+00:00"
+        },
+        {
+            "name": "spriebsch/sqlite",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/sqlite.git",
+                "reference": "a3de11bf564020cc2e9746179cc4c386b6e9573f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/a3de11bf564020cc2e9746179cc4c386b6e9573f",
+                "reference": "a3de11bf564020cc2e9746179cc4c386b6e9573f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Lightweight Sqlite wrapper with lazy connection and schema creation.",
+            "support": {
+                "issues": "https://github.com/spriebsch/sqlite/issues",
+                "source": "https://github.com/spriebsch/sqlite/tree/1.0.7"
+            },
+            "time": "2024-09-09T20:58:52+00:00"
+        },
+        {
+            "name": "spriebsch/timestamp",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/timestamp.git",
+                "reference": "475363a8ce010b4318b9418942182f13143da238"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/timestamp/zipball/475363a8ce010b4318b9418942182f13143da238",
+                "reference": "475363a8ce010b4318b9418942182f13143da238",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A timestamp with microsecond granularity.",
+            "support": {
+                "issues": "https://github.com/spriebsch/timestamp/issues",
+                "source": "https://github.com/spriebsch/timestamp/tree/1.0.2"
+            },
+            "time": "2024-09-09T20:59:20+00:00"
+        },
+        {
+            "name": "spriebsch/uuid",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/UUID.git",
+                "reference": "75325ce64ef16a005cbb9cd63d6d5c1a389b95f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/UUID/zipball/75325ce64ef16a005cbb9cd63d6d5c1a389b95f8",
+                "reference": "75325ce64ef16a005cbb9cd63d6d5c1a389b95f8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A fast and simple no-frills UUIDv4 implementation.",
+            "support": {
+                "issues": "https://github.com/spriebsch/UUID/issues",
+                "source": "https://github.com/spriebsch/UUID/tree/1.0.3"
+            },
+            "time": "2024-09-09T20:59:41+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=8.3",
+        "ext-sqlite3": "*"
+    },
+    "platform-dev": {},
+    "platform-overrides": {
+        "php": "8.3"
+    },
+    "plugin-api-version": "2.6.0"
+}

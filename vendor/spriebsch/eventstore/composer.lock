@@ -1,0 +1,211 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "dc3a4d5e6b592e5a08d160e9847816a4",
+    "packages": [
+        {
+            "name": "spriebsch/sqlite",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/sqlite.git",
+                "reference": "f15613e781f6711b435d57e8579dc48bc1a513f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/f15613e781f6711b435d57e8579dc48bc1a513f0",
+                "reference": "f15613e781f6711b435d57e8579dc48bc1a513f0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Lightweight Sqlite wrapper with lazy connection and schema creation.",
+            "support": {
+                "issues": "https://github.com/spriebsch/sqlite/issues",
+                "source": "https://github.com/spriebsch/sqlite/tree/1.0.3"
+            },
+            "time": "2024-03-07T11:31:58+00:00"
+        },
+        {
+            "name": "spriebsch/timestamp",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/timestamp.git",
+                "reference": "59a74d63533478c763ad155ff9781ce0a38acb96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/timestamp/zipball/59a74d63533478c763ad155ff9781ce0a38acb96",
+                "reference": "59a74d63533478c763ad155ff9781ce0a38acb96",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A timestamp with microsecond granularity.",
+            "support": {
+                "issues": "https://github.com/spriebsch/timestamp/issues",
+                "source": "https://github.com/spriebsch/timestamp/tree/1.0.0"
+            },
+            "time": "2024-01-29T20:56:10+00:00"
+        },
+        {
+            "name": "spriebsch/uuid",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/UUID.git",
+                "reference": "8cb0e404094ff9651b525e5b544c4616441c8e75"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/UUID/zipball/8cb0e404094ff9651b525e5b544c4616441c8e75",
+                "reference": "8cb0e404094ff9651b525e5b544c4616441c8e75",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Priebsch",
+                    "email": "stefan@priebsch.de",
+                    "homepage": "https://priebsch.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A fast and simple no-frills UUIDv4 implementation.",
+            "support": {
+                "issues": "https://github.com/spriebsch/UUID/issues",
+                "source": "https://github.com/spriebsch/UUID/tree/1.0.2"
+            },
+            "time": "2024-03-01T17:13:59+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "phpstan/phpstan",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "6c98c7600fc717b2c78c11ef60040d5b1e359c82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6c98c7600fc717b2c78c11ef60040d5b1e359c82",
+                "reference": "6c98c7600fc717b2c78c11ef60040d5b1e359c82",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-11-17T14:17:00+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "^8.3",
+        "ext-sqlite3": "*"
+    },
+    "platform-dev": {},
+    "platform-overrides": {
+        "php": "8.3"
+    },
+    "plugin-api-version": "2.6.0"
+}
