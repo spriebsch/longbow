@@ -1,8 +1,6 @@
-/.ant_targets
 /.idea
 /.php_cs
 /.php_cs.cache
 /.phpunit.cache
-/.psalm/cache
 /build
 vendor
