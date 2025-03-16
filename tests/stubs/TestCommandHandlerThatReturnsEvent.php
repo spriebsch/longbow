@@ -16,10 +16,15 @@ use spriebsch\longbow\commands\CommandHandler;
 
 class TestCommandHandlerThatReturnsEvent implements CommandHandler
 {
-    public function __construct(private Event $event) {}
+    private static Event $event;
+
+    public static function willReturn(Event $event): void
+    {
+        self::$event = $event;
+    }
 
     public function handle(TestCommand $command): Event
     {
-        return $this->event;
+        return self::$event;
     }
 }

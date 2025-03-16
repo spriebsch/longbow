@@ -11,21 +11,20 @@
 
 namespace spriebsch\longbow\events;
 
+use spriebsch\diContainer\Container;
 use spriebsch\eventstore\Event;
 
 final readonly class LongbowEventDispatcher implements EventDispatcher
 {
     public function __construct(
-        private EventHandlerMap     $eventHandlerMap,
-        private EventHandlerFactory $factory
+        private EventHandlerMap $eventHandlerMap,
+        private Container       $container,
     ) {}
 
     public function dispatch(Event $event): void
     {
         foreach ($this->eventHandlerMap->handlerClassesFor($event) as $handlerClass) {
-            $handler = $this->factory->createEventHandler($handlerClass);
-            $handler->handle($event);
-            // @todo make event handler return event collection that gets saved (and dispatched) by infrastructure?
+            $handler = $this->container->get($handlerClass)->handle($event);
         }
     }
 }

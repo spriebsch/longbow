@@ -7,6 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
+                'spriebsch\\longbow\\example\\applicationconfiguration' => '/exampleApplication/ApplicationConfiguration.php',
                 'spriebsch\\longbow\\example\\applicationfactory' => '/exampleApplication/ApplicationFactory.php',
                 'spriebsch\\longbow\\example\\somecommand' => '/exampleApplication/SomeCommand.php',
                 'spriebsch\\longbow\\example\\somecommandhandler' => '/exampleApplication/SomeCommandHandler.php',

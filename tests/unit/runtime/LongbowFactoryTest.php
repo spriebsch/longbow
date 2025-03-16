@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use spriebsch\diContainer\Container;
 use spriebsch\eventstore\EventWriter;
 use spriebsch\filesystem\FakeDirectory;
 use spriebsch\filesystem\Filesystem;
@@ -24,6 +25,8 @@ use spriebsch\longbow\commands\OrchestrateCommandHandlers;
 use spriebsch\longbow\events\OrchestrateEventHandlers;
 use spriebsch\longbow\eventStreams\EventStreamDispatcher;
 use spriebsch\longbow\eventStreams\OrchestrateEventStreamProcessors;
+use spriebsch\longbow\example\ApplicationConfiguration;
+use spriebsch\longbow\example\ApplicationFactory;
 use spriebsch\sqlite\Connection;
 
 #[CoversClass(LongbowFactory::class)]
@@ -34,28 +37,22 @@ class LongbowFactoryTest extends TestCase
     #[Group('feature')]
     public function creates_CommandDispatcher(): void
     {
+        $container = new Container(new ApplicationConfiguration, ApplicationFactory::class);
+
         $directory = new FakeDirectory('/fake');
         $directory->createFile(
-            OrchestrateCommandHandlers::SERIALIZATION_FILE, 'the-content'
+            OrchestrateCommandHandlers::SERIALIZATION_FILE, '<?php declare(strict_types=1); return [];'
         );
         $directory->createFile(
-            OrchestrateEventHandlers::SERIALIZATION_FILE, 'the-content'
+            OrchestrateEventHandlers::SERIALIZATION_FILE, '<?php declare(strict_types=1); return [];'
         );
-
-        $eventWriter = $this->createStub(EventWriter::class);
 
         $factory = new LongbowFactory(
             $directory,
             Filesystem::from(__DIR__ . '/../../fixtures/events.php'),
-            new readonly class($eventWriter) {
-
-                public function __construct(private EventWriter $eventWriter) {}
-
-                public function eventWriter(): EventWriter
-                {
-                    return $this->eventWriter;
-                }
-            }
+            ':memory:',
+            ':memory:',
+            $container,
         );
 
         $this->assertInstanceOf(
@@ -68,9 +65,11 @@ class LongbowFactoryTest extends TestCase
     #[Group('feature')]
     public function creates_EventStreamDispatcher(): void
     {
+        $container = new Container(new ApplicationConfiguration, ApplicationFactory::class);
+
         $directory = new FakeDirectory('/fake');
         $directory->createFile(
-            OrchestrateEventStreamProcessors::SERIALIZATION_FILE, 'the-content'
+            OrchestrateEventStreamProcessors::SERIALIZATION_FILE, '<?php declare(strict_types=1); return [];'
         );
 
         $connection = $this->createStub(Connection::class);
@@ -78,15 +77,9 @@ class LongbowFactoryTest extends TestCase
         $factory = new LongbowFactory(
             $directory,
             Filesystem::from(__DIR__ . '/../../fixtures/events.php'),
-            new readonly class($connection) {
-
-                public function __construct(private Connection $connection) {}
-
-                public function streamPositionConnection(): Connection
-                {
-                    return $this->connection;
-                }
-            }
+            ':memory:',
+            ':memory:',
+            $container,
         );
 
         $this->assertInstanceOf(

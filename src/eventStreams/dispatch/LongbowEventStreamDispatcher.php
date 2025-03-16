@@ -11,9 +11,9 @@
 
 namespace spriebsch\longbow\eventStreams;
 
+use spriebsch\diContainer\Container;
 use spriebsch\eventstore\Events;
 use spriebsch\eventstore\EventStream;
-use spriebsch\longbow\ExclusiveLock;
 use spriebsch\longbow\StreamPositionReader;
 use spriebsch\longbow\StreamPositionWriter;
 use spriebsch\uuid\UUID;
@@ -23,32 +23,24 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
     private ?int $limit;
 
     public function __construct(
-        private readonly EventStreamProcessorMap     $streamProcessorMap,
-        private readonly ExclusiveLock               $exclusiveLock,
-        private readonly StreamPositionReader        $streamPositionReader,
-        private readonly StreamPositionWriter        $streamPositionWriter,
-        private readonly EventStreamProcessorFactory $eventStreamProcessorFactory,
-        private readonly EventStreamFactory          $eventStreamFactory
+        private readonly EventStreamProcessorMap $streamProcessorMap,
+        private readonly StreamPositionReader    $streamPositionReader,
+        private readonly StreamPositionWriter    $streamPositionWriter,
+        private readonly Container               $container,
     ) {}
 
     public function run(?int $limit = null): void
     {
         $this->limit = $limit;
 
-        // $this->exclusiveLock->acquireLock();
-
-        // @todo make sure to release lock on fail
-
         foreach ($this->streamProcessorMap->streams() as $eventStreamClass => $processors) {
             foreach ($processors as $processorId => $processorClass) {
                 $this->runEventStreamProcessor(
                     $this->createEventStreamProcessor($processorId, $processorClass),
-                    $this->createEventStream($eventStreamClass)
+                    $this->createEventStream($eventStreamClass),
                 );
             }
         }
-
-        // $this->exclusiveLock->releaseLock();
     }
 
     public function runEventStreamProcessor(EventStreamProcessor $processor, EventStream $stream): void
@@ -73,14 +65,11 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
 
     private function createEventStreamProcessor(string $id, string $class): EventStreamProcessor
     {
-        return $this->eventStreamProcessorFactory->createEventStreamProcessor(
-            UUID::from($id),
-            $class
-        );
+        return $this->container->get($class, UUID::from($id));
     }
 
     private function createEventStream(string $class): EventStream
     {
-        return $this->eventStreamFactory->createEventStream($class);
+        return $this->container->get($class);
     }
 }

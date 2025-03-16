@@ -9,9 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace spriebsch\longbow\events;
+namespace spriebsch\longbow\example;
 
-interface EventHandlerFactory
+use spriebsch\diContainer\Configuration;
+use spriebsch\filesystem\Directory;
+
+class ApplicationConfiguration implements Configuration
 {
-    public function createEventHandler(string $class): EventHandler;
 }

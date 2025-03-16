@@ -14,10 +14,11 @@ namespace spriebsch\longbow\events;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use spriebsch\eventstore\Event;
+use spriebsch\diContainer\Container;
+use spriebsch\longbow\example\ApplicationConfiguration;
+use spriebsch\longbow\example\ApplicationFactory;
 use spriebsch\longbow\tests\TestEvent;
 use spriebsch\longbow\tests\TestEventHandler;
-use spriebsch\longbow\tests\TestEventHandlerFactory;
 
 #[CoversClass(LongbowEventDispatcher::class)]
 class LongbowEventDispatcherTest extends TestCase
@@ -25,23 +26,16 @@ class LongbowEventDispatcherTest extends TestCase
     #[Group('feature')]
     public function test_dispatches_to_EventHandler(): void
     {
-        $eventHandlerMap = new class implements EventHandlerMap {
-            public function handlerClassesFor(Event $event): array
-            {
-                return [TestEventHandler::class, TestEventHandler::class];
-            }
-        };
+        $container = new Container(new ApplicationConfiguration, ApplicationFactory::class);
 
-        $testEventHandler = new TestEventHandler;
+        $eventHandlerMap = EventHandlerMap::fromArray([TestEvent::class => [TestEventHandler::class]]);
 
-        $eventHandlerFactory = new TestEventHandlerFactory($testEventHandler);
-
-        $dispatcher = new LongbowEventDispatcher(
-            $eventHandlerMap, $eventHandlerFactory
-        );
+        $dispatcher = new LongbowEventDispatcher($eventHandlerMap, $container);
 
         $dispatcher->dispatch(new TestEvent);
 
-        $this->assertCount(2, $testEventHandler->calls());
+        $handler = $container->get(TestEventHandler::class);
+
+        $this->assertCount(1, $handler->calls());
     }
 }

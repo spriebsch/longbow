@@ -11,18 +11,15 @@
 
 namespace spriebsch\longbow\eventStreams;
 
-use spriebsch\eventstore\EventStream;
-use spriebsch\filesystem\File;
 use spriebsch\longbow\Exception;
 
 final class EventStreamProcessorMapElementIsNoArrayException extends Exception
 {
-    public function __construct(File $map, string $stream)
+    public function __construct(string $stream)
     {
         parent::__construct(
             sprintf(
-                'Event stream processor map %s element %s is no array',
-                $map->asString(),
+                'Event stream processor map element %s is no array',
                 $stream
             )
         );

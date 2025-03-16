@@ -11,6 +11,7 @@
 
 namespace spriebsch\longbow;
 
+use spriebsch\diContainer\Container;
 use spriebsch\eventstore\Event;
 use spriebsch\eventstore\EventFactory;
 use spriebsch\filesystem\Directory;
@@ -25,7 +26,9 @@ final class Longbow
     public static function configure(
         Directory $orchestration,
         File      $eventMap,
-        object    $applicationFactory
+        string $eventStoreDb,
+        string $positionsDb,
+        Container $container,
     ): void
     {
         if (self::$factory !== null) {
@@ -35,7 +38,9 @@ final class Longbow
         self::$factory = new LongbowFactory(
             $orchestration,
             $eventMap,
-            $applicationFactory
+            $eventStoreDb,
+            $positionsDb,
+            $container,
         );
     }
 

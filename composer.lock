@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4eb4e518a7b2605bd4dc4aa2a2859f91",
+    "content-hash": "a0e96ecf13b51e0e06b4c1bda1e3dcab",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -66,16 +66,16 @@
         },
         {
             "name": "spriebsch/di",
-            "version": "1.0.0",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/diContainer.git",
-                "reference": "c11abb27bbeaa8bcb2a7be7fe1ec42fcfa41dfd0"
+                "reference": "03793a60dd3eed7bedd6a68dc82c75c7df6ccf24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/c11abb27bbeaa8bcb2a7be7fe1ec42fcfa41dfd0",
-                "reference": "c11abb27bbeaa8bcb2a7be7fe1ec42fcfa41dfd0",
+                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/03793a60dd3eed7bedd6a68dc82c75c7df6ccf24",
+                "reference": "03793a60dd3eed7bedd6a68dc82c75c7df6ccf24",
                 "shasum": ""
             },
             "require": {
@@ -106,9 +106,9 @@
             "description": "A lightweight, smart and fast DI container.",
             "support": {
                 "issues": "https://github.com/spriebsch/diContainer/issues",
-                "source": "https://github.com/spriebsch/diContainer/tree/1.0.0"
+                "source": "https://github.com/spriebsch/diContainer/tree/1.0.5"
             },
-            "time": "2025-03-15T22:14:37+00:00"
+            "time": "2025-03-16T17:32:46+00:00"
         },
         {
             "name": "spriebsch/event-generator",

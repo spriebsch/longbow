@@ -11,9 +11,31 @@
 
 namespace spriebsch\longbow\eventStreams;
 
-use spriebsch\eventstore\EventStream;
+use spriebsch\filesystem\File;
 
-interface EventStreamProcessorMap
+final readonly class EventStreamProcessorMap
 {
-    public function streams(): array;
+    public function __construct(private array $eventStreamProcessorMap)
+    {
+        foreach ($eventStreamProcessorMap as $stream => $processors) {
+            if (!is_array($processors)) {
+                throw new EventStreamProcessorMapElementIsNoArrayException($stream);
+            }
+        }
+    }
+
+    public static function fromFile(File $map): self
+    {
+        return new self($map->require());
+    }
+
+    public static function fromArray(array $map): self
+    {
+        return new self($map);
+    }
+
+    public function streams(): array
+    {
+        return $this->eventStreamProcessorMap;
+    }
 }

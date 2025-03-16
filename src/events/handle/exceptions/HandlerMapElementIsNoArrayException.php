@@ -12,17 +12,15 @@
 namespace spriebsch\longbow\events;
 
 use spriebsch\eventstore\Event;
-use spriebsch\filesystem\File;
 use spriebsch\longbow\Exception;
 
 final class HandlerMapElementIsNoArrayException extends Exception
 {
-    public function __construct(File $eventHandlerMap, Event $event)
+    public function __construct(Event $event)
     {
         parent::__construct(
             sprintf(
-                'Event handler map %s element %s is no array',
-                $eventHandlerMap->asString(),
+                'Event handler map element %s is no array',
                 $event::class
             )
         );

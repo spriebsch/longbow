@@ -12,44 +12,28 @@
 namespace spriebsch\longbow\commands;
 
 use Exception;
+use spriebsch\diContainer\Container;
 use spriebsch\eventstore\Event;
 use spriebsch\longbow\events\EventDispatcher;
 
 final readonly class LongbowCommandDispatcher implements CommandDispatcher
 {
-    /**
-     * We require LongbowEventWriter because we need one that writes and dispatches events
-     */
     public function __construct(
-        private CommandHandlerMap     $handlerMap,
-        private CommandHandlerFactory $handlerFactory,
-        private EventDispatcher       $eventDispatcher,
+        private CommandHandlerMap $handlerMap,
+        private Container         $container,
+        private EventDispatcher   $eventDispatcher,
     ) {}
 
     public function handle(Command $command): Event
     {
         try {
-            $handler = $this->locateHandlerFor($command);
+            $handler = $this->container->get($this->handlerMap->handlerClassFor($command));
             $event = $handler->handle($command);
             $this->eventDispatcher->dispatch($event);
 
             return $event;
         } catch (Exception $exception) {
-            throw new FailedToDispatchCommandException(
-                $command,
-                $exception#
-            );
+            throw new FailedToDispatchCommandException($command, $exception);
         }
-    }
-
-    private function locateHandlerFor(Command $command): CommandHandler
-    {
-        $handler = $this->handlerFactory->createCommandHandler(
-            $this->handlerMap->handlerClassFor($command)
-        );
-
-        assert($handler instanceof CommandHandler);
-
-        return $handler;
     }
 }

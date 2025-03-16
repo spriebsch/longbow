@@ -14,8 +14,10 @@ namespace spriebsch\longbow\integration;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use spriebsch\diContainer\Container;
 use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\Filesystem;
+use spriebsch\longbow\example\ApplicationConfiguration;
 use spriebsch\longbow\example\ApplicationFactory;
 use spriebsch\longbow\example\SomeCommand;
 use spriebsch\longbow\example\SomeCommandHandler;
@@ -23,6 +25,8 @@ use spriebsch\longbow\example\SomeEvent;
 use spriebsch\longbow\example\SomeEventHandler;
 use spriebsch\longbow\example\SomeEventStream;
 use spriebsch\longbow\example\SomeEventStreamProcessor;
+use spriebsch\longbow\example\Something;
+use spriebsch\longbow\example\Something2;
 use spriebsch\longbow\Longbow;
 use spriebsch\longbow\orchestration\LongbowOrchestration;
 use spriebsch\uuid\UUID;
@@ -71,20 +75,25 @@ class IntegrationTest extends TestCase
     {
         $eventMap = Filesystem::from(__DIR__ . '/../fixtures/events.php');
 
-        $applicationFactory = new ApplicationFactory;
+        $configuration = new ApplicationConfiguration;
+        $container = new Container($configuration, ApplicationFactory::class);
+
+        // $applicationFactory = new ApplicationFactory;
         $payload = UUID::generate()->asString();
 
         Longbow::configure(
             $orchestrationDirectory,
             $eventMap,
-            $applicationFactory
+            ':memory:',
+            ':memory:',
+            $container
         );
 
         $event = Longbow::handleCommand(new SomeCommand($payload));
-        $something = $applicationFactory->getSomething();
+        $something = $container->get(Something::class);
 
         Longbow::processEvents();
-        $something2 = $applicationFactory->getSomething2();
+        $something2 = $container->get(Something2::class);
 
         $this->assertSame($payload, $event->payload());
         $this->assertSame($something->payload(), $payload);

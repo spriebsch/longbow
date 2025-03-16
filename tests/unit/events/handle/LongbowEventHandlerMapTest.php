@@ -13,26 +13,20 @@ namespace spriebsch\longbow\events;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use spriebsch\filesystem\FakeFile;
-use spriebsch\filesystem\File;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\tests\TestEvent;
 use spriebsch\longbow\tests\TestEventHandler;
 
-#[CoversClass(LongbowEventHandlerMap::class)]
+#[CoversClass(EventHandlerMap::class)]
 #[CoversClass(HandlerMapDoesNotReturnArrayException::class)]
 #[CoversClass(HandlerMapElementIsNoArrayException::class)]
 class LongbowEventHandlerMapTest extends TestCase
 {
-    #[Test]
     #[Group('feature')]
-    public function provides_EventHandler_class_for_given_Event(): void
+    public function test_provides_EventHandler_class_for_given_Event(): void
     {
-        $map = new LongbowEventHandlerMap(
-            new FakeFile('the-filename', 'the-content', $this->testEventMap())
-        );
+        $map = EventHandlerMap::fromArray([TestEvent::class => [TestEventHandler::class]]);
 
         $this->assertSame(
             [TestEventHandler::class],
@@ -40,61 +34,21 @@ class LongbowEventHandlerMapTest extends TestCase
         );
     }
 
-    #[Test]
     #[Group('feature')]
-    public function loads_map_only_once(): void
+    public function test_EventHandler_must_be_configured(): void
     {
-        $file = $this->createMock(File::class);
-        $file
-            ->expects($this->once())
-            ->method('require')
-            ->willReturn($this->testEventMap());
-
-        $map = new LongbowEventHandlerMap($file);
-
-        $map->handlerClassesFor(new TestEvent);
-        $map->handlerClassesFor(new TestEvent);
-    }
-
-    #[Test]
-    #[Group('feature')]
-    public function EventHandler_must_be_configured(): void
-    {
-        $map = new LongbowEventHandlerMap(
-            new FakeFile('the-filename', 'no-content', [])
-        );
+        $map = EventHandlerMap::fromArray([]);
 
         $this->assertSame([], $map->handlerClassesFor(new TestEvent));
     }
 
-    #[Test]
     #[Group('exception')]
-    public function stored_map_must_be_array(): void
+    public function test_stored_map_element_must_be_array(): void
     {
-        $map = new LongbowEventHandlerMap(
-            new FakeFile('the-filename', 'no-content', 'no-array')
-        );
-
-        $this->expectException(HandlerMapDoesNotReturnArrayException::class);
-
-        $map->handlerClassesFor(new TestEvent);
-    }
-
-    #[Test]
-    #[Group('exception')]
-    public function stored_map_element_must_be_array(): void
-    {
-        $map = new LongbowEventHandlerMap(
-            Filesystem::from(__DIR__ . '/../../../fixtures/InvalidEventHandlerMap.php')
-        );
+        $map = EventHandlerMap::fromArray([TestEvent::class => 'no-array']);
 
         $this->expectException(HandlerMapElementIsNoArrayException::class);
 
         $map->handlerClassesFor(new TestEvent);
-    }
-
-    private function testEventMap(): array
-    {
-        return [TestEvent::class => [TestEventHandler::class]];
     }
 }

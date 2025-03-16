@@ -11,7 +11,28 @@
 
 namespace spriebsch\longbow\commands;
 
-interface CommandHandlerMap
+use spriebsch\filesystem\File;
+
+final readonly class CommandHandlerMap
 {
-    public function handlerClassFor(Command $command): string;
+    public function __construct(private array $commandHandlers) {}
+
+    public static function fromFile(File $map): self
+    {
+        return new self($map->require());
+    }
+
+    public static function fromArray(array $map): self
+    {
+        return new self($map);
+    }
+
+    public function handlerClassFor(Command $command): string
+    {
+        if (!isset($this->commandHandlers[$command::class])) {
+            throw new CommandHasNoHandlerException($command);
+        }
+
+        return $this->commandHandlers[$command::class];
+    }
 }

@@ -19,7 +19,7 @@ use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\tests\TestCommand;
 use spriebsch\longbow\tests\TestCommandHandlerThatReturnsEvent;
 
-#[CoversClass(LongbowCommandHandlerMap::class)]
+#[CoversClass(CommandHandlerMap::class)]
 #[CoversClass(CommandHasNoHandlerException::class)]
 #[CoversClass(CommandHandlerMapIsNoArrayException::class)]
 class LongbowCommandHandlerMapTest extends TestCase
@@ -27,7 +27,7 @@ class LongbowCommandHandlerMapTest extends TestCase
     #[Group('feature')]
     public function test_provides_CommandHandler_class_for_given_Command(): void
     {
-        $map = new LongbowCommandHandlerMap(
+        $map = CommandHandlerMap::fromFile(
             Filesystem::from(__DIR__ . '/../../../fixtures/CommandMap.php')
         );
 
@@ -36,41 +36,23 @@ class LongbowCommandHandlerMapTest extends TestCase
         $this->assertSame(TestCommandHandlerThatReturnsEvent::class, $handlerClass);
     }
 
-    #[Group('feature')]
-    public function test_loads_map_only_once(): void
+    public function test_provides_CommandHandler_class_for_given_Command_array(): void
     {
-        $file = $this->createMock(File::class);
-        $file
-            ->expects($this->once())
-            ->method('require')
-            ->willReturn(require __DIR__ . '/../../../fixtures/CommandMap.php');
+        $map = CommandHandlerMap::fromArray(
+            [TestCommand::class => TestCommandHandlerThatReturnsEvent::class]
+        );
 
-        $map = new LongbowCommandHandlerMap($file);
+        $handlerClass = $map->handlerClassFor(new TestCommand);
 
-        $map->handlerClassFor(new TestCommand);
-        $map->handlerClassFor(new TestCommand);
+        $this->assertSame(TestCommandHandlerThatReturnsEvent::class, $handlerClass);
     }
 
     #[Group('exception')]
     public function test_CommandHandler_must_be_configured_for_given_Command(): void
     {
-        $map = new LongbowCommandHandlerMap(
-            Filesystem::from(__DIR__ . '/../../../fixtures/EmptyMap.php')
-        );
+        $map = CommandHandlerMap::fromArray([]);
 
         $this->expectException(CommandHasNoHandlerException::class);
-
-        $map->handlerClassFor(new TestCommand);
-    }
-
-    #[Group('exception')]
-    public function test_stored_map_must_be_array(): void
-    {
-        $map = new LongbowCommandHandlerMap(
-            Filesystem::from(__DIR__ . '/../../../fixtures/InvalidMap.php')
-        );
-
-        $this->expectException(CommandHandlerMapIsNoArrayException::class);
 
         $map->handlerClassFor(new TestCommand);
     }
