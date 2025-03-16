@@ -32,7 +32,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
         $this->limit = $limit;
 
         foreach ($this->streamProcessorMap->streams() as $eventStreamClass => $processors) {
-            foreach ($processors as $processorId => $processorClass) {
+             foreach ($processors as $processorId => $processorClass) {
                 $this->runEventStreamProcessor(
                     $this->createEventStreamProcessor($processorId, $processorClass),
                     $this->createEventStream($eventStreamClass),

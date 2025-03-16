@@ -22,7 +22,8 @@
     "spriebsch/filesystem": "^1.0",
     "spriebsch/identifier-generator": "^1.1",
     "spriebsch/sqlite": "^1.0",
-    "spriebsch/uuid": "^1.0"
+    "spriebsch/uuid": "^1.0",
+    "ext-sqlite": "*"
   },
   "repositories": [
   ],

@@ -59,7 +59,6 @@ final readonly class LongbowFactory
         );
     }
 
-
     public function eventReader(): EventReader
     {
         return SqliteEventReader::from(
@@ -104,12 +103,7 @@ final readonly class LongbowFactory
         );
     }
 
-    private function sqliteStreamPosition(): SqliteStreamPosition
-    {
-        return new SqliteStreamPosition($this->streamPositionConnection());
-    }
-
-    private function streamPositionWriter(): StreamPosition
+    private function streamPosition(): StreamPosition
     {
         return new SqliteStreamPosition($this->streamPositionConnection());
     }
