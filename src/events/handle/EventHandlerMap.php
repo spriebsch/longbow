@@ -16,7 +16,15 @@ use spriebsch\filesystem\File;
 
 final readonly class EventHandlerMap
 {
-    public function __construct(private array $eventHandlerMap) {}
+    public function __construct(private array $eventHandlerMap)
+    {
+        foreach ($eventHandlerMap as $eventClass => $handlers) {
+            if (!is_array($handlers)) {
+                throw new HandlerMapElementIsNoArrayException($eventClass);
+            }
+        }
+
+    }
 
     public static function fromFile(File $map): self
     {
@@ -30,17 +38,6 @@ final readonly class EventHandlerMap
 
     public function handlerClassesFor(Event $event): array
     {
-        $element = $this->eventHandlerMap[$event::class] ?? [];
-
-        $this->ensureHandlerMapElementIsArray($element, $event);
-
-        return $element;
-    }
-
-    private function ensureHandlerMapElementIsArray(mixed $element, Event $event): void
-    {
-        if (!is_array($element)) {
-            throw new HandlerMapElementIsNoArrayException($event);
-        }
+        return $this->eventHandlerMap[$event::class] ?? [];
     }
 }

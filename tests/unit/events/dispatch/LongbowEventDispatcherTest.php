@@ -21,6 +21,7 @@ use spriebsch\longbow\tests\TestEvent;
 use spriebsch\longbow\tests\TestEventHandler;
 
 #[CoversClass(LongbowEventDispatcher::class)]
+#[CoversClass(EventHandlerMap::class)]
 class LongbowEventDispatcherTest extends TestCase
 {
     #[Group('feature')]

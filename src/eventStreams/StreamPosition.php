@@ -14,7 +14,9 @@ namespace spriebsch\longbow;
 use spriebsch\eventstore\EventId;
 use spriebsch\uuid\UUID;
 
-interface StreamPositionWriter
+interface StreamPosition
 {
-    public function writePosition(UUID $handlerId, EventId $eventId): void;
+    public function readPositionAndLock(UUID $handlerId): ?EventId;
+
+    public function writePositionAndReleaseLock(UUID $handlerId, EventId $eventId): void;
 }

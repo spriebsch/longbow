@@ -21,7 +21,6 @@ use spriebsch\longbow\tests\TestCommandHandlerThatReturnsEvent;
 
 #[CoversClass(CommandHandlerMap::class)]
 #[CoversClass(CommandHasNoHandlerException::class)]
-#[CoversClass(CommandHandlerMapIsNoArrayException::class)]
 class LongbowCommandHandlerMapTest extends TestCase
 {
     #[Group('feature')]

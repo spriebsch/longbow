@@ -19,7 +19,7 @@ use spriebsch\eventstore\EventId;
 use spriebsch\longbow\FailedToStoreStreamPositionException;
 use spriebsch\longbow\SqliteStreamPositionHandler;
 use spriebsch\longbow\SqliteStreamPositionSchema;
-use spriebsch\longbow\SqliteStreamPositionWriter;
+use spriebsch\longbow\SqliteStreamPosition;
 use spriebsch\sqlite\Connection;
 use spriebsch\sqlite\SqliteConnection;
 use spriebsch\uuid\UUID;
@@ -27,7 +27,7 @@ use SQLite3Result;
 use SQLite3Stmt;
 
 #[CoversClass(SqliteStreamPositionHandler::class)]
-#[CoversClass(SqliteStreamPositionWriter::class)]
+#[CoversClass(SqliteStreamPosition::class)]
 #[CoversClass(SqliteStreamPositionSchema::class)]
 #[CoversClass(FailedToStoreStreamPositionException::class)]
 #[UsesClass(SqliteStreamPositionHandler::class)]
@@ -103,10 +103,10 @@ class SqliteStreamPositionHandlerTest extends TestCase
         $handlerId = UUID::generate();
         $eventId = EventId::generate();
 
-        $writer = new SqliteStreamPositionWriter($connection);
+        $writer = new SqliteStreamPosition($connection);
         $reader = new SqliteStreamPositionHandler($connection);
 
-        $writer->writePosition($handlerId, $eventId);
+        $writer->writePositionAndRelease($handlerId, $eventId);
 
         $this->assertSame(
             $eventId->asString(),
@@ -123,11 +123,11 @@ class SqliteStreamPositionHandlerTest extends TestCase
         $handlerId = UUID::generate();
         $eventId = EventId::generate();
 
-        $writer = new SqliteStreamPositionWriter($connection);
+        $writer = new SqliteStreamPosition($connection);
         $reader = new SqliteStreamPositionHandler($connection);
 
-        $writer->writePosition($handlerId, EventId::generate());
-        $writer->writePosition($handlerId, $eventId);
+        $writer->writePositionAndRelease($handlerId, EventId::generate());
+        $writer->writePositionAndRelease($handlerId, $eventId);
 
         $this->assertSame(
             $eventId->asString(),
@@ -149,10 +149,10 @@ class SqliteStreamPositionHandlerTest extends TestCase
             ->method('prepare')
             ->willReturn($statement);
 
-        $writer = new SqliteStreamPositionWriter($connection);
+        $writer = new SqliteStreamPosition($connection);
 
         $this->expectException(FailedToStoreStreamPositionException::class);
 
-        $writer->writePosition(UUID::generate(), EventId::generate());
+        $writer->writePositionAndRelease(UUID::generate(), EventId::generate());
     }
 }

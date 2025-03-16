@@ -14,8 +14,7 @@ namespace spriebsch\longbow\eventStreams;
 use spriebsch\diContainer\Container;
 use spriebsch\eventstore\Events;
 use spriebsch\eventstore\EventStream;
-use spriebsch\longbow\StreamPositionReader;
-use spriebsch\longbow\StreamPositionWriter;
+use spriebsch\longbow\StreamPosition;
 use spriebsch\uuid\UUID;
 
 final class LongbowEventStreamDispatcher implements EventStreamDispatcher
@@ -24,8 +23,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
 
     public function __construct(
         private readonly EventStreamProcessorMap $streamProcessorMap,
-        private readonly StreamPositionReader    $streamPositionReader,
-        private readonly StreamPositionWriter    $streamPositionWriter,
+        private readonly StreamPosition          $streamPosition,
         private readonly Container               $container,
     ) {}
 
@@ -48,13 +46,13 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
         foreach ($this->queuedEvents($processor::id(), $stream) as $event) {
             $wrapper = new EventStreamProcessorWrapper($processor);
             $wrapper->process($event);
-            $this->streamPositionWriter->writePosition($processor::id(), $event->id());
+            $this->streamPosition->writePositionAndReleaseLock($processor::id(), $event->id());
         }
     }
 
     private function queuedEvents(UUID $handlerId, EventStream $eventStream): Events
     {
-        $position = $this->streamPositionReader->readPosition($handlerId);
+        $position = $this->streamPosition->readPositionAndLock($handlerId);
 
         if ($this->limit !== null) {
             $eventStream->limitNextQuery($this->limit);

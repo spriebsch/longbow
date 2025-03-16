@@ -18,7 +18,6 @@ use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\tests\TestEventStream;
 
 #[CoversClass(EventStreamProcessorMap::class)]
-#[CoversClass(EventStreamProcessorMapDoesNotReturnArrayException::class)]
 #[CoversClass(EventStreamProcessorMapElementIsNoArrayException::class)]
 class EventStreamProcessorMapTest extends TestCase
 {

@@ -26,6 +26,7 @@ use spriebsch\longbow\tests\TestCommandHandlerThatReturnsEvent;
 use spriebsch\longbow\tests\TestCommandHandlerThatThrowsException;
 
 #[CoversClass(LongbowCommandDispatcher::class)]
+#[CoversClass(CommandHandlerMap::class)]
 #[CoversClass(FailedToDispatchCommandException::class)]
 #[CoversClass(CommandHasNoHandlerException::class)]
 class LongbowCommandDispatcherTest extends TestCase

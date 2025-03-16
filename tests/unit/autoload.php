@@ -8,13 +8,11 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'spriebsch\\longbow\\tests\\testcommand' => '/../stubs/TestCommand.php',
-                'spriebsch\\longbow\\tests\\testcommandhandlerfactory' => '/../stubs/TestCommandHandlerFactory.php',
                 'spriebsch\\longbow\\tests\\testcommandhandlerthatreturnsevent' => '/../stubs/TestCommandHandlerThatReturnsEvent.php',
                 'spriebsch\\longbow\\tests\\testcommandhandlerthatthrowsexception' => '/../stubs/TestCommandHandlerThatThrowsException.php',
                 'spriebsch\\longbow\\tests\\testcorrelationid' => '/../stubs/TestCorrelationId.php',
                 'spriebsch\\longbow\\tests\\testevent' => '/../stubs/TestEvent.php',
                 'spriebsch\\longbow\\tests\\testeventhandler' => '/../stubs/TestEventHandler.php',
-                'spriebsch\\longbow\\tests\\testeventhandlerfactory' => '/../stubs/TestEventHandlerFactory.php',
                 'spriebsch\\longbow\\tests\\testeventstream' => '/../stubs/TestEventStream.php',
                 'spriebsch\\longbow\\tests\\testeventstreamprocessor' => '/../stubs/TestEventStreamProcessor.php'
             );

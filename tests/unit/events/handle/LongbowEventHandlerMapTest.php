@@ -45,10 +45,8 @@ class LongbowEventHandlerMapTest extends TestCase
     #[Group('exception')]
     public function test_stored_map_element_must_be_array(): void
     {
-        $map = EventHandlerMap::fromArray([TestEvent::class => 'no-array']);
-
         $this->expectException(HandlerMapElementIsNoArrayException::class);
 
-        $map->handlerClassesFor(new TestEvent);
+        EventHandlerMap::fromArray([TestEvent::class => 'no-array']);
     }
 }

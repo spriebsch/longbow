@@ -83,8 +83,7 @@ final readonly class LongbowFactory
     {
         return new LongbowEventStreamDispatcher(
             $this->eventStreamProcessorMap(),
-            $this->streamPositionReader(),
-            $this->streamPositionWriter(),
+            $this->streamPosition(),
             $this->container,
         );
     }
@@ -105,14 +104,14 @@ final readonly class LongbowFactory
         );
     }
 
-    private function streamPositionReader(): StreamPositionReader
+    private function sqliteStreamPosition(): SqliteStreamPosition
     {
-        return new SqliteStreamPositionHandler($this->streamPositionConnection());
+        return new SqliteStreamPosition($this->streamPositionConnection());
     }
 
-    private function streamPositionWriter(): StreamPositionWriter
+    private function streamPositionWriter(): StreamPosition
     {
-        return new SqliteStreamPositionWriter($this->streamPositionConnection());
+        return new SqliteStreamPosition($this->streamPositionConnection());
     }
 
     private function eventStreamProcessorMap(): EventStreamProcessorMap

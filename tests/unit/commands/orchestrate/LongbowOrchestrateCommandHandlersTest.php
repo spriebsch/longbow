@@ -38,7 +38,6 @@ use spriebsch\longbow\tests\TestCommandHandlerThatReturnsEvent;
 #[CoversClass(CommandHandlerHasAlreadyBeenConfiguredException::class)]
 #[CoversClass(NoCommandSpecifiedException::class)]
 #[CoversClass(CommandHasNoHandlerException::class)]
-#[CoversClass(CommandHandlerMapIsNoArrayException::class)]
 #[CoversClass(FailedToConfigureCommandException::class)]
 class LongbowOrchestrateCommandHandlersTest extends TestCase
 {
