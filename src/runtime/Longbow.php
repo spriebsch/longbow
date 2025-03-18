@@ -17,11 +17,13 @@ use spriebsch\eventstore\EventFactory;
 use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\File;
 use spriebsch\longbow\commands\Command;
+use spriebsch\longbow\commands\CommandDispatcher;
+use spriebsch\longbow\eventStreams\EventStreamDispatcher;
 use spriebsch\longbow\orchestration\LongbowHasAlreadyBeenConfiguredException;
 
 final class Longbow
 {
-    private static ?LongbowFactory $factory = null;
+    private static ?LongbowContainer $container = null;
 
     public static function configure(
         Directory $orchestration,
@@ -31,11 +33,11 @@ final class Longbow
         Container $container,
     ): void
     {
-        if (self::$factory !== null) {
+        if (self::$container !== null) {
             throw new LongbowHasAlreadyBeenConfiguredException;
         }
 
-        self::$factory = new LongbowFactory(
+        self::$container = new LongbowContainer(
             $orchestration,
             $eventMap,
             $eventStoreDb,
@@ -47,16 +49,16 @@ final class Longbow
     public static function reset(): void
     {
         EventFactory::reset();
-        self::$factory = null;
+        self::$container = null;
     }
 
     public static function handleCommand(Command $command): Event
     {
-        return self::$factory->commandDispatcher()->handle($command);
+        return self::$container->get(CommandDispatcher::class)->handle($command);
     }
 
     public static function processEvents(): void
     {
-        self::$factory->eventStreamDispatcher()->run();
+        self::$container->get(EventStreamDispatcher::class)->run();
     }
 }

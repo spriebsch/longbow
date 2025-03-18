@@ -16,6 +16,8 @@ use spriebsch\eventstore\EventReader;
 use spriebsch\eventstore\EventWriter;
 use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\File;
+use spriebsch\longbow\commands\CommandDispatcher;
+use spriebsch\longbow\eventStreams\EventStreamDispatcher;
 
 final readonly class LongbowContainer implements Container
 {
@@ -58,6 +60,8 @@ final readonly class LongbowContainer implements Container
     private function doGet(string $type, mixed ...$parameters)
     {
         return match ($type) {
+            CommandDispatcher::class => $this->longbowFactory->commandDispatcher(),
+            EventStreamDispatcher::class => $this->longbowFactory->eventStreamDispatcher(),
             EventReader::class => $this->longbowFactory->eventReader(),
             EventWriter::class => $this->longbowFactory->eventWriter(),
             SqliteStreamPosition::class => $this->longbowFactory->streamPosition(),

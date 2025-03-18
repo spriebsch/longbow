@@ -16,7 +16,7 @@
   "require": {
     "php": ">=8.4",
     "ext-sqlite3": "*",
-    "spriebsch/di": "^1.1",
+    "spriebsch/di": "^1.5",
     "spriebsch/event-generator": "^1.4",
     "spriebsch/eventstore": "^1.9",
     "spriebsch/filesystem": "^1.0",
