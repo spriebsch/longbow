@@ -18,8 +18,9 @@ use RuntimeException;
 use spriebsch\diContainer\DIContainer;
 use spriebsch\eventstore\Event;
 use spriebsch\eventstore\EventWriter;
+use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\events\EventDispatcher;
-use spriebsch\longbow\example\ApplicationConfiguration;
+use spriebsch\longbow\example\LongbowConfiguration;
 use spriebsch\longbow\example\ApplicationFactory;
 use spriebsch\longbow\tests\TestCommand;
 use spriebsch\longbow\tests\TestCommandHandlerThatReturnsEvent;
@@ -34,7 +35,15 @@ class LongbowCommandDispatcherTest extends TestCase
     #[Group('feature')]
     public function test_dispatches_command_to_defined_CommandHandler(): void
     {
-        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
+        $configuration = LongbowConfiguration::fromArray(
+            [
+                'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
+                'eventStore' => ':memory:',
+                'longbowDatabase' => ':memory:',
+            ],
+        );
+
+        $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
         $event = $this->createMock(Event::class);
@@ -52,7 +61,15 @@ class LongbowCommandDispatcherTest extends TestCase
     #[Group('exception')]
     public function test_CommandHandler_must_be_defined(): void
     {
-        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
+        $configuration = LongbowConfiguration::fromArray(
+            [
+                'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
+                'eventStore' => ':memory:',
+                'longbowDatabase' => ':memory:',
+            ],
+        );
+
+        $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
         $event = $this->createMock(Event::class);
@@ -75,7 +92,15 @@ class LongbowCommandDispatcherTest extends TestCase
     #[Group('exception')]
     public function test_CommandHandler_must_not_fail(): void
     {
-        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
+        $configuration = LongbowConfiguration::fromArray(
+            [
+                'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
+                'eventStore' => ':memory:',
+                'longbowDatabase' => ':memory:',
+            ],
+        );
+
+        $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
         $commandHandler = new TestCommandHandlerThatThrowsException;
@@ -101,7 +126,15 @@ class LongbowCommandDispatcherTest extends TestCase
     #[Group('exception')]
     public function test_EventWriter_must_not_fail(): void
     {
-        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
+        $configuration = LongbowConfiguration::fromArray(
+            [
+                'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
+                'eventStore' => ':memory:',
+                'longbowDatabase' => ':memory:',
+            ],
+        );
+
+        $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
         $commandHandler = new TestCommandHandlerThatThrowsException;
@@ -130,7 +163,15 @@ class LongbowCommandDispatcherTest extends TestCase
     #[Group('exception')]
     public function test_EventDispatcher_must_not_fail(): void
     {
-        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
+        $configuration = LongbowConfiguration::fromArray(
+            [
+                'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
+                'eventStore' => ':memory:',
+                'longbowDatabase' => ':memory:',
+            ],
+        );
+
+        $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
         $commandHandler = new TestCommandHandlerThatThrowsException;

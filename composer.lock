@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "176cb60c6ee32633613eaa8ce44adb47",
+    "content-hash": "18bc1336e75be08c42ef17ead849cd0a",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -66,16 +66,16 @@
         },
         {
             "name": "spriebsch/di",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/diContainer.git",
-                "reference": "0ab1eefeb8c36d951348e5d493564ecf30d7f958"
+                "reference": "81d25875d26d1d7f75d661faf3fce908f4582eab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/0ab1eefeb8c36d951348e5d493564ecf30d7f958",
-                "reference": "0ab1eefeb8c36d951348e5d493564ecf30d7f958",
+                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/81d25875d26d1d7f75d661faf3fce908f4582eab",
+                "reference": "81d25875d26d1d7f75d661faf3fce908f4582eab",
                 "shasum": ""
             },
             "require": {
@@ -106,9 +106,9 @@
             "description": "A lightweight, smart and fast DI container.",
             "support": {
                 "issues": "https://github.com/spriebsch/diContainer/issues",
-                "source": "https://github.com/spriebsch/diContainer/tree/1.5.0"
+                "source": "https://github.com/spriebsch/diContainer/tree/1.6.0"
             },
-            "time": "2025-03-18T08:34:20+00:00"
+            "time": "2025-03-18T17:53:56+00:00"
         },
         {
             "name": "spriebsch/event-generator",
@@ -164,21 +164,21 @@
         },
         {
             "name": "spriebsch/eventstore",
-            "version": "1.9.1",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/eventstore.git",
-                "reference": "e8469a80b32af0f5ea2abb1046cbf628af127f4b"
+                "reference": "367f495404e6cd271e08503b073cc85abfe7db29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/e8469a80b32af0f5ea2abb1046cbf628af127f4b",
-                "reference": "e8469a80b32af0f5ea2abb1046cbf628af127f4b",
+                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/367f495404e6cd271e08503b073cc85abfe7db29",
+                "reference": "367f495404e6cd271e08503b073cc85abfe7db29",
                 "shasum": ""
             },
             "require": {
                 "ext-sqlite3": "*",
-                "php": "^8.3",
+                "php": "^8.4",
                 "spriebsch/sqlite": "^1.0",
                 "spriebsch/timestamp": "^1.0",
                 "spriebsch/uuid": "^1.0"
@@ -207,9 +207,9 @@
             "description": "Lightweight Sqlite-based Event Store.",
             "support": {
                 "issues": "https://github.com/spriebsch/eventstore/issues",
-                "source": "https://github.com/spriebsch/eventstore/tree/1.9.1"
+                "source": "https://github.com/spriebsch/eventstore/tree/1.10.0"
             },
-            "time": "2025-01-14T12:30:04+00:00"
+            "time": "2025-03-18T13:26:30+00:00"
         },
         {
             "name": "spriebsch/filesystem",

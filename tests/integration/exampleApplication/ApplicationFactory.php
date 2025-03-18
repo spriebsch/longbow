@@ -17,7 +17,7 @@ use spriebsch\eventstore\EventWriter;
 use spriebsch\eventstore\SqliteEventReader;
 use spriebsch\eventstore\SqliteEventStoreSchema;
 use spriebsch\eventstore\SqliteEventWriter;
-use spriebsch\longbow\SqliteStreamPositionSchema;
+use spriebsch\longbow\LongbowDatabaseSchema;
 use spriebsch\sqlite\SqliteConnection;
 
 final readonly class ApplicationFactory extends AbstractFactory
@@ -46,7 +46,7 @@ final readonly class ApplicationFactory extends AbstractFactory
     {
         $connection = SqliteConnection::memory();
         SqliteEventStoreSchema::from($connection)->createIfNotExists();
-        SqliteStreamPositionSchema::from($connection)->createIfNotExists();
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         return $connection;
     }

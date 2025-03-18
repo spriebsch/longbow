@@ -11,7 +11,7 @@
 
 namespace spriebsch\longbow\example;
 
-class Something2
+class EventHandlerSideEffect
 {
     private string $payload;
 

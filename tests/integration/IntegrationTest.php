@@ -12,21 +12,20 @@
 namespace spriebsch\longbow\integration;
 
 use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use spriebsch\diContainer\DIContainer;
 use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\Filesystem;
-use spriebsch\longbow\example\ApplicationConfiguration;
 use spriebsch\longbow\example\ApplicationFactory;
+use spriebsch\longbow\example\LongbowConfiguration;
 use spriebsch\longbow\example\SomeCommand;
 use spriebsch\longbow\example\SomeCommandHandler;
 use spriebsch\longbow\example\SomeEvent;
 use spriebsch\longbow\example\SomeEventHandler;
 use spriebsch\longbow\example\SomeEventStream;
 use spriebsch\longbow\example\SomeEventStreamProcessor;
-use spriebsch\longbow\example\Something;
-use spriebsch\longbow\example\Something2;
+use spriebsch\longbow\example\EventHandlerSideEffect;
+use spriebsch\longbow\example\EventStreamProcessorSideEffect;
 use spriebsch\longbow\Longbow;
 use spriebsch\longbow\orchestration\LongbowOrchestration;
 use spriebsch\uuid\UUID;
@@ -34,8 +33,7 @@ use spriebsch\uuid\UUID;
 #[CoversNothing]
 class IntegrationTest extends TestCase
 {
-    #[Test]
-    public function exampleApplication(): void
+    public function test_exampleApplication(): void
     {
         $orchestrationDirectory = $this->prepare();
         $this->orchestrate($orchestrationDirectory);
@@ -44,7 +42,7 @@ class IntegrationTest extends TestCase
 
     private function prepare(): Directory
     {
-        $orchestrationDirectory = Filesystem::from(__DIR__ . '/orchestration');
+        $orchestrationDirectory = Filesystem::from(__DIR__ . '/../../data');
 
         $orchestrationDirectory->deleteFile('_LongbowCommandHandlers.php');
         $orchestrationDirectory->deleteFile('_LongbowEventHandlers.php');
@@ -73,30 +71,33 @@ class IntegrationTest extends TestCase
 
     private function runLongbow(Directory $orchestrationDirectory): void
     {
-        $eventMap = Filesystem::from(__DIR__ . '/../fixtures/events.php');
-
-        $configuration = new ApplicationConfiguration;
-        $container = new DiContainer($configuration, ApplicationFactory::class);
-
-        // $applicationFactory = new ApplicationFactory;
         $payload = UUID::generate()->asString();
 
+        $eventMap = Filesystem::from(__DIR__ . '/../fixtures/events.php');
+
+        $configuration = LongbowConfiguration::fromArray(
+            [
+                'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../data'),
+                'eventStore' => ':memory:',
+                'longbowDatabase' => ':memory:',
+            ],
+        );
+
         Longbow::configure(
-            $orchestrationDirectory,
+            $configuration,
             $eventMap,
-            ':memory:',
-            ':memory:',
-            $container
+            ApplicationFactory::class,
         );
 
         $event = Longbow::handleCommand(new SomeCommand($payload));
-        $something = $container->get(Something::class);
+        $eventHandlerSideEffect = Longbow::container()->get(EventHandlerSideEffect::class);
 
         Longbow::processEvents();
-        $something2 = $container->get(Something2::class);
+        $streamProcessorSideEffect = Longbow::container()->get(EventStreamProcessorSideEffect::class);
+        Longbow::reset();
 
         $this->assertSame($payload, $event->payload());
-        $this->assertSame($something->payload(), $payload);
-        $this->assertSame($something2->payload(), $payload);
+        $this->assertSame($eventHandlerSideEffect->payload(), $payload);
+        $this->assertSame($streamProcessorSideEffect->payload(), $payload);
     }
 }

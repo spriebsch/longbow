@@ -11,10 +11,11 @@
 
 namespace spriebsch\longbow;
 
+use spriebsch\diContainer\Configuration;
 use spriebsch\diContainer\Container;
+use spriebsch\diContainer\DIContainer;
 use spriebsch\eventstore\Event;
 use spriebsch\eventstore\EventFactory;
-use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\File;
 use spriebsch\longbow\commands\Command;
 use spriebsch\longbow\commands\CommandDispatcher;
@@ -23,27 +24,34 @@ use spriebsch\longbow\orchestration\LongbowHasAlreadyBeenConfiguredException;
 
 final class Longbow
 {
-    private static ?LongbowContainer $container = null;
+    private static ?Container $container = null;
 
     public static function configure(
-        Directory $orchestration,
-        File      $eventMap,
-        string $eventStoreDb,
-        string $positionsDb,
-        Container $container,
+        Configuration $configuration,
+        File          $eventMap,
+        string        $factoryClass,
     ): void
     {
         if (self::$container !== null) {
             throw new LongbowHasAlreadyBeenConfiguredException;
         }
 
-        self::$container = new LongbowContainer(
-            $orchestration,
-            $eventMap,
-            $eventStoreDb,
-            $positionsDb,
-            $container,
+        EventFactory::configureWith($eventMap->require());
+
+        self::$container = new DIContainer(
+            $configuration,
+            $factoryClass,
+            LongbowFactory::class
         );
+    }
+
+    public static function container(): Container
+    {
+        if (self::$container === null) {
+            throw new LongbowHasNotBeenConfiguredException;
+        }
+
+        return self::$container;
     }
 
     public static function reset(): void

@@ -15,8 +15,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use spriebsch\diContainer\DIContainer;
-use spriebsch\longbow\example\ApplicationConfiguration;
+use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\example\ApplicationFactory;
+use spriebsch\longbow\example\LongbowConfiguration;
 use spriebsch\longbow\tests\TestEvent;
 use spriebsch\longbow\tests\TestEventHandler;
 
@@ -27,7 +28,15 @@ class LongbowEventDispatcherTest extends TestCase
     #[Group('feature')]
     public function test_dispatches_to_EventHandler(): void
     {
-        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
+        $configuration = LongbowConfiguration::fromArray(
+            [
+                'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
+                'eventStore' => ':memory:',
+                'longbowDatabase' => ':memory:',
+            ],
+        );
+
+        $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $eventHandlerMap = EventHandlerMap::fromArray([TestEvent::class => [TestEventHandler::class]]);
 

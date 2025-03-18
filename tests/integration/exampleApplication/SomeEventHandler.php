@@ -15,10 +15,10 @@ use spriebsch\longbow\events\EventHandler;
 
 class SomeEventHandler implements EventHandler
 {
-    public function __construct(private readonly Something $spy) {}
+    public function __construct(private readonly EventHandlerSideEffect $sideEffect) {}
 
     public function handle(SomeEvent $event): void
     {
-        $this->spy->setPayload($event->payload());
+        $this->sideEffect->setPayload($event->payload());
     }
 }

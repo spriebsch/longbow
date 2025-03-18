@@ -16,7 +16,7 @@ use spriebsch\uuid\UUID;
 
 final class SomeEventStreamProcessor implements EventStreamProcessor
 {
-    public function __construct(private readonly Something2 $something2) {}
+    public function __construct(private readonly EventStreamProcessorSideEffect $sideEffect) {}
 
     public static function id(): UUID
     {
@@ -25,6 +25,6 @@ final class SomeEventStreamProcessor implements EventStreamProcessor
 
     public function onSomeEvent(SomeEvent $event): void
     {
-        $this->something2->setPayload($event->payload());
+        $this->sideEffect->setPayload($event->payload());
     }
 }

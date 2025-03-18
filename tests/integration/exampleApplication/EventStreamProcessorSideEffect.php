@@ -11,9 +11,17 @@
 
 namespace spriebsch\longbow\example;
 
-use spriebsch\diContainer\Configuration;
-use spriebsch\filesystem\Directory;
-
-class ApplicationConfiguration implements Configuration
+class EventStreamProcessorSideEffect
 {
+    private string $payload;
+
+    public function setPayload(string $payload): void
+    {
+        $this->payload = $payload;
+    }
+
+    public function payload(): string
+    {
+        return $this->payload;
+    }
 }

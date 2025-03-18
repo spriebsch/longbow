@@ -14,7 +14,7 @@ namespace spriebsch\longbow;
 use spriebsch\sqlite\Connection;
 use spriebsch\sqlite\SqliteSchema;
 
-final class SqliteStreamPositionSchema extends SqliteSchema
+final class LongbowDatabaseSchema extends SqliteSchema
 {
     protected function schemaExists(Connection $connection): bool
     {

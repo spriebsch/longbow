@@ -7,17 +7,17 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'spriebsch\\longbow\\example\\applicationconfiguration' => '/exampleApplication/ApplicationConfiguration.php',
                 'spriebsch\\longbow\\example\\applicationfactory' => '/exampleApplication/ApplicationFactory.php',
+                'spriebsch\\longbow\\example\\eventhandlersideeffect' => '/exampleApplication/EventHandlerSideEffect.php',
+                'spriebsch\\longbow\\example\\eventstreamprocessorsideeffect' => '/exampleApplication/EventStreamProcessorSideEffect.php',
+                'spriebsch\\longbow\\example\\longbowconfiguration' => '/exampleApplication/LongbowConfiguration.php',
                 'spriebsch\\longbow\\example\\somecommand' => '/exampleApplication/SomeCommand.php',
                 'spriebsch\\longbow\\example\\somecommandhandler' => '/exampleApplication/SomeCommandHandler.php',
                 'spriebsch\\longbow\\example\\someevent' => '/exampleApplication/SomeEvent.php',
                 'spriebsch\\longbow\\example\\someeventhandler' => '/exampleApplication/SomeEventHandler.php',
                 'spriebsch\\longbow\\example\\someeventstream' => '/exampleApplication/SomeEventStream.php',
                 'spriebsch\\longbow\\example\\someeventstreamprocessor' => '/exampleApplication/SomeEventStreamProcessor.php',
-                'spriebsch\\longbow\\example\\someid' => '/exampleApplication/SomeId.php',
-                'spriebsch\\longbow\\example\\something' => '/exampleApplication/Something.php',
-                'spriebsch\\longbow\\example\\something2' => '/exampleApplication/Something2.php'
+                'spriebsch\\longbow\\example\\someid' => '/exampleApplication/SomeId.php'
             );
         }
         $cn = strtolower($class);

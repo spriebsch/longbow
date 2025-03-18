@@ -16,9 +16,9 @@
   "require": {
     "php": ">=8.4",
     "ext-sqlite3": "*",
-    "spriebsch/di": "^1.5",
+    "spriebsch/di": "^1.6",
     "spriebsch/event-generator": "^1.4",
-    "spriebsch/eventstore": "^1.9",
+    "spriebsch/eventstore": "^1.10",
     "spriebsch/filesystem": "^1.0",
     "spriebsch/identifier-generator": "^1.1",
     "spriebsch/sqlite": "^1.0",
@@ -29,7 +29,7 @@
   "scripts": {
     "post-autoload-dump": "composer generate-autoloader",
     "generate-autoloader": [
-      "tools/phpab --output tests/unit/autoload.php tests/stubs",
+      "tools/phpab --output tests/unit/autoload.php tests/stubs tests/fixtures",
       "tools/phpab --output tests/integration/autoload.php tests/integration/exampleApplication"
     ],
     "test": "tools/phpunit",

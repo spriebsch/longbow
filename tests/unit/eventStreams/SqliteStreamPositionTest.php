@@ -17,14 +17,14 @@ use PHPUnit\Framework\TestCase;
 use spriebsch\eventstore\EventId;
 use spriebsch\longbow\FailedToStoreStreamPositionException;
 use spriebsch\longbow\SqliteStreamPosition;
-use spriebsch\longbow\SqliteStreamPositionSchema;
+use spriebsch\longbow\LongbowDatabaseSchema;
 use spriebsch\sqlite\SqliteConnection;
 use spriebsch\timestamp\Timestamp;
 use spriebsch\uuid\UUID;
 use SQLite3Exception;
 
 #[CoversClass(SqliteStreamPosition::class)]
-#[CoversClass(SqliteStreamPositionSchema::class)]
+#[CoversClass(LongbowDatabaseSchema::class)]
 #[CoversClass(FailedToStoreStreamPositionException::class)]
 class SqliteStreamPositionTest extends TestCase
 {
@@ -47,7 +47,7 @@ class SqliteStreamPositionTest extends TestCase
         $handlerId = UUID::generate();
 
         $connection = SqliteConnection::memory();
-        SqliteStreamPositionSchema::from($connection)->createIfNotExists();
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         $position = new SqliteStreamPosition($connection);
 
@@ -61,7 +61,7 @@ class SqliteStreamPositionTest extends TestCase
         $eventId = UUID::generate();
 
         $connection = SqliteConnection::memory();
-        SqliteStreamPositionSchema::from($connection)->createIfNotExists();
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         $writeStatement = $connection->prepare(
             'INSERT OR REPLACE INTO positions(handlerId, eventId, timestamp) VALUES(:handlerId, :eventId, :timestamp)',
@@ -88,7 +88,7 @@ class SqliteStreamPositionTest extends TestCase
         $eventId = EventId::generate();
 
         $connection = SqliteConnection::memory();
-        SqliteStreamPositionSchema::from($connection)->createIfNotExists();
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         $position = new SqliteStreamPosition($connection);
 
@@ -110,7 +110,7 @@ class SqliteStreamPositionTest extends TestCase
         $eventId = EventId::generate();
 
         $connection = SqliteConnection::memory();
-        SqliteStreamPositionSchema::from($connection)->createIfNotExists();
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         $position = new SqliteStreamPosition($connection);
 
@@ -138,7 +138,7 @@ class SqliteStreamPositionTest extends TestCase
         $secondEventId = EventId::generate();
 
         $connection = SqliteConnection::from($this->db);
-        SqliteStreamPositionSchema::from($connection)->createIfNotExists();
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         $secondConnection = SqliteConnection::from($this->db);
 
@@ -169,7 +169,7 @@ class SqliteStreamPositionTest extends TestCase
         $connection = SqliteConnection::from($this->db);
         $secondConnection = SqliteConnection::from($this->db);
 
-        SqliteStreamPositionSchema::from($connection)->createIfNotExists();
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         $position = new SqliteStreamPosition($connection);
         $secondPosition = new SqliteStreamPosition($secondConnection);

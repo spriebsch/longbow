@@ -15,11 +15,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use spriebsch\longbow\SqliteStreamPositionSchema;
+use spriebsch\longbow\LongbowDatabaseSchema;
 use spriebsch\sqlite\SqliteConnection;
 
-#[CoversClass(SqliteStreamPositionSchema::class)]
-class SqliteStreamPositionSchemaTest extends TestCase
+#[CoversClass(LongbowDatabaseSchema::class)]
+class LongbowDatabaseSchemaTest extends TestCase
 {
     #[Test]
     #[Group('feature')]
@@ -27,7 +27,7 @@ class SqliteStreamPositionSchemaTest extends TestCase
     {
         $connection = SqliteConnection::memory();
 
-        $schema = SqliteStreamPositionSchema::from($connection);
+        $schema = LongbowDatabaseSchema::from($connection);
         $schema->createIfNotExists();
 
         $this->assertStringContainsString(
@@ -42,10 +42,9 @@ class SqliteStreamPositionSchemaTest extends TestCase
     {
         $connection = SqliteConnection::memory();
 
-        $schema = SqliteStreamPositionSchema::from($connection);
+        $schema = LongbowDatabaseSchema::from($connection);
         $schema->createIfNotExists();
         $schema->createIfNotExists();
-
 
         $this->assertStringContainsString(
             'CREATE TABLE `positions`',

@@ -9,19 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace spriebsch\longbow\example;
+namespace spriebsch\longbow\orchestration;
 
-class Something
+use spriebsch\longbow\Exception;
+
+final class LongbowHasNotBeenConfiguredException extends Exception
 {
-    private string $payload;
-
-    public function setPayload(string $payload): void
+    public function __construct()
     {
-        $this->payload = $payload;
-    }
-
-    public function payload(): string
-    {
-        return $this->payload;
+        parent::__construct('Longbow has not been configured');
     }
 }

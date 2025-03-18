@@ -11,15 +11,13 @@
 
 namespace spriebsch\longbow;
 
+use spriebsch\diContainer\AbstractFactory;
 use spriebsch\diContainer\Container;
-use spriebsch\eventstore\EventFactory;
 use spriebsch\eventstore\EventReader;
 use spriebsch\eventstore\EventWriter;
 use spriebsch\eventstore\SqliteEventReader;
 use spriebsch\eventstore\SqliteEventStoreSchema;
 use spriebsch\eventstore\SqliteEventWriter;
-use spriebsch\filesystem\Directory;
-use spriebsch\filesystem\File;
 use spriebsch\longbow\commands\CommandDispatcher;
 use spriebsch\longbow\commands\CommandHandlerMap;
 use spriebsch\longbow\commands\LongbowCommandDispatcher;
@@ -32,119 +30,86 @@ use spriebsch\longbow\eventStreams\EventStreamDispatcher;
 use spriebsch\longbow\eventStreams\EventStreamProcessorMap;
 use spriebsch\longbow\eventStreams\LongbowEventStreamDispatcher;
 use spriebsch\longbow\eventStreams\OrchestrateEventStreamProcessors;
+use spriebsch\sqlite\Connection;
 use spriebsch\sqlite\SqliteConnection;
 
-final readonly class LongbowFactory
+final readonly class LongbowFactory extends AbstractFactory
 {
-    private ?SqliteConnection $positionsConnection;
-    private ?SqliteConnection $eventStoreConnection;
-
-    public function __construct(
-        private Directory $orchestrationDirectory,
-        private File      $eventMap,
-        private string    $eventStoreDb,
-        private string    $positionsDb,
-        private Container $container,
-    )
+    public function CommandDispatcher(): CommandDispatcher
     {
-        EventFactory::configureWith($this->eventMap->require());
+        return $this->container->get(LongbowCommandDispatcher::class);
     }
 
-    public function commandDispatcher(): CommandDispatcher
+    public function CommandHandlerMap(): CommandHandlerMap
     {
-        return new LongbowCommandDispatcher(
-            $this->commandHandlerMap(),
-            $this->container,
-            $this->eventDispatcher(),
+        return CommandHandlerMap::fromFile(
+            $this->configuration()->orchestrationDirectory()
+                ->file(OrchestrateCommandHandlers::SERIALIZATION_FILE),
         );
     }
 
-    public function eventReader(): EventReader
+    public function EventHandlerMap(): EventHandlerMap
+    {
+        return EventHandlerMap::fromFile(
+            $this->configuration()->orchestrationDirectory()
+                ->file(OrchestrateEventHandlers::SERIALIZATION_FILE),
+        );
+    }
+
+    public function EventStreamProcessorMap(): EventStreamProcessorMap
+    {
+        return EventStreamProcessorMap::fromFile(
+            $this->configuration()->orchestrationDirectory()
+                ->file(OrchestrateEventStreamProcessors::SERIALIZATION_FILE),
+        );
+    }
+
+    public function EventReader(): EventReader
     {
         return SqliteEventReader::from(
             $this->eventStoreConnection(),
         );
     }
 
-    public function eventWriter(): EventWriter
+    public function EventWriter(): EventWriter
     {
         return SqliteEventWriter::from(
             $this->eventStoreConnection(),
         );
     }
 
-    public function eventDispatcher(): EventDispatcher
+    public function EventDispatcher(): EventDispatcher
     {
-        return new LongbowEventDispatcher($this->eventHandlerMap(), $this->container);
+        return $this->container->get(LongbowEventDispatcher::class);
     }
 
-    public function eventStreamDispatcher(): EventStreamDispatcher
+    public function EventStreamDispatcher(): EventStreamDispatcher
     {
         return new LongbowEventStreamDispatcher(
-            $this->eventStreamProcessorMap(),
-            $this->streamPosition(),
+            $this->EventStreamProcessorMap(),
+            $this->StreamPosition(),
             $this->container,
         );
     }
 
-    private function commandHandlerMap(): CommandHandlerMap
+    public function StreamPosition(): StreamPosition
     {
-        return CommandHandlerMap::fromFile(
-            $this->orchestrationDirectory()
-                ->file(OrchestrateCommandHandlers::SERIALIZATION_FILE),
-        );
+        return new SqliteStreamPosition($this->longbowDatabaseConnection());
     }
 
-    private function eventHandlerMap(): EventHandlerMap
+    public function longbowDatabaseConnection(): SqliteConnection
     {
-        return EventHandlerMap::fromFile(
-            $this->orchestrationDirectory()
-                ->file(OrchestrateEventHandlers::SERIALIZATION_FILE),
-        );
+        $connection = SqliteConnection::from($this->configuration()->longbowDatabase());
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
+
+        return $connection;
     }
 
-    public function streamPosition(): StreamPosition
+    public function eventStoreConnection(): SqliteConnection
     {
-        return new SqliteStreamPosition($this->streamPositionConnection());
-    }
+        $connection = SqliteConnection::from($this->configuration()->eventStore());
+        SqliteEventStoreSchema::from($connection)->createIfNotExists();
 
-    private function eventStreamProcessorMap(): EventStreamProcessorMap
-    {
-        return EventStreamProcessorMap::fromFile(
-            $this->orchestrationDirectory()
-                ->file(OrchestrateEventStreamProcessors::SERIALIZATION_FILE),
-        );
-    }
-
-    private function orchestrationDirectory(): Directory
-    {
-        return $this->orchestrationDirectory;
-    }
-
-    private function streamPositionConnection(): SqliteConnection
-    {
-        if (!isset($this->positionsConnection)) {
-            $this->positionsConnection = $this->sqliteConnection($this->eventStoreDb);
-
-            SqliteStreamPositionSchema::from($this->positionsConnection)->createIfNotExists();
-        }
-
-        return $this->positionsConnection;
-    }
-
-    private function eventStoreConnection(): SqliteConnection
-    {
-        if (!isset($this->eventStoreConnection)) {
-            $this->eventStoreConnection = $this->sqliteConnection($this->positionsDb);
-
-            SqliteEventStoreSchema::from($this->eventStoreConnection)->createIfNotExists();
-        }
-
-        return $this->eventStoreConnection;
-    }
-
-    private function sqliteConnection(string $database): SqliteConnection
-    {
-        return SqliteConnection::from($database);
+        return $connection;
     }
 }

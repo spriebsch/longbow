@@ -8,6 +8,7 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
                 'spriebsch\\longbow\\dispatchtestevent' => '/../stubs/DispatchTestEvent.php',
+                'spriebsch\\longbow\\eventstreams\\eventstreamdispatchertestfixture' => '/../fixtures/EventStreamDispatcherTestFixture.php',
                 'spriebsch\\longbow\\tests\\dispatchertesteventstream' => '/../stubs/DispatcherTestEventStream.php',
                 'spriebsch\\longbow\\tests\\testapplicationfactory' => '/../stubs/TestApplicationFactory.php',
                 'spriebsch\\longbow\\tests\\testcommand' => '/../stubs/TestCommand.php',
