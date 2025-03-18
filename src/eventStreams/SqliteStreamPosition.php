@@ -15,7 +15,6 @@ use spriebsch\eventstore\EventId;
 use spriebsch\sqlite\Connection;
 use spriebsch\timestamp\Timestamp;
 use spriebsch\uuid\UUID;
-use Exception;
 use SQLite3Stmt;
 use const SQLITE3_TEXT;
 

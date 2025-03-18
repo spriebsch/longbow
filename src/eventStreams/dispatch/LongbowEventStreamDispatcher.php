@@ -14,7 +14,6 @@ namespace spriebsch\longbow\eventStreams;
 use spriebsch\diContainer\Container;
 use spriebsch\eventstore\EventStream;
 use spriebsch\longbow\StreamPosition;
-use spriebsch\uuid\UUID;
 
 final class LongbowEventStreamDispatcher implements EventStreamDispatcher
 {
@@ -42,8 +41,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
     {
         foreach ($processors as $processorId => $processorClass) {
             /** @var EventStreamProcessor $processor */
-            $processor = $this->container->get($processorClass, UUID::from($processorId));
-            // $processor = $this->container->get($processorClass);
+            $processor = $this->container->get($processorClass);
 
             $this->runEventStreamProcessor($processor, $stream);
         }

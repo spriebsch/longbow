@@ -11,6 +11,7 @@
 
 namespace spriebsch\longbow\tests;
 
+use RuntimeException;
 use spriebsch\longbow\DispatchTestEvent;
 use spriebsch\longbow\eventStreams\EventStreamProcessor;
 use spriebsch\uuid\UUID;
@@ -18,6 +19,8 @@ use spriebsch\uuid\UUID;
 class TestEventStreamProcessor implements EventStreamProcessor
 {
     private array $processedEvents;
+    private ?int $failOn = null;
+    private int $runs = 0;
 
     public static function id(): UUID
     {
@@ -26,7 +29,20 @@ class TestEventStreamProcessor implements EventStreamProcessor
 
     public function onDispatchTestEvent(DispatchTestEvent $event): void
     {
+        if ($this->failOn) {
+            if ($this->runs >= $this->failOn - 1) {
+                throw new RuntimeException(sprintf('I was told to fail on run %s', $this->failOn));
+            }
+        }
+
         $this->processedEvents[] = $event;
+        $this->runs ++;
+    }
+
+    public function failOn(int $run): void
+    {
+        $this->runs = 0;
+        $this->failOn = $run;
     }
 
     public function getProcessedEvents(): array
