@@ -21,6 +21,8 @@ final readonly class EventStreamProcessorWrapper
 
     public function process(Event $event): void
     {
+        var_dump('PROCESS');
+
         $method = $this->onEventMethodNameFor($event);
 
         $this->ensureHasMethod($this->eventStreamProcessor, $method);

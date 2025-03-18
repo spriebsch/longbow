@@ -30,7 +30,6 @@ use spriebsch\longbow\eventStreams\EventStreamDispatcher;
 use spriebsch\longbow\eventStreams\EventStreamProcessorMap;
 use spriebsch\longbow\eventStreams\LongbowEventStreamDispatcher;
 use spriebsch\longbow\eventStreams\OrchestrateEventStreamProcessors;
-use spriebsch\sqlite\Connection;
 use spriebsch\sqlite\SqliteConnection;
 
 final readonly class LongbowFactory extends AbstractFactory

@@ -29,6 +29,8 @@ class TestEventStreamProcessor implements EventStreamProcessor
 
     public function onDispatchTestEvent(DispatchTestEvent $event): void
     {
+        var_dump('DISPATCH');
+
         if ($this->failOn) {
             if ($this->runs >= $this->failOn - 1) {
                 throw new RuntimeException(sprintf('I was told to fail on run %s', $this->failOn));

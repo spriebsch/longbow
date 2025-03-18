@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace spriebsch\longbow\orchestration;
+namespace spriebsch\longbow;
 
 use spriebsch\longbow\Exception;
 

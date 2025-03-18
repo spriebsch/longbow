@@ -13,7 +13,6 @@ namespace spriebsch\longbow\integration;
 
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
-use spriebsch\diContainer\DIContainer;
 use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\example\ApplicationFactory;

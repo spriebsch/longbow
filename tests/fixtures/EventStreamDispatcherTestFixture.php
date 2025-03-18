@@ -2,18 +2,13 @@
 
 namespace spriebsch\longbow\eventStreams;
 
-use spriebsch\diContainer\Container;
-use spriebsch\diContainer\DIContainer;
-use spriebsch\eventstore\EventFactory;
 use spriebsch\eventstore\Events;
 use spriebsch\eventstore\EventWriter;
-use spriebsch\filesystem\FakeDirectory;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\DispatchTestEvent;
 use spriebsch\longbow\example\LongbowConfiguration;
-use spriebsch\longbow\LongbowFactory;
-use spriebsch\longbow\SqliteStreamPosition;
-use spriebsch\longbow\StreamPosition;
+use spriebsch\longbow\Longbow;
+use spriebsch\longbow\orchestration\LongbowOrchestration;
 use spriebsch\longbow\tests\DispatcherTestEventStream;
 use spriebsch\longbow\tests\TestApplicationFactory;
 use spriebsch\longbow\tests\TestCorrelationId;
@@ -21,27 +16,38 @@ use spriebsch\longbow\tests\TestEventStreamProcessor;
 
 final readonly class EventStreamDispatcherTestFixture
 {
-    public LongbowEventStreamDispatcher $dispatcher;
-    public Container $container;
     public array $events;
 
     public function __construct()
     {
+        $orchestrationDirectory = Filesystem::from(__DIR__ . '/../../data');
+
+        $orchestrationDirectory->deleteFile('_LongbowCommandHandlers.php');
+        $orchestrationDirectory->deleteFile('_LongbowEventHandlers.php');
+        $orchestrationDirectory->deleteFile('_LongbowEventStreamProcessors.php');
+
+        $orchestration = LongbowOrchestration::initialize();
+        $orchestration
+            ->eventStream(DispatcherTestEventStream::class)
+            ->isProcessedBy(TestEventStreamProcessor::class);
+
+        $orchestration->exportOrchestrationTo($orchestrationDirectory);
+
         $eventMap = Filesystem::from(__DIR__ . '/../stubs/events.php');
-        EventFactory::configureWith($eventMap->require());
 
         $configuration = LongbowConfiguration::fromArray(
             [
-                'orchestrationDirectory' => new FakeDirectory('/fake'),
+                'orchestrationDirectory' => $orchestrationDirectory,
                 'eventStore' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ]
         );
 
-        $this->container = new DiContainer(
+        Longbow::reset();
+        Longbow::configure(
             $configuration,
+            $eventMap,
             TestApplicationFactory::class,
-            LongbowFactory::class,
         );
 
         $this->events = [
@@ -50,19 +56,7 @@ final readonly class EventStreamDispatcherTestFixture
             DispatchTestEvent::from(TestCorrelationId::generate(), 'payload-3'),
         ];
 
-        $eventWriter = $this->container->get(EventWriter::class);
+        $eventWriter = Longbow::container()->get(EventWriter::class);
         $eventWriter->store(Events::from(...$this->events));
-
-        $streamPosition = $this->container->get(StreamPosition::class);
-        $processorMap = EventStreamProcessorMap::fromArray(
-            [
-                DispatcherTestEventStream::class =>
-                    [
-                        TestEventStreamProcessor::id()->asString() => TestEventStreamProcessor::class,
-                    ],
-            ],
-        );
-
-        $this->dispatcher = new LongbowEventStreamDispatcher($processorMap, $streamPosition, $this->container);
     }
 }
