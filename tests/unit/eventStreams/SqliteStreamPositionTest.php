@@ -21,9 +21,7 @@ use spriebsch\longbow\SqliteStreamPositionSchema;
 use spriebsch\sqlite\SqliteConnection;
 use spriebsch\timestamp\Timestamp;
 use spriebsch\uuid\UUID;
-use SQLite3;
 use SQLite3Exception;
-use const SQLITE3_ASSOC;
 
 #[CoversClass(SqliteStreamPosition::class)]
 #[CoversClass(SqliteStreamPositionSchema::class)]
@@ -53,7 +51,7 @@ class SqliteStreamPositionTest extends TestCase
 
         $position = new SqliteStreamPosition($connection);
 
-        $this->assertNull($position->readPositionAndLock($handlerId));
+        $this->assertNull($position->readPosition($handlerId));
     }
 
     #[Group('feature')]
@@ -79,7 +77,7 @@ class SqliteStreamPositionTest extends TestCase
 
         $this->assertEquals(
             $eventId->asString(),
-            $position->readPositionAndLock($handlerId)->asString(),
+            $position->readPosition($handlerId)->asString(),
         );
     }
 
@@ -94,19 +92,14 @@ class SqliteStreamPositionTest extends TestCase
 
         $position = new SqliteStreamPosition($connection);
 
-        $position->readPositionAndLock($handlerId);
-        $position->writePositionAndReleaseLock($handlerId, $eventId);
+        $position->acquireLock($handlerId);
+        $position->readPosition($handlerId);
+        $position->writePosition($handlerId, $eventId);
+        $position->releaseLock($handlerId);
 
-        $readStatement = $connection->prepare(
-            'SELECT eventId FROM positions WHERE handlerId=:handlerId',
-        );
-
-        $readStatement->bindValue(':handlerId', $handlerId->asString(), SQLITE3_TEXT);
-
-        $result = $readStatement->execute();
         $this->assertSame(
             $eventId->asString(),
-            $result->fetchArray(SQLITE3_ASSOC)['eventId']
+            $position->readPosition($handlerId)->asString(),
         );
     }
 
@@ -121,22 +114,19 @@ class SqliteStreamPositionTest extends TestCase
 
         $position = new SqliteStreamPosition($connection);
 
-        $position->readPositionAndLock($handlerId);
-        $position->writePositionAndReleaseLock($handlerId, EventId::generate());
+        $position->acquireLock($handlerId);
+        $position->readPosition($handlerId);
+        $position->writePosition($handlerId, EventId::generate());
+        $position->releaseLock($handlerId);
 
-        $position->readPositionAndLock($handlerId);
-        $position->writePositionAndReleaseLock($handlerId, $eventId);
+        $position->acquireLock($handlerId);
+        $position->readPosition($handlerId);
+        $position->writePosition($handlerId, $eventId);
+        $position->releaseLock($handlerId);
 
-        $readStatement = $connection->prepare(
-            'SELECT eventId FROM positions WHERE handlerId=:handlerId',
-        );
-
-        $readStatement->bindValue(':handlerId', $handlerId->asString(), SQLITE3_TEXT);
-
-        $result = $readStatement->execute();
         $this->assertSame(
             $eventId->asString(),
-            $result->fetchArray(SQLITE3_ASSOC)['eventId']
+            $position->readPosition($handlerId)->asString(),
         );
     }
 
@@ -144,26 +134,32 @@ class SqliteStreamPositionTest extends TestCase
     public function test_transaction_allows_read(): void
     {
         $handlerId = UUID::generate();
-        $eventId = EventId::generate();
+        $firstEventId = EventId::generate();
+        $secondEventId = EventId::generate();
 
         $connection = SqliteConnection::from($this->db);
         SqliteStreamPositionSchema::from($connection)->createIfNotExists();
 
         $secondConnection = SqliteConnection::from($this->db);
 
-        $readStatement = $secondConnection->prepare(
-            'SELECT eventId FROM positions WHERE handlerId=:handlerId',
-        );
-
-        $readStatement->bindValue(':handlerId', $handlerId->asString(), SQLITE3_TEXT);
-
         $position = new SqliteStreamPosition($connection);
+        $secondPosition = new SqliteStreamPosition($secondConnection);
 
-        $position->readPositionAndLock($handlerId);
-        $result = $readStatement->execute()->fetchArray();
-        $position->writePositionAndReleaseLock($handlerId, $eventId);
+        $position->acquireLock($handlerId);
+        $position->readPosition($handlerId);
+        $position->writePosition($handlerId, $firstEventId);
+        $position->releaseLock($handlerId);
 
-        $this->assertFalse($result);
+        $position->acquireLock($handlerId);
+        $position->readPosition($handlerId);
+        $before = $secondPosition->readPosition($handlerId);
+        $position->writePosition($handlerId, $secondEventId);
+        $position->releaseLock($handlerId);
+
+        $this->assertSame(
+            $firstEventId->asString(),
+            $before->asString(),
+        );
     }
 
     public function test_transaction_blocks_write(): void
@@ -175,20 +171,13 @@ class SqliteStreamPositionTest extends TestCase
 
         SqliteStreamPositionSchema::from($connection)->createIfNotExists();
 
-        $writeStatement = $secondConnection->prepare(
-            'INSERT OR REPLACE INTO positions(handlerId, eventId, timestamp) VALUES(:handlerId, :eventId, :timestamp)',
-        );
-
-        $writeStatement->bindValue(':handlerId', $handlerId->asString(), SQLITE3_TEXT);
-        $writeStatement->bindValue(':eventId', EventId::generate()->asString(), SQLITE3_TEXT);
-        $writeStatement->bindValue(':timestamp', Timestamp::generate()->asString(), SQLITE3_TEXT);
-
         $position = new SqliteStreamPosition($connection);
+        $secondPosition = new SqliteStreamPosition($secondConnection);
 
-        $position->readPositionAndLock($handlerId);
+        $position->acquireLock($handlerId);
 
         $this->expectException(SQLite3Exception::class);
 
-        $writeStatement->execute();
+        $secondPosition->writePosition($handlerId, EventId::generate());
     }
 }

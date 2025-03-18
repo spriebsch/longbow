@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\tests\TestEventStream;
+use spriebsch\longbow\tests\TestEventStreamProcessor;
 
 #[CoversClass(EventStreamProcessorMap::class)]
 #[CoversClass(EventStreamProcessorMapElementIsNoArrayException::class)]
@@ -52,6 +53,18 @@ class EventStreamProcessorMapTest extends TestCase
         ];
 
         $this->expectException(EventStreamProcessorMapElementIsNoArrayException::class);
+
+        EventStreamProcessorMap::fromArray($map);
+    }
+
+    #[Group('exception')]
+    public function test_exception_element_key_must_be_string(): void
+    {
+        $map = [
+            TestEventStream::class => [TestEventStreamProcessor::class]
+        ];
+
+        $this->expectException(EventStreamProcessorMapElementHasNoUUIDException::class);
 
         EventStreamProcessorMap::fromArray($map);
     }

@@ -14,7 +14,7 @@ namespace spriebsch\longbow\events;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use spriebsch\diContainer\Container;
+use spriebsch\diContainer\DIContainer;
 use spriebsch\longbow\example\ApplicationConfiguration;
 use spriebsch\longbow\example\ApplicationFactory;
 use spriebsch\longbow\tests\TestEvent;
@@ -27,7 +27,7 @@ class LongbowEventDispatcherTest extends TestCase
     #[Group('feature')]
     public function test_dispatches_to_EventHandler(): void
     {
-        $container = new Container(new ApplicationConfiguration, ApplicationFactory::class);
+        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
 
         $eventHandlerMap = EventHandlerMap::fromArray([TestEvent::class => [TestEventHandler::class]]);
 

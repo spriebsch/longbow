@@ -16,14 +16,13 @@
   "require": {
     "php": ">=8.4",
     "ext-sqlite3": "*",
-    "spriebsch/di": "^1.0",
+    "spriebsch/di": "^1.1",
     "spriebsch/event-generator": "^1.4",
     "spriebsch/eventstore": "^1.9",
     "spriebsch/filesystem": "^1.0",
     "spriebsch/identifier-generator": "^1.1",
     "spriebsch/sqlite": "^1.0",
-    "spriebsch/uuid": "^1.0",
-    "ext-sqlite": "*"
+    "spriebsch/uuid": "^1.0"
   },
   "repositories": [
   ],

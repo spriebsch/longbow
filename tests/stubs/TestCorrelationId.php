@@ -16,12 +16,12 @@ use spriebsch\uuid\UUID;
 
 class TestCorrelationId implements CorrelationId
 {
-    public static function from(string $uuid): CorrelationId
+    public static function from(string $uuid): self
     {
         return new self(UUID::from($uuid));
     }
 
-    public static function generate(): CorrelationId
+    public static function generate(): self
     {
         return new self(UUID::generate());
     }

@@ -14,7 +14,7 @@ namespace spriebsch\longbow\integration;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use spriebsch\diContainer\Container;
+use spriebsch\diContainer\DIContainer;
 use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\example\ApplicationConfiguration;
@@ -76,7 +76,7 @@ class IntegrationTest extends TestCase
         $eventMap = Filesystem::from(__DIR__ . '/../fixtures/events.php');
 
         $configuration = new ApplicationConfiguration;
-        $container = new Container($configuration, ApplicationFactory::class);
+        $container = new DiContainer($configuration, ApplicationFactory::class);
 
         // $applicationFactory = new ApplicationFactory;
         $payload = UUID::generate()->asString();

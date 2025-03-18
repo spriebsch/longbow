@@ -15,6 +15,7 @@ use spriebsch\eventstore\EventId;
 use spriebsch\sqlite\Connection;
 use spriebsch\timestamp\Timestamp;
 use spriebsch\uuid\UUID;
+use Exception;
 use SQLite3Stmt;
 use const SQLITE3_TEXT;
 
@@ -25,10 +26,8 @@ final readonly class SqliteStreamPosition implements StreamPosition
 
     public function __construct(private Connection $connection) {}
 
-    public function readPositionAndLock(UUID $handlerId): ?EventId
+    public function readPosition(UUID $handlerId): ?EventId
     {
-        $this->connection->exec('BEGIN IMMEDIATE');
-
         if (!isset($this->readStatement)) {
             $this->readStatement = $this->connection->prepare(
                 'SELECT eventId FROM positions WHERE handlerId=:handlerId',
@@ -46,8 +45,15 @@ final readonly class SqliteStreamPosition implements StreamPosition
         return EventId::from($row['eventId']);
     }
 
-    public function writePositionAndReleaseLock(UUID $handlerId, EventId $eventId): void
+    public function acquireLock(UUID $handlerId): void
     {
+        $this->connection->exec('BEGIN IMMEDIATE');
+    }
+
+    public function writePosition(UUID $handlerId, EventId $eventId): void
+    {
+        $this->connection->exec('SAVEPOINT "' . $eventId->asString() . '"');
+
         if (!isset($this->writeStatement)) {
             $this->writeStatement = $this->connection->prepare(
                 'INSERT OR REPLACE INTO positions(handlerId, eventId, timestamp) VALUES(:handlerId, :eventId, :timestamp)',
@@ -61,9 +67,16 @@ final readonly class SqliteStreamPosition implements StreamPosition
         $result = $this->writeStatement->execute();
 
         if ($result === false) {
+            $this->connection->exec('ROLLBACK TO SAVEPOINT "' . $eventId->asString() . '"');
+
             throw new FailedToStoreStreamPositionException($handlerId, $eventId);
         }
 
+        $this->connection->exec('RELEASE SAVEPOINT "' . $eventId->asString() . '"');
+    }
+
+    public function releaseLock(UUID $handlerId): void
+    {
         $this->connection->exec('COMMIT');
     }
 }

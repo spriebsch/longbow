@@ -21,6 +21,12 @@ final readonly class EventStreamProcessorMap
             if (!is_array($processors)) {
                 throw new EventStreamProcessorMapElementIsNoArrayException($stream);
             }
+
+            foreach ($processors as $id => $processor) {
+                if (!is_string($id)) {
+                    throw new EventStreamProcessorMapElementHasNoUUIDException($stream, $id, $processor);
+                }
+            }
         }
     }
 

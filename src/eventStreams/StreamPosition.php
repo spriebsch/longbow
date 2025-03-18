@@ -16,7 +16,11 @@ use spriebsch\uuid\UUID;
 
 interface StreamPosition
 {
-    public function readPositionAndLock(UUID $handlerId): ?EventId;
+    public function readPosition(UUID $handlerId): ?EventId;
 
-    public function writePositionAndReleaseLock(UUID $handlerId, EventId $eventId): void;
+    public function acquireLock(UUID $handlerId): void;
+
+    public function writePosition(UUID $handlerId, EventId $eventId): void;
+
+    public function releaseLock(UUID $handlerId): void;
 }

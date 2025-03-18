@@ -103,7 +103,7 @@ final readonly class LongbowFactory
         );
     }
 
-    private function streamPosition(): StreamPosition
+    public function streamPosition(): StreamPosition
     {
         return new SqliteStreamPosition($this->streamPositionConnection());
     }

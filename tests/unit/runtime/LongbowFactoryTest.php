@@ -16,8 +16,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use spriebsch\diContainer\Container;
-use spriebsch\eventstore\EventWriter;
+use spriebsch\diContainer\DIContainer;
 use spriebsch\filesystem\FakeDirectory;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\commands\CommandDispatcher;
@@ -37,7 +36,7 @@ class LongbowFactoryTest extends TestCase
     #[Group('feature')]
     public function creates_CommandDispatcher(): void
     {
-        $container = new Container(new ApplicationConfiguration, ApplicationFactory::class);
+        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
 
         $directory = new FakeDirectory('/fake');
         $directory->createFile(
@@ -65,7 +64,7 @@ class LongbowFactoryTest extends TestCase
     #[Group('feature')]
     public function creates_EventStreamDispatcher(): void
     {
-        $container = new Container(new ApplicationConfiguration, ApplicationFactory::class);
+        $container = new DiContainer(new ApplicationConfiguration, ApplicationFactory::class);
 
         $directory = new FakeDirectory('/fake');
         $directory->createFile(
