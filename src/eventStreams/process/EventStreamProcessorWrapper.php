@@ -21,8 +21,6 @@ final readonly class EventStreamProcessorWrapper
 
     public function process(Event $event): void
     {
-        var_dump('PROCESS');
-
         $method = $this->onEventMethodNameFor($event);
 
         $this->ensureHasMethod($this->eventStreamProcessor, $method);
@@ -45,7 +43,7 @@ final readonly class EventStreamProcessorWrapper
         if (count($this->reflectHandleMethodParameters($eventStreamProcessor, $method)) !== 1) {
             throw new MethodDoesNotHaveExactlyOneParameterException(
                 $eventStreamProcessor,
-                $method
+                $method,
             );
         }
     }
@@ -53,14 +51,14 @@ final readonly class EventStreamProcessorWrapper
     private function ensureMethodParameterIsTheEvent(
         EventStreamProcessor $eventStreamProcessor,
         string               $method,
-        Event                $event
+        Event                $event,
     ): void
     {
         if ($this->reflectMethodParameterType($eventStreamProcessor, $method) !== $event::class) {
             throw new MethodDoesNotHandleEventException(
                 $eventStreamProcessor,
                 $method,
-                $event
+                $event,
             );
         }
     }

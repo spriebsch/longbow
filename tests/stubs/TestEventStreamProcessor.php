@@ -24,13 +24,11 @@ class TestEventStreamProcessor implements EventStreamProcessor
 
     public static function id(): UUID
     {
-        return UUID::from('498fe307-073b-4dc1-8dd6-989466a98f53');
+        return UUID::from('11111111-073b-4dc1-8dd6-989466a98f53');
     }
 
     public function onDispatchTestEvent(DispatchTestEvent $event): void
     {
-        var_dump('DISPATCH');
-
         if ($this->failOn) {
             if ($this->runs >= $this->failOn - 1) {
                 throw new RuntimeException(sprintf('I was told to fail on run %s', $this->failOn));

@@ -30,6 +30,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
         $this->limit = $limit;
 
         foreach ($this->streamProcessorMap->streams() as $eventStreamClass => $processors) {
+
             /** @var EventStream $stream */
             $stream = $this->container->get($eventStreamClass);
 
@@ -42,7 +43,10 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
         foreach ($processors as $processorId => $processorClass) {
             /** @var EventStreamProcessor $processor */
             $processor = $this->container->get($processorClass);
-var_dump($processor);
+
+            if ($processorId !== $processor::id()->asString()) {
+                throw new EventStreamProcessorIDMismatch($processorClass, $processorId);
+            }
 
             $this->runEventStreamProcessor($processor, $stream);
         }
@@ -58,7 +62,6 @@ var_dump($processor);
         }
 
         foreach ($stream->queued($position) as $event) {
-            var_dump('WRAP');
             new EventStreamProcessorWrapper($processor)->process($event);
             $this->streamPosition->writePosition($processor::id(), $event->id());
         }

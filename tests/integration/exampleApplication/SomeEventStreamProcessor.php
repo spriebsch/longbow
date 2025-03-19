@@ -20,7 +20,7 @@ final class SomeEventStreamProcessor implements EventStreamProcessor
 
     public static function id(): UUID
     {
-        return UUID::from('8e6c3643-47d5-44f6-a699-e382937ffbd9');
+        return UUID::from('11111111-47d5-44f6-a699-e382937ffbd9');
     }
 
     public function onSomeEvent(SomeEvent $event): void

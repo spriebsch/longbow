@@ -12,7 +12,6 @@
 namespace spriebsch\longbow;
 
 use spriebsch\diContainer\AbstractFactory;
-use spriebsch\diContainer\Container;
 use spriebsch\eventstore\EventReader;
 use spriebsch\eventstore\EventWriter;
 use spriebsch\eventstore\SqliteEventReader;
@@ -66,14 +65,14 @@ final readonly class LongbowFactory extends AbstractFactory
     public function EventReader(): EventReader
     {
         return SqliteEventReader::from(
-            $this->eventStoreConnection(),
+            $this->container->get('eventStoreConnection'),
         );
     }
 
     public function EventWriter(): EventWriter
     {
         return SqliteEventWriter::from(
-            $this->eventStoreConnection(),
+            $this->container->get('eventStoreConnection'),
         );
     }
 
@@ -93,7 +92,7 @@ final readonly class LongbowFactory extends AbstractFactory
 
     public function StreamPosition(): StreamPosition
     {
-        return new SqliteStreamPosition($this->longbowDatabaseConnection());
+        return new SqliteStreamPosition($this->container->get('longbowDatabaseConnection'));
     }
 
     public function longbowDatabaseConnection(): SqliteConnection
