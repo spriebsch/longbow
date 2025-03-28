@@ -21,6 +21,7 @@ use spriebsch\longbow\commands\Command;
 use spriebsch\longbow\commands\CommandDispatcher;
 use spriebsch\longbow\eventStreams\EventStreamDispatcher;
 use spriebsch\longbow\orchestration\LongbowHasAlreadyBeenConfiguredException;
+use spriebsch\uuid\UUID;
 
 final class Longbow
 {
@@ -68,5 +69,10 @@ final class Longbow
     public static function processEvents(): void
     {
         self::$container->get(EventStreamDispatcher::class)->run();
+    }
+
+    public function resetEventStreamProcessor(UUID $id): void
+    {
+        self::$container->get(StreamPosition::class)->resetPosition($id);
     }
 }

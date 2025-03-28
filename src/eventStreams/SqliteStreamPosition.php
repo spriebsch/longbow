@@ -78,4 +78,20 @@ final readonly class SqliteStreamPosition implements StreamPosition
     {
         $this->connection->exec('COMMIT');
     }
+
+    public function resetPosition(UUID $handlerId): void
+    {
+        $statement = $this->connection->prepare(
+            'UPDATE positions SET eventId=null,timestamp=:timestamp WHERE handlerId=:handlerId',
+        );
+
+        $statement->bindValue(':handlerId', $handlerId->asString(), SQLITE3_TEXT);
+        $statement->bindValue(':timestamp', Timestamp::generate()->asString(), SQLITE3_TEXT);
+
+        $result = $statement->execute();
+
+        if ($result === false) {
+            throw new FailedToResetStreamPositionException($handlerId);
+        }
+    }
 }

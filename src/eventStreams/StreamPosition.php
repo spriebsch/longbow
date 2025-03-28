@@ -23,4 +23,6 @@ interface StreamPosition
     public function writePosition(UUID $handlerId, EventId $eventId): void;
 
     public function releaseLock(UUID $handlerId): void;
+
+    public function resetPosition(UUID $handlerId): void;
 }
