@@ -71,7 +71,7 @@ final class Longbow
         self::$container->get(EventStreamDispatcher::class)->run();
     }
 
-    public function resetEventStreamProcessor(UUID $id): void
+    public static function resetEventStreamProcessor(UUID $id): void
     {
         self::$container->get(StreamPosition::class)->resetPosition($id);
     }
