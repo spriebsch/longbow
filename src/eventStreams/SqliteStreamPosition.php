@@ -41,6 +41,10 @@ final readonly class SqliteStreamPosition implements StreamPosition
             return null;
         }
 
+        if ($row['eventId'] === null) {
+            return null;
+        }
+
         return EventId::from($row['eventId']);
     }
 
