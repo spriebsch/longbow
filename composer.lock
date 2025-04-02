@@ -164,16 +164,16 @@
         },
         {
             "name": "spriebsch/eventstore",
-            "version": "1.10.0",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/eventstore.git",
-                "reference": "367f495404e6cd271e08503b073cc85abfe7db29"
+                "reference": "a5ab641c6f0a66b140e3beef1212fd9945ff6467"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/367f495404e6cd271e08503b073cc85abfe7db29",
-                "reference": "367f495404e6cd271e08503b073cc85abfe7db29",
+                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/a5ab641c6f0a66b140e3beef1212fd9945ff6467",
+                "reference": "a5ab641c6f0a66b140e3beef1212fd9945ff6467",
                 "shasum": ""
             },
             "require": {
@@ -207,9 +207,9 @@
             "description": "Lightweight Sqlite-based Event Store.",
             "support": {
                 "issues": "https://github.com/spriebsch/eventstore/issues",
-                "source": "https://github.com/spriebsch/eventstore/tree/1.10.0"
+                "source": "https://github.com/spriebsch/eventstore/tree/1.11.0"
             },
-            "time": "2025-03-18T13:26:30+00:00"
+            "time": "2025-04-02T18:04:49+00:00"
         },
         {
             "name": "spriebsch/filesystem",
@@ -348,16 +348,16 @@
         },
         {
             "name": "spriebsch/timestamp",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/timestamp.git",
-                "reference": "475363a8ce010b4318b9418942182f13143da238"
+                "reference": "a41e7fb51e2cd649794fcb4ed7cf3d0a65124a91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/timestamp/zipball/475363a8ce010b4318b9418942182f13143da238",
-                "reference": "475363a8ce010b4318b9418942182f13143da238",
+                "url": "https://api.github.com/repos/spriebsch/timestamp/zipball/a41e7fb51e2cd649794fcb4ed7cf3d0a65124a91",
+                "reference": "a41e7fb51e2cd649794fcb4ed7cf3d0a65124a91",
                 "shasum": ""
             },
             "require": {
@@ -384,9 +384,9 @@
             "description": "A timestamp with microsecond granularity.",
             "support": {
                 "issues": "https://github.com/spriebsch/timestamp/issues",
-                "source": "https://github.com/spriebsch/timestamp/tree/1.0.2"
+                "source": "https://github.com/spriebsch/timestamp/tree/1.1.0"
             },
-            "time": "2024-09-09T20:59:20+00:00"
+            "time": "2025-04-02T17:19:28+00:00"
         },
         {
             "name": "spriebsch/uuid",

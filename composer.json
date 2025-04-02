@@ -18,7 +18,7 @@
     "ext-sqlite3": "*",
     "spriebsch/di": "^1.6",
     "spriebsch/event-generator": "^1.4",
-    "spriebsch/eventstore": "^1.10",
+    "spriebsch/eventstore": "^1.11",
     "spriebsch/filesystem": "^1.0",
     "spriebsch/identifier-generator": "^1.1",
     "spriebsch/sqlite": "^1.0",
