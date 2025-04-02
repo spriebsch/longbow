@@ -1,0 +1,10 @@
+/.phive                 export-ignore
+/tools                  export-ignore
+/tools/*                binary
+/tests                  export-ignore
+/.gitattributes         export-ignore
+/.gitignore             export-ignore
+/phpunit.phar           export-ignore
+/phpunit.xml            export-ignore
+
+*.php diff=php
