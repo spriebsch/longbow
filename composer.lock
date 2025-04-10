@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18bc1336e75be08c42ef17ead849cd0a",
+    "content-hash": "0bc55911dabf2e77da231f69dd4853b3",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -213,16 +213,16 @@
         },
         {
             "name": "spriebsch/filesystem",
-            "version": "1.0.6",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/filesystem.git",
-                "reference": "a888f2797039245dfc06638aadf443e9f4fe2404"
+                "reference": "c94acb00d9c22a53a6f32f9a91379c903451c8f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/filesystem/zipball/a888f2797039245dfc06638aadf443e9f4fe2404",
-                "reference": "a888f2797039245dfc06638aadf443e9f4fe2404",
+                "url": "https://api.github.com/repos/spriebsch/filesystem/zipball/c94acb00d9c22a53a6f32f9a91379c903451c8f4",
+                "reference": "c94acb00d9c22a53a6f32f9a91379c903451c8f4",
                 "shasum": ""
             },
             "require": {
@@ -250,9 +250,9 @@
             "description": "Lightweight object-oriented API to the filesystem.",
             "support": {
                 "issues": "https://github.com/spriebsch/filesystem/issues",
-                "source": "https://github.com/spriebsch/filesystem/tree/1.0.6"
+                "source": "https://github.com/spriebsch/filesystem/tree/1.0.7"
             },
-            "time": "2024-10-23T21:23:35+00:00"
+            "time": "2025-04-10T17:27:39+00:00"
         },
         {
             "name": "spriebsch/identifier-generator",
@@ -305,16 +305,16 @@
         },
         {
             "name": "spriebsch/sqlite",
-            "version": "1.0.7",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/sqlite.git",
-                "reference": "a3de11bf564020cc2e9746179cc4c386b6e9573f"
+                "reference": "96436c91a0b091c32c593abc911063c304d54cf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/a3de11bf564020cc2e9746179cc4c386b6e9573f",
-                "reference": "a3de11bf564020cc2e9746179cc4c386b6e9573f",
+                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/96436c91a0b091c32c593abc911063c304d54cf1",
+                "reference": "96436c91a0b091c32c593abc911063c304d54cf1",
                 "shasum": ""
             },
             "require": {
@@ -342,22 +342,22 @@
             "description": "Lightweight Sqlite wrapper with lazy connection and schema creation.",
             "support": {
                 "issues": "https://github.com/spriebsch/sqlite/issues",
-                "source": "https://github.com/spriebsch/sqlite/tree/1.0.7"
+                "source": "https://github.com/spriebsch/sqlite/tree/1.1.0"
             },
-            "time": "2024-09-09T20:58:52+00:00"
+            "time": "2025-04-10T17:23:56+00:00"
         },
         {
             "name": "spriebsch/timestamp",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/timestamp.git",
-                "reference": "a41e7fb51e2cd649794fcb4ed7cf3d0a65124a91"
+                "reference": "8eba43ac23dc443370c2651ce777942d8c0d7119"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/timestamp/zipball/a41e7fb51e2cd649794fcb4ed7cf3d0a65124a91",
-                "reference": "a41e7fb51e2cd649794fcb4ed7cf3d0a65124a91",
+                "url": "https://api.github.com/repos/spriebsch/timestamp/zipball/8eba43ac23dc443370c2651ce777942d8c0d7119",
+                "reference": "8eba43ac23dc443370c2651ce777942d8c0d7119",
                 "shasum": ""
             },
             "require": {
@@ -384,9 +384,9 @@
             "description": "A timestamp with microsecond granularity.",
             "support": {
                 "issues": "https://github.com/spriebsch/timestamp/issues",
-                "source": "https://github.com/spriebsch/timestamp/tree/1.1.0"
+                "source": "https://github.com/spriebsch/timestamp/tree/1.1.1"
             },
-            "time": "2025-04-02T17:19:28+00:00"
+            "time": "2025-04-10T17:22:26+00:00"
         },
         {
             "name": "spriebsch/uuid",

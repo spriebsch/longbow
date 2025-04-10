@@ -4,3 +4,5 @@
 /.phpunit.cache
 /build
 vendor
+/data/test.db-shm
+/data/test.db-wal
