@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0bc55911dabf2e77da231f69dd4853b3",
+    "content-hash": "4450519a21df556f9551ced464d58031",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -112,26 +112,26 @@
         },
         {
             "name": "spriebsch/event-generator",
-            "version": "1.4.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/event-generator.git",
-                "reference": "a437cff865d033b9751cb472a806284d05fcd679"
+                "reference": "fef4da21551fe00c988ff486415db99e1a3b393c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/event-generator/zipball/a437cff865d033b9751cb472a806284d05fcd679",
-                "reference": "a437cff865d033b9751cb472a806284d05fcd679",
+                "url": "https://api.github.com/repos/spriebsch/event-generator/zipball/fef4da21551fe00c988ff486415db99e1a3b393c",
+                "reference": "fef4da21551fe00c988ff486415db99e1a3b393c",
                 "shasum": ""
             },
             "require": {
                 "ext-sqlite3": "*",
                 "nikic/php-parser": "^5.0",
-                "php": "^8.3",
-                "spriebsch/eventstore": "^1.0",
+                "php": "^8.4",
+                "spriebsch/eventstore": "^2.0",
                 "spriebsch/filesystem": "^1.0",
-                "spriebsch/sqlite": "^1.0",
-                "spriebsch/timestamp": "^1.0",
+                "spriebsch/sqlite": "^2.0",
+                "spriebsch/timestamp": "^1.1",
                 "spriebsch/uuid": "^1.0"
             },
             "bin": [
@@ -158,29 +158,29 @@
             "description": "Code generator for domain events.",
             "support": {
                 "issues": "https://github.com/spriebsch/event-generator/issues",
-                "source": "https://github.com/spriebsch/event-generator/tree/1.4.0"
+                "source": "https://github.com/spriebsch/event-generator/tree/2.0.0"
             },
-            "time": "2025-01-14T16:36:41+00:00"
+            "time": "2025-04-29T15:29:36+00:00"
         },
         {
             "name": "spriebsch/eventstore",
-            "version": "1.11.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/eventstore.git",
-                "reference": "a5ab641c6f0a66b140e3beef1212fd9945ff6467"
+                "reference": "6aa32838d850847aff26bfeb296ba6516269611e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/a5ab641c6f0a66b140e3beef1212fd9945ff6467",
-                "reference": "a5ab641c6f0a66b140e3beef1212fd9945ff6467",
+                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/6aa32838d850847aff26bfeb296ba6516269611e",
+                "reference": "6aa32838d850847aff26bfeb296ba6516269611e",
                 "shasum": ""
             },
             "require": {
                 "ext-sqlite3": "*",
                 "php": "^8.4",
-                "spriebsch/sqlite": "^1.0",
-                "spriebsch/timestamp": "^1.0",
+                "spriebsch/sqlite": "^2.0",
+                "spriebsch/timestamp": "^1.1",
                 "spriebsch/uuid": "^1.0"
             },
             "require-dev": {
@@ -207,9 +207,9 @@
             "description": "Lightweight Sqlite-based Event Store.",
             "support": {
                 "issues": "https://github.com/spriebsch/eventstore/issues",
-                "source": "https://github.com/spriebsch/eventstore/tree/1.11.0"
+                "source": "https://github.com/spriebsch/eventstore/tree/2.0.0"
             },
-            "time": "2025-04-02T18:04:49+00:00"
+            "time": "2025-04-29T15:06:07+00:00"
         },
         {
             "name": "spriebsch/filesystem",
@@ -256,22 +256,22 @@
         },
         {
             "name": "spriebsch/identifier-generator",
-            "version": "1.1.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/identifier-generator.git",
-                "reference": "b724a936d964780be1e066197fc631b509d5aa4d"
+                "reference": "33c5347ebd8ea4e2fb5b2a84695370e9435b48a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/identifier-generator/zipball/b724a936d964780be1e066197fc631b509d5aa4d",
-                "reference": "b724a936d964780be1e066197fc631b509d5aa4d",
+                "url": "https://api.github.com/repos/spriebsch/identifier-generator/zipball/33c5347ebd8ea4e2fb5b2a84695370e9435b48a2",
+                "reference": "33c5347ebd8ea4e2fb5b2a84695370e9435b48a2",
                 "shasum": ""
             },
             "require": {
                 "ext-sqlite3": "*",
-                "php": "^8.3",
-                "spriebsch/eventstore": "^1.0",
+                "php": "^8.4",
+                "spriebsch/eventstore": "^2.0",
                 "spriebsch/filesystem": "^1.0",
                 "spriebsch/uuid": "^1.0"
             },
@@ -299,22 +299,22 @@
             "description": "Code generator for UUID-based indentifier value objects.",
             "support": {
                 "issues": "https://github.com/spriebsch/identifier-generator/issues",
-                "source": "https://github.com/spriebsch/identifier-generator/tree/1.1.0"
+                "source": "https://github.com/spriebsch/identifier-generator/tree/2.0.0"
             },
-            "time": "2024-12-03T13:16:30+00:00"
+            "time": "2025-04-29T15:30:48+00:00"
         },
         {
             "name": "spriebsch/sqlite",
-            "version": "1.1.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/sqlite.git",
-                "reference": "96436c91a0b091c32c593abc911063c304d54cf1"
+                "reference": "e46d70767783b42c613b6bfea3f308759cee5259"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/96436c91a0b091c32c593abc911063c304d54cf1",
-                "reference": "96436c91a0b091c32c593abc911063c304d54cf1",
+                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/e46d70767783b42c613b6bfea3f308759cee5259",
+                "reference": "e46d70767783b42c613b6bfea3f308759cee5259",
                 "shasum": ""
             },
             "require": {
@@ -342,9 +342,9 @@
             "description": "Lightweight Sqlite wrapper with lazy connection and schema creation.",
             "support": {
                 "issues": "https://github.com/spriebsch/sqlite/issues",
-                "source": "https://github.com/spriebsch/sqlite/tree/1.1.0"
+                "source": "https://github.com/spriebsch/sqlite/tree/2.0.0"
             },
-            "time": "2025-04-10T17:23:56+00:00"
+            "time": "2025-04-29T14:58:44+00:00"
         },
         {
             "name": "spriebsch/timestamp",
