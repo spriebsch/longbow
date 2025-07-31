@@ -14,6 +14,7 @@ namespace spriebsch\longbow\eventStreams;
 use spriebsch\diContainer\Container;
 use spriebsch\eventstore\EventStream;
 use spriebsch\longbow\StreamPosition;
+use Throwable;
 
 final class LongbowEventStreamDispatcher implements EventStreamDispatcher
 {
@@ -61,9 +62,15 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
             $stream->limitNextQuery($this->limit);
         }
 
-        foreach ($stream->queued($position) as $event) {
-            new EventStreamProcessorWrapper($processor)->process($event);
-            $this->streamPosition->writePosition($processor::id(), $event->id());
+        try {
+            foreach ($stream->queued($position) as $event) {
+                new EventStreamProcessorWrapper($processor)->process($event);
+                $this->streamPosition->writePosition($processor::id(), $event->id());
+            }
+        }
+
+        catch (Throwable $exception) {
+            // @todo log this exception somewhere
         }
 
         $this->streamPosition->releaseLock($processor::id());
