@@ -62,4 +62,45 @@ class LongbowEventStreamDispatcherTest extends TestCase
 
         $this->assertSame($expected, $processedEvents);
     }
+
+    public function test_stream_position_is_written_correctly_when_processor_fails_on_second_run(): void
+    {
+        $fixture = new EventStreamDispatcherTestFixture;
+
+        /** @var TestEventStreamProcessor $processor */
+        $processor = Longbow::container()->get(TestEventStreamProcessor::class);
+        $processor->failOn(2);
+
+        $streamPosition = Longbow::container()->get(\spriebsch\longbow\StreamPosition::class);
+        $processorId = TestEventStreamProcessor::id();
+
+        // Reset position to start from beginning
+        $streamPosition->resetPosition($processorId);
+
+        try {
+            Longbow::processEvents();
+        } catch (RuntimeException) {
+        }
+
+        // Verify that only the first event was processed
+        $processedEvents = $processor->getProcessedEvents();
+        $this->assertCount(1, $processedEvents);
+
+        // Verify that the position was written for the first event
+        $currentPosition = $streamPosition->readPosition($processorId);
+        $this->assertNotNull($currentPosition);
+        $this->assertSame($fixture->events[0]->id()->asString(), $currentPosition->asString());
+
+        // Run again to verify it continues from the correct position
+        $processor->failOn(999); // Don't fail this time (use high number)
+        Longbow::processEvents();
+
+        // Should now have processed all remaining events
+        $processedEvents = $processor->getProcessedEvents();
+        $this->assertCount(3, $processedEvents);
+
+        // Final position should be the last event
+        $finalPosition = $streamPosition->readPosition($processorId);
+        $this->assertSame($fixture->events[2]->id()->asString(), $finalPosition->asString());
+    }
 }
