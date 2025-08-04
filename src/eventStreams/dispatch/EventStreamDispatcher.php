@@ -13,5 +13,5 @@ namespace spriebsch\longbow\eventStreams;
 
 interface EventStreamDispatcher
 {
-    public function run(): void;
+    public function run(): array;
 }

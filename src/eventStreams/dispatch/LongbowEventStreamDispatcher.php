@@ -19,6 +19,7 @@ use Throwable;
 final class LongbowEventStreamDispatcher implements EventStreamDispatcher
 {
     private ?int $limit;
+    private array $exceptions = [];
 
     public function __construct(
         private readonly EventStreamProcessorMap $streamProcessorMap,
@@ -26,7 +27,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
         private readonly Container               $container,
     ) {}
 
-    public function run(?int $limit = null): void
+    public function run(?int $limit = null): array
     {
         $this->limit = $limit;
 
@@ -37,6 +38,8 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
 
             $this->processStream($stream, $processors);
         }
+
+        return $this->exceptions;
     }
 
     private function processStream(EventStream $stream, array $processors): void
@@ -70,7 +73,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
         }
 
         catch (Throwable $exception) {
-            // @todo log this exception somewhere
+            $this->exceptions[] = $exception;
         }
 
         $this->streamPosition->releaseLock($processor::id());

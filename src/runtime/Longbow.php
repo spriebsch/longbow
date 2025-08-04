@@ -26,6 +26,7 @@ use spriebsch\uuid\UUID;
 final class Longbow
 {
     private static ?Container $container = null;
+    private static $exceptions = [];
 
     public static function configure(
         Configuration $configuration,
@@ -68,11 +69,18 @@ final class Longbow
 
     public static function processEvents(): void
     {
-        self::$container->get(EventStreamDispatcher::class)->run();
+        /** @var EventStreamDispatcher $dispatcher */
+        $dispatcher = self::$container->get(EventStreamDispatcher::class);
+        self::$exceptions = $dispatcher->run();
     }
 
     public static function resetEventStreamProcessor(UUID $id): void
     {
         self::$container->get(StreamPosition::class)->resetPosition($id);
+    }
+
+    public static function exceptions(): array
+    {
+        return self::$exceptions;
     }
 }
