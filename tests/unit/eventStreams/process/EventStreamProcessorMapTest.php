@@ -13,6 +13,7 @@ namespace spriebsch\longbow\eventStreams;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\tests\TestEventStream;
@@ -20,6 +21,7 @@ use spriebsch\longbow\tests\TestEventStreamProcessor;
 
 #[CoversClass(EventStreamProcessorMap::class)]
 #[CoversClass(EventStreamProcessorMapElementIsNoArrayException::class)]
+#[UsesClass(EventStreamProcessorMapElementHasNoUUIDException::class)]
 class EventStreamProcessorMapTest extends TestCase
 {
     #[Group('feature')]

@@ -12,13 +12,32 @@
 namespace spriebsch\longbow\eventStreams;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use spriebsch\eventstore\Event;
+use spriebsch\longbow\commands\LongbowOrchestrateCommandHandlers;
+use spriebsch\longbow\events\LongbowOrchestrateEventHandlers;
 use spriebsch\longbow\Longbow;
+use spriebsch\longbow\LongbowDatabaseSchema;
+use spriebsch\longbow\LongbowFactory;
+use spriebsch\longbow\orchestration\LongbowOrchestration;
+use spriebsch\longbow\orchestration\LongbowPHPArraySerializer;
+use spriebsch\longbow\SqliteStreamPosition;
 use spriebsch\longbow\tests\TestEventStreamProcessor;
 
 #[CoversClass(LongbowEventStreamDispatcher::class)]
+#[UsesClass(Longbow::class)]
+#[UsesClass(LongbowDatabaseSchema::class)]
+#[UsesClass(LongbowFactory::class)]
+#[UsesClass(SqliteStreamPosition::class)]
+#[UsesClass(LongbowOrchestrateCommandHandlers::class)]
+#[UsesClass(EventStreamProcessorMap::class)]
+#[UsesClass(EventStreamProcessorWrapper::class)]
+#[UsesClass(LongbowOrchestrateEventStreamProcessors::class)]
+#[UsesClass(LongbowOrchestrateEventHandlers::class)]
+#[UsesClass(LongbowOrchestration::class)]
+#[UsesClass(LongbowPHPArraySerializer::class)]
 class LongbowEventStreamDispatcherTest extends TestCase
 {
     public function test_processes_all_events_successfully(): void

@@ -16,7 +16,6 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use spriebsch\filesystem\Directory;
-use spriebsch\longbow\commands\CommandHandlerHandleMethodDoesNotHaveExactlyOneParameterException;
 use spriebsch\longbow\orchestration\PHPArraySerializer;
 use spriebsch\longbow\tests\TestEvent;
 use spriebsch\longbow\tests\TestEventHandler;
@@ -25,7 +24,6 @@ use stdClass;
 #[CoversClass(LongbowOrchestrateEventHandlers::class)]
 #[CoversClass(ClassDoesNotImplementEventHandlerInterfaceException::class)]
 #[CoversClass(HandleMethodDoesNotHaveExactlyOneParameterException::class)]
-#[CoversClass(EventHandlerHasNoHandleMethodException::class)]
 #[CoversClass(EventHandlerHasNoHandleMethodException::class)]
 #[CoversClass(HandleMethodHasNoVoidReturnTypeException::class)]
 #[CoversClass(NoEventSpecifiedException::class)]
