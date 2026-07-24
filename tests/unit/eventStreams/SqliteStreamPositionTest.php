@@ -14,13 +14,13 @@ namespace spriebsch\longbow\eventStreams;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use spriebsch\eventstore\EventId;
+use spriebsch\DomainEvent\EventId;
 use spriebsch\longbow\FailedToStoreStreamPositionException;
 use spriebsch\longbow\SqliteStreamPosition;
 use spriebsch\longbow\LongbowDatabaseSchema;
 use spriebsch\sqlite\SqliteConnection;
 use spriebsch\timestamp\Timestamp;
-use spriebsch\uuid\UUID;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 use SQLite3Exception;
 
 #[CoversClass(SqliteStreamPosition::class)]
@@ -28,7 +28,7 @@ use SQLite3Exception;
 #[CoversClass(FailedToStoreStreamPositionException::class)]
 class SqliteStreamPositionTest extends TestCase
 {
-    private readonly string $db;
+    private string $db;
 
     protected function setUp(): void
     {
@@ -44,7 +44,7 @@ class SqliteStreamPositionTest extends TestCase
 
     public function test_position_of_a_handler_is_initially_null(): void
     {
-        $handlerId = UUID::generate();
+        $handlerId = EventStreamProcessorId::generate();
 
         $connection = SqliteConnection::memory();
         LongbowDatabaseSchema::from($connection)->createIfNotExists();
@@ -57,8 +57,8 @@ class SqliteStreamPositionTest extends TestCase
     #[Group('feature')]
     public function test_reads_position_of_a_handler(): void
     {
-        $handlerId = UUID::generate();
-        $eventId = UUID::generate();
+        $handlerId = EventStreamProcessorId::generate();
+        $eventId = EventId::generate();
 
         $connection = SqliteConnection::memory();
         LongbowDatabaseSchema::from($connection)->createIfNotExists();
@@ -84,7 +84,7 @@ class SqliteStreamPositionTest extends TestCase
     #[Group('feature')]
     public function test_writes_position_of_a_handler(): void
     {
-        $handlerId = UUID::generate();
+        $handlerId = EventStreamProcessorId::generate();
         $eventId = EventId::generate();
 
         $connection = SqliteConnection::memory();
@@ -106,7 +106,7 @@ class SqliteStreamPositionTest extends TestCase
     #[Group('feature')]
     public function test_updates_position_of_a_handler(): void
     {
-        $handlerId = UUID::generate();
+        $handlerId = EventStreamProcessorId::generate();
         $eventId = EventId::generate();
 
         $connection = SqliteConnection::memory();
@@ -133,7 +133,7 @@ class SqliteStreamPositionTest extends TestCase
     #[Group('feature')]
     public function test_transaction_allows_read(): void
     {
-        $handlerId = UUID::generate();
+        $handlerId = EventStreamProcessorId::generate();
         $firstEventId = EventId::generate();
         $secondEventId = EventId::generate();
 
@@ -164,7 +164,7 @@ class SqliteStreamPositionTest extends TestCase
 
     public function test_transaction_blocks_write(): void
     {
-        $handlerId = UUID::generate();
+        $handlerId = EventStreamProcessorId::generate();
 
         $connection = SqliteConnection::from($this->db);
         $secondConnection = SqliteConnection::from($this->db);

@@ -13,12 +13,16 @@ namespace spriebsch\longbow;
 
 use Exception;
 use RuntimeException;
-use spriebsch\eventstore\EventId;
-use spriebsch\uuid\UUID;
+use spriebsch\DomainEvent\EventId;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 
 final class FailedToStoreStreamPositionException extends RuntimeException implements LongbowException
 {
-    public function __construct(UUID $handler, EventId $eventId, ?Exception $exception = null)
+    public function __construct(
+        EventStreamProcessorId $handler,
+        EventId $eventId,
+        ?Exception $exception = null,
+    )
     {
         parent::__construct(
             sprintf(

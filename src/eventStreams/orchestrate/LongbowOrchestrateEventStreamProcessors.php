@@ -15,7 +15,6 @@ use spriebsch\filesystem\Directory;
 use spriebsch\longbow\orchestration\ExportOrchestration;
 use spriebsch\longbow\orchestration\LongbowPHPArraySerializer;
 use spriebsch\longbow\orchestration\PHPArraySerializer;
-use spriebsch\uuid\UUID;
 
 final class LongbowOrchestrateEventStreamProcessors implements OrchestrateEventStreamProcessors, ExportOrchestration
 {
@@ -68,13 +67,54 @@ final class LongbowOrchestrateEventStreamProcessors implements OrchestrateEventS
         );
     }
 
-    private function ensureClassExists(string $eventStreamClass): void {}
+    private function ensureClassExists(string $eventStreamClass): void
+    {
+        if (!class_exists($eventStreamClass)) {
+            throw new EventStreamClassDoesNotExistException($eventStreamClass);
+        }
+    }
 
-    private function ensureClassImplementsEventStreamInterface(string $eventStreamClass): void {}
+    private function ensureClassImplementsEventStreamInterface(string $eventStreamClass): void
+    {
+        if (!is_subclass_of($eventStreamClass, EventStream::class)) {
+            throw new OrchestrateEventStreamProcessorsException(
+                sprintf('Class %s is not an event stream', $eventStreamClass),
+            );
+        }
+    }
 
-    private function ensureEventStreamHasBeenSpecifiedFor(string $streamProcessorClass): void {}
+    private function ensureEventStreamHasBeenSpecifiedFor(string $streamProcessorClass): void
+    {
+        if ($this->eventStreamClass === null) {
+            throw new OrchestrateEventStreamProcessorsException(
+                sprintf('No event stream specified for processor %s', $streamProcessorClass),
+            );
+        }
+    }
 
-    private function ensureStreamProcessorIdIsUnique(UUID $streamProcessorId): void {}
+    private function ensureStreamProcessorIdIsUnique(EventStreamProcessorId $streamProcessorId): void
+    {
+        foreach ($this->eventStreamProcessors as $processors) {
+            if (isset($processors[$streamProcessorId->asString()])) {
+                throw new OrchestrateEventStreamProcessorsException(
+                    sprintf('Processor ID %s is already configured', $streamProcessorId->asString()),
+                );
+            }
+        }
+    }
 
-    private function ensureClassImplementsEventStreamProcessorInterface(string $streamProcessorClass): void {}
+    private function ensureClassImplementsEventStreamProcessorInterface(string $streamProcessorClass): void
+    {
+        if (!class_exists($streamProcessorClass)) {
+            throw new OrchestrateEventStreamProcessorsException(
+                sprintf('Event stream processor class %s does not exist', $streamProcessorClass),
+            );
+        }
+
+        if (!is_subclass_of($streamProcessorClass, EventStreamProcessor::class)) {
+            throw new OrchestrateEventStreamProcessorsException(
+                sprintf('Class %s is not an event stream processor', $streamProcessorClass),
+            );
+        }
+    }
 }

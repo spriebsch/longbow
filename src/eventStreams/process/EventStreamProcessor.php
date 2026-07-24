@@ -11,9 +11,7 @@
 
 namespace spriebsch\longbow\eventStreams;
 
-use spriebsch\uuid\UUID;
-
 interface EventStreamProcessor
 {
-    public static function id(): UUID;
+    public static function id(): EventStreamProcessorId;
 }

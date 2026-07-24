@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use spriebsch\longbow\tests\TestEvent;
-use spriebsch\uuid\UUID;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 
 #[CoversClass(EventStreamProcessorWrapper::class)]
 #[CoversClass(EventStreamProcessorHasNoOnEventMethodException::class)]
@@ -35,9 +35,9 @@ class EventStreamProcessorWrapperTest extends TestCase
                 return $this->calls;
             }
 
-            public static function id(): UUID
+            public static function id(): EventStreamProcessorId
             {
-                return UUID::generate();
+                return EventStreamProcessorId::generate();
             }
 
             public function onTestEvent(TestEvent $event): void
@@ -57,9 +57,9 @@ class EventStreamProcessorWrapperTest extends TestCase
     {
         $event = new TestEvent;
         $eventHandler = new class() implements EventStreamProcessor {
-            public static function id(): UUID
+            public static function id(): EventStreamProcessorId
             {
-                return UUID::generate();
+                return EventStreamProcessorId::generate();
             }
         };
 
@@ -74,9 +74,9 @@ class EventStreamProcessorWrapperTest extends TestCase
     {
         $event = new TestEvent;
         $eventHandler = new class() implements EventStreamProcessor {
-            public static function id(): UUID
+            public static function id(): EventStreamProcessorId
             {
-                return UUID::generate();
+                return EventStreamProcessorId::generate();
             }
 
             public function onTestEvent(): void {}
@@ -93,9 +93,9 @@ class EventStreamProcessorWrapperTest extends TestCase
     {
         $event = new TestEvent;
         $eventHandler = new class() implements EventStreamProcessor {
-            public static function id(): UUID
+            public static function id(): EventStreamProcessorId
             {
-                return UUID::generate();
+                return EventStreamProcessorId::generate();
             }
 
             public function onTestEvent(TestEvent $event, $additionalParameter): void {}
@@ -113,9 +113,9 @@ class EventStreamProcessorWrapperTest extends TestCase
     {
         $event = new TestEvent;
         $eventHandler = new class() implements EventStreamProcessor {
-            public static function id(): UUID
+            public static function id(): EventStreamProcessorId
             {
-                return UUID::generate();
+                return EventStreamProcessorId::generate();
             }
 
             public function onTestEvent($oneParameterWithWrongType): void {}

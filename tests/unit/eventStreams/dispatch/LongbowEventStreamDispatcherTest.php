@@ -15,7 +15,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use spriebsch\eventstore\Event;
 use spriebsch\longbow\commands\LongbowOrchestrateCommandHandlers;
 use spriebsch\longbow\events\LongbowOrchestrateEventHandlers;
 use spriebsch\longbow\Longbow;
@@ -34,6 +33,7 @@ use spriebsch\longbow\tests\TestEventStreamProcessor;
 #[UsesClass(LongbowOrchestrateCommandHandlers::class)]
 #[UsesClass(EventStreamProcessorMap::class)]
 #[UsesClass(EventStreamProcessorWrapper::class)]
+#[UsesClass(EventStream::class)]
 #[UsesClass(LongbowOrchestrateEventStreamProcessors::class)]
 #[UsesClass(LongbowOrchestrateEventHandlers::class)]
 #[UsesClass(LongbowOrchestration::class)]
@@ -44,8 +44,7 @@ class LongbowEventStreamDispatcherTest extends TestCase
     {
         $fixture = new EventStreamDispatcherTestFixture;
 
-        $toEventIds = fn(Event $event) => $event->id()->asString();
-        $expected = array_map($toEventIds, $fixture->events);
+        $expected = array_map(static fn($event) => $event->payload(), $fixture->events);
 
         Longbow::processEvents();
 
@@ -53,7 +52,7 @@ class LongbowEventStreamDispatcherTest extends TestCase
         $processor = Longbow::container()->get(TestEventStreamProcessor::class);
 
         $processedEvents = $processor->getProcessedEvents();
-        $processedEvents = array_map($toEventIds, $processedEvents);
+        $processedEvents = array_map(static fn($event) => $event->payload(), $processedEvents);
 
         $this->assertSame($expected, $processedEvents);
     }
@@ -62,8 +61,7 @@ class LongbowEventStreamDispatcherTest extends TestCase
     {
         $fixture = new EventStreamDispatcherTestFixture;
 
-        $toEventIds = fn(Event $event) => $event->id()->asString();
-        $expected = array_map($toEventIds, $fixture->events);
+        $expected = array_map(static fn($event) => $event->payload(), $fixture->events);
 
         /** @var TestEventStreamProcessor $processor */
         $processor = Longbow::container()->get(TestEventStreamProcessor::class);
@@ -75,7 +73,7 @@ class LongbowEventStreamDispatcherTest extends TestCase
         }
 
         $processedEvents = $processor->getProcessedEvents();
-        $processedEvents = array_map($toEventIds, $processedEvents);
+        $processedEvents = array_map(static fn($event) => $event->payload(), $processedEvents);
 
         $expected = array_slice($expected, 0, -1);
 
@@ -107,7 +105,7 @@ class LongbowEventStreamDispatcherTest extends TestCase
 
         $this->assertCount(1, $processedEventsAfterFirstRun);
         $this->assertNotNull($currentPosition);
-        $this->assertSame($fixture->events[0]->id()->asString(), $currentPosition->asString());
+        $this->assertSame($fixture->eventIds[0]->asString(), $currentPosition->asString());
     }
 
     public function test_processor_continues_from_correct_position_after_failure(): void
@@ -138,6 +136,6 @@ class LongbowEventStreamDispatcherTest extends TestCase
         $finalPosition = $streamPosition->readPosition($processorId);
 
         $this->assertCount(3, $processedEventsAfterSecondRun);
-        $this->assertSame($fixture->events[2]->id()->asString(), $finalPosition->asString());
+        $this->assertSame($fixture->eventIds[2]->asString(), $finalPosition->asString());
     }
 }

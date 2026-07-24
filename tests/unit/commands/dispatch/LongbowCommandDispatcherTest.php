@@ -16,8 +16,8 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use spriebsch\diContainer\DIContainer;
-use spriebsch\eventstore\Event;
-use spriebsch\eventstore\EventWriter;
+use spriebsch\DomainEvent\DomainEvent;
+use spriebsch\sequora\EventWriter;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\events\EventDispatcher;
 use spriebsch\longbow\example\LongbowConfiguration;
@@ -38,7 +38,8 @@ class LongbowCommandDispatcherTest extends TestCase
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
-                'eventStore' => ':memory:',
+                'topicMap' => Filesystem::from(__DIR__ . '/../../../fixtures/events.php'),
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ],
         );
@@ -46,7 +47,7 @@ class LongbowCommandDispatcherTest extends TestCase
         $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
-        $event = $this->createStub(Event::class);
+        $event = $this->createStub(DomainEvent::class);
         TestCommandHandlerThatReturnsEvent::willReturn($event);
 
         $map = CommandHandlerMap::fromArray([$command::class => TestCommandHandlerThatReturnsEvent::class]);
@@ -64,7 +65,8 @@ class LongbowCommandDispatcherTest extends TestCase
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
-                'eventStore' => ':memory:',
+                'topicMap' => Filesystem::from(__DIR__ . '/../../../fixtures/events.php'),
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ],
         );
@@ -72,7 +74,7 @@ class LongbowCommandDispatcherTest extends TestCase
         $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
-        $event = $this->createStub(Event::class);
+        $event = $this->createStub(DomainEvent::class);
 
         $map = CommandHandlerMap::fromArray([]);
 
@@ -95,7 +97,8 @@ class LongbowCommandDispatcherTest extends TestCase
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
-                'eventStore' => ':memory:',
+                'topicMap' => Filesystem::from(__DIR__ . '/../../../fixtures/events.php'),
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ],
         );
@@ -129,7 +132,8 @@ class LongbowCommandDispatcherTest extends TestCase
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
-                'eventStore' => ':memory:',
+                'topicMap' => Filesystem::from(__DIR__ . '/../../../fixtures/events.php'),
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ],
         );
@@ -166,7 +170,8 @@ class LongbowCommandDispatcherTest extends TestCase
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
-                'eventStore' => ':memory:',
+                'topicMap' => Filesystem::from(__DIR__ . '/../../../fixtures/events.php'),
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ],
         );

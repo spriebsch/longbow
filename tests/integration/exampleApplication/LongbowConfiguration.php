@@ -11,12 +11,11 @@
 
 namespace spriebsch\longbow\example;
 
-use spriebsch\diContainer\Configuration;
 use spriebsch\filesystem\Directory;
 use spriebsch\filesystem\File;
 use spriebsch\longbow\LongbowConfigurationException;
 
-class LongbowConfiguration implements Configuration
+final readonly class LongbowConfiguration implements \spriebsch\longbow\LongbowConfiguration
 {
     public static function fromFile(File $configuration): self
     {
@@ -31,7 +30,8 @@ class LongbowConfiguration implements Configuration
     private function __construct(private readonly array $configuration)
     {
         $this->ensureSettingExists('orchestrationDirectory');
-        $this->ensureSettingExists('eventStore');
+        $this->ensureSettingExists('topicMap');
+        $this->ensureSettingExists('sequoraDatabase');
         $this->ensureSettingExists('longbowDatabase');
     }
 
@@ -47,9 +47,14 @@ class LongbowConfiguration implements Configuration
         return $this->configuration['orchestrationDirectory'];
     }
 
-    public function eventStore(): string
+    public function topicMap(): File
     {
-        return $this->configuration['eventStore'];
+        return $this->configuration['topicMap'];
+    }
+
+    public function sequoraDatabase(): string
+    {
+        return $this->configuration['sequoraDatabase'];
     }
 
     public function longbowDatabase(): string

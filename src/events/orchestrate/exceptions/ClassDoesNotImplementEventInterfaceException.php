@@ -11,7 +11,7 @@
 
 namespace spriebsch\longbow\events;
 
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\longbow\Exception;
 
 final class ClassDoesNotImplementEventInterfaceException extends Exception
@@ -22,7 +22,7 @@ final class ClassDoesNotImplementEventInterfaceException extends Exception
             sprintf(
                 'Class %s does not implement interface %s',
                 $class,
-                Event::class
+                DomainEvent::class
             )
         );
     }

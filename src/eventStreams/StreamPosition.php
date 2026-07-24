@@ -11,18 +11,18 @@
 
 namespace spriebsch\longbow;
 
-use spriebsch\eventstore\EventId;
-use spriebsch\uuid\UUID;
+use spriebsch\DomainEvent\EventId;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 
 interface StreamPosition
 {
-    public function readPosition(UUID $handlerId): ?EventId;
+    public function readPosition(EventStreamProcessorId $handlerId): ?EventId;
 
-    public function acquireLock(UUID $handlerId): void;
+    public function acquireLock(EventStreamProcessorId $handlerId): void;
 
-    public function writePosition(UUID $handlerId, EventId $eventId): void;
+    public function writePosition(EventStreamProcessorId $handlerId, EventId $eventId): void;
 
-    public function releaseLock(UUID $handlerId): void;
+    public function releaseLock(EventStreamProcessorId $handlerId): void;
 
-    public function resetPosition(UUID $handlerId): void;
+    public function resetPosition(EventStreamProcessorId $handlerId): void;
 }

@@ -11,21 +11,21 @@
 
 namespace spriebsch\longbow;
 
-use spriebsch\eventstore\EventId;
+use spriebsch\DomainEvent\EventId;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 use spriebsch\sqlite\Connection;
 use spriebsch\timestamp\Timestamp;
-use spriebsch\uuid\UUID;
 use SQLite3Stmt;
 use const SQLITE3_TEXT;
 
-final readonly class SqliteStreamPosition implements StreamPosition
+final class SqliteStreamPosition implements StreamPosition
 {
-    private ?SQLite3Stmt $writeStatement;
-    private ?SQLite3Stmt $readStatement;
+    private ?SQLite3Stmt $writeStatement = null;
+    private ?SQLite3Stmt $readStatement = null;
 
-    public function __construct(private Connection $connection) {}
+    public function __construct(private readonly Connection $connection) {}
 
-    public function readPosition(UUID $handlerId): ?EventId
+    public function readPosition(EventStreamProcessorId $handlerId): ?EventId
     {
         if (!isset($this->readStatement)) {
             $this->readStatement = $this->connection->prepare(
@@ -35,7 +35,13 @@ final readonly class SqliteStreamPosition implements StreamPosition
 
         $this->readStatement->bindValue(':handlerId', $handlerId->asString(), SQLITE3_TEXT);
 
-        $row = $this->readStatement->execute()->fetchArray(SQLITE3_ASSOC);
+        $result = $this->readStatement->execute();
+
+        if ($result === false) {
+            return null;
+        }
+
+        $row = $result->fetchArray(SQLITE3_ASSOC);
 
         if ($row === false) {
             return null;
@@ -45,15 +51,15 @@ final readonly class SqliteStreamPosition implements StreamPosition
             return null;
         }
 
-        return EventId::from($row['eventId']);
+        return EventId::from((string) $row['eventId']);
     }
 
-    public function acquireLock(UUID $handlerId): void
+    public function acquireLock(EventStreamProcessorId $handlerId): void
     {
         $this->connection->exec('BEGIN IMMEDIATE');
     }
 
-    public function writePosition(UUID $handlerId, EventId $eventId): void
+    public function writePosition(EventStreamProcessorId $handlerId, EventId $eventId): void
     {
         $this->connection->exec('SAVEPOINT "' . $eventId->asString() . '"');
 
@@ -78,12 +84,12 @@ final readonly class SqliteStreamPosition implements StreamPosition
         $this->connection->exec('RELEASE SAVEPOINT "' . $eventId->asString() . '"');
     }
 
-    public function releaseLock(UUID $handlerId): void
+    public function releaseLock(EventStreamProcessorId $handlerId): void
     {
         $this->connection->exec('COMMIT');
     }
 
-    public function resetPosition(UUID $handlerId): void
+    public function resetPosition(EventStreamProcessorId $handlerId): void
     {
         $statement = $this->connection->prepare(
             'UPDATE positions SET eventId=null,timestamp=:timestamp WHERE handlerId=:handlerId',

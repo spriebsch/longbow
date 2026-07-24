@@ -11,22 +11,21 @@
 
 namespace spriebsch\longbow\example;
 
-use spriebsch\eventstore\Event;
-use spriebsch\eventstore\Events;
-use spriebsch\eventstore\EventWriter;
+use spriebsch\DomainEvent\DomainEvent;
+use spriebsch\sequora\EventWriter;
 use spriebsch\longbow\commands\CommandHandler;
 
-class SomeCommandHandler implements CommandHandler
+final readonly class SomeCommandHandler implements CommandHandler
 {
     public function __construct(
         private readonly EventWriter $eventWriter,
     ) {}
 
-    public function handle(SomeCommand $command): Event
+    public function handle(SomeCommand $command): DomainEvent
     {
         $event = SomeEvent::from(SomeId::generate(), $command->payload);
 
-        $this->eventWriter->store(Events::from($event));
+        $this->eventWriter->store($event);
 
         return $event;
     }

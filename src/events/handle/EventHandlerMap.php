@@ -11,7 +11,7 @@
 
 namespace spriebsch\longbow\events;
 
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\filesystem\File;
 
 final readonly class EventHandlerMap
@@ -36,7 +36,7 @@ final readonly class EventHandlerMap
         return new self($map);
     }
 
-    public function handlerClassesFor(Event $event): array
+    public function handlerClassesFor(DomainEvent $event): array
     {
         return $this->eventHandlerMap[$event::class] ?? [];
     }

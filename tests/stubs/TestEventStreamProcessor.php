@@ -14,7 +14,7 @@ namespace spriebsch\longbow\tests;
 use RuntimeException;
 use spriebsch\longbow\DispatchTestEvent;
 use spriebsch\longbow\eventStreams\EventStreamProcessor;
-use spriebsch\uuid\UUID;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 
 class TestEventStreamProcessor implements EventStreamProcessor
 {
@@ -22,9 +22,9 @@ class TestEventStreamProcessor implements EventStreamProcessor
     private ?int $failOn = null;
     private int $runs = 0;
 
-    public static function id(): UUID
+    public static function id(): EventStreamProcessorId
     {
-        return UUID::from('11111111-073b-4dc1-8dd6-989466a98f53');
+        return EventStreamProcessorId::from('11111111-073b-4dc1-8dd6-989466a98f53');
     }
 
     public function onDispatchTestEvent(DispatchTestEvent $event): void

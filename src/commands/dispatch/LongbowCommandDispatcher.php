@@ -13,7 +13,7 @@ namespace spriebsch\longbow\commands;
 
 use Exception;
 use spriebsch\diContainer\Container;
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\longbow\events\EventDispatcher;
 
 final readonly class LongbowCommandDispatcher implements CommandDispatcher
@@ -24,11 +24,13 @@ final readonly class LongbowCommandDispatcher implements CommandDispatcher
         private EventDispatcher   $eventDispatcher,
     ) {}
 
-    public function handle(Command $command): Event
+    public function handle(Command $command): DomainEvent
     {
         try {
             $handler = $this->container->get($this->handlerMap->handlerClassFor($command));
+            assert(method_exists($handler, 'handle'));
             $event = $handler->handle($command);
+            assert($event instanceof DomainEvent);
             $this->eventDispatcher->dispatch($event);
 
             return $event;

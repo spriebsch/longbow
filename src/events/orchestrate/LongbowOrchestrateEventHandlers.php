@@ -13,7 +13,7 @@ namespace spriebsch\longbow\events;
 
 use ReflectionClass;
 use ReflectionMethod;
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\filesystem\Directory;
 use spriebsch\longbow\orchestration\ExportOrchestration;
 use spriebsch\longbow\orchestration\LongbowPHPArraySerializer;
@@ -159,6 +159,6 @@ final class LongbowOrchestrateEventHandlers implements OrchestrateEventHandlers,
 
     private function classIsNoInstanceOfEvent(string $eventClass): bool
     {
-        return !in_array(Event::class, class_implements($eventClass), true);
+        return !in_array(DomainEvent::class, class_implements($eventClass), true);
     }
 }

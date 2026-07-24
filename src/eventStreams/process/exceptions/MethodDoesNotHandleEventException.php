@@ -11,12 +11,12 @@
 
 namespace spriebsch\longbow\eventStreams;
 
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\longbow\Exception;
 
 final class MethodDoesNotHandleEventException extends Exception
 {
-    public function __construct(EventStreamProcessor $eventStreamProcessor, string $method, Event $event)
+    public function __construct(EventStreamProcessor $eventStreamProcessor, string $method, DomainEvent $event)
     {
         parent::__construct(
             sprintf(

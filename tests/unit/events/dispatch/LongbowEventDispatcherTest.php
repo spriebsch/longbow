@@ -31,7 +31,8 @@ class LongbowEventDispatcherTest extends TestCase
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../../../data'),
-                'eventStore' => ':memory:',
+                'topicMap' => Filesystem::from(__DIR__ . '/../../../fixtures/events.php'),
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ],
         );

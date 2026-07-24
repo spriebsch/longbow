@@ -27,7 +27,7 @@ use spriebsch\longbow\example\EventHandlerSideEffect;
 use spriebsch\longbow\example\EventStreamProcessorSideEffect;
 use spriebsch\longbow\Longbow;
 use spriebsch\longbow\orchestration\LongbowOrchestration;
-use spriebsch\uuid\UUID;
+use spriebsch\uuid\UUIDv4;
 
 #[CoversNothing]
 class IntegrationTest extends TestCase
@@ -70,25 +70,26 @@ class IntegrationTest extends TestCase
 
     private function runLongbow(Directory $orchestrationDirectory): void
     {
-        $payload = UUID::generate()->asString();
+        $payload = UUIDv4::generate()->asString();
 
         $eventMap = Filesystem::from(__DIR__ . '/../fixtures/events.php');
 
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => Filesystem::from(__DIR__ . '/../../data'),
-                'eventStore' => ':memory:',
+                'topicMap' => $eventMap,
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ],
         );
 
         Longbow::configure(
             $configuration,
-            $eventMap,
             ApplicationFactory::class,
         );
 
         $event = Longbow::handleCommand(new SomeCommand($payload));
+        assert($event instanceof SomeEvent);
         $eventHandlerSideEffect = Longbow::container()->get(EventHandlerSideEffect::class);
 
         Longbow::processEvents();

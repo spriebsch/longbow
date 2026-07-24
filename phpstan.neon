@@ -1,0 +1,11 @@
+parameters:
+  level: 5
+  paths:
+    - src
+    - tests
+  bootstrapFiles:
+    - /usr/local/bin/phpunit
+  treatPhpDocTypesAsCertain: false
+  excludePaths:
+    analyse:
+      - tests/unit/orchestration/OrchestrateLongbowTest.php

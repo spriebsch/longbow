@@ -4,86 +4,234 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4450519a21df556f9551ced464d58031",
+    "content-hash": "997a9f471b93faa1c928955994b215c7",
     "packages": [
         {
-            "name": "nikic/php-parser",
-            "version": "v5.4.0",
+            "name": "crell/attributeutils",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "447a020a1f875a434d62f2a401f53b82a396e494"
+                "url": "https://github.com/Crell/AttributeUtils.git",
+                "reference": "309acffe4f6d3768eb6921ef96091b16c84b524b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/447a020a1f875a434d62f2a401f53b82a396e494",
-                "reference": "447a020a1f875a434d62f2a401f53b82a396e494",
+                "url": "https://api.github.com/repos/Crell/AttributeUtils/zipball/309acffe4f6d3768eb6921ef96091b16c84b524b",
+                "reference": "309acffe4f6d3768eb6921ef96091b16c84b524b",
                 "shasum": ""
             },
             "require": {
-                "ext-ctype": "*",
-                "ext-json": "*",
-                "ext-tokenizer": "*",
-                "php": ">=7.4"
+                "crell/fp": "~1.0.0",
+                "php": "~8.1"
             },
             "require-dev": {
-                "ircmaxell/php-yacc": "^0.0.7",
-                "phpunit/phpunit": "^9.0"
+                "fig/cache-util": "^2.0",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/phpstan": "~2",
+                "phpunit/phpunit": "~10.5",
+                "psr/cache": "^3.0"
             },
-            "bin": [
-                "bin/php-parse"
-            ],
+            "suggest": {
+                "psr/cache": "Caching analyzer rests is recommended, and a bridge for psr/cache is included."
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.0-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "PhpParser\\": "lib/PhpParser"
+                    "Crell\\AttributeUtils\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+                "LGPL-3.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "Nikita Popov"
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "http://www.garfieldtech.com/",
+                    "role": "Developer"
                 }
             ],
-            "description": "A PHP parser written in PHP",
+            "description": "A robust, flexible attribute handling framework",
+            "homepage": "https://github.com/Crell/AttributeUtils",
             "keywords": [
-                "parser",
-                "php"
+                "attributes",
+                "reflection"
             ],
             "support": {
-                "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.4.0"
+                "issues": "https://github.com/Crell/AttributeUtils/issues",
+                "source": "https://github.com/Crell/AttributeUtils/tree/1.3.1"
             },
-            "time": "2024-12-30T11:07:19+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/Crell",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-06-07T13:59:04+00:00"
         },
         {
-            "name": "spriebsch/di",
+            "name": "crell/fp",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Crell/fp.git",
+                "reference": "796a1eaa3e2d841f93359f9ef64e45326b68af87"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Crell/fp/zipball/796a1eaa3e2d841f93359f9ef64e45326b68af87",
+                "reference": "796a1eaa3e2d841f93359f9ef64e45326b68af87",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~8.1"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^1.2",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "~10.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/array.php",
+                    "src/composition.php",
+                    "src/object.php",
+                    "src/string.php"
+                ],
+                "psr-4": {
+                    "Crell\\fp\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "http://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Functional utilities for PHP 8 and later",
+            "homepage": "https://github.com/Crell/fp",
+            "keywords": [
+                "array",
+                "fp",
+                "functional"
+            ],
+            "support": {
+                "issues": "https://github.com/Crell/fp/issues",
+                "source": "https://github.com/Crell/fp/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Crell",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-10-28T20:06:08+00:00"
+        },
+        {
+            "name": "crell/serde",
             "version": "1.6.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spriebsch/diContainer.git",
-                "reference": "81d25875d26d1d7f75d661faf3fce908f4582eab"
+                "url": "https://github.com/Crell/Serde.git",
+                "reference": "677e11017f715c8f74a61f436ee596a73858ed68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/81d25875d26d1d7f75d661faf3fce908f4582eab",
-                "reference": "81d25875d26d1d7f75d661faf3fce908f4582eab",
+                "url": "https://api.github.com/repos/Crell/Serde/zipball/677e11017f715c8f74a61f436ee596a73858ed68",
+                "reference": "677e11017f715c8f74a61f436ee596a73858ed68",
                 "shasum": ""
             },
             "require": {
-                "ext-sqlite3": "*",
-                "php": "^8.4"
+                "crell/attributeutils": "~1.3.1",
+                "crell/fp": "~1.0",
+                "php": "~8.2"
             },
             "require-dev": {
-                "phpstan/phpstan": "^2.0"
+                "devium/toml": "^1.0.5",
+                "phpbench/phpbench": "^1.3.0",
+                "phpstan/phpstan": "^2.1.17",
+                "phpunit/phpunit": "^10.5.60",
+                "symfony/yaml": "^5.4"
+            },
+            "suggest": {
+                "devium/toml": "Enables serializing to/from TOML files.",
+                "symfony/yaml": "Enables serializing to/from YAML files."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Crell\\Serde\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Larry Garfield",
+                    "email": "larry@garfieldtech.com",
+                    "homepage": "http://www.garfieldtech.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A general purpose serialization and deserialization library",
+            "homepage": "https://github.com/Crell/Serde",
+            "keywords": [
+                "Serde",
+                "database"
+            ],
+            "support": {
+                "issues": "https://github.com/Crell/Serde/issues",
+                "source": "https://github.com/Crell/Serde/tree/1.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Crell",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-06-23T15:59:17+00:00"
+        },
+        {
+            "name": "spriebsch/di",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/diContainer.git",
+                "reference": "ca4304ed423b2c7d356c4e3f2f6735886bc70c8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/ca4304ed423b2c7d356c4e3f2f6735886bc70c8b",
+                "reference": "ca4304ed423b2c7d356c4e3f2f6735886bc70c8b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.5"
             },
             "type": "library",
             "autoload": {
@@ -99,43 +247,40 @@
                 {
                     "name": "Stefan Priebsch",
                     "email": "stefan@priebsch.de",
-                    "homepage": "https://priebsch.de",
-                    "role": "Developer"
+                    "homepage": "https://software-success-consultant.com"
                 }
             ],
-            "description": "A lightweight, smart and fast DI container.",
+            "description": "A lightweight, smart and fast DI container with autowiring.",
             "support": {
                 "issues": "https://github.com/spriebsch/diContainer/issues",
-                "source": "https://github.com/spriebsch/diContainer/tree/1.6.0"
+                "source": "https://github.com/spriebsch/diContainer/tree/2.0.4"
             },
-            "time": "2025-03-18T17:53:56+00:00"
+            "time": "2026-07-16T07:49:06+00:00"
         },
         {
-            "name": "spriebsch/event-generator",
-            "version": "2.0.0",
+            "name": "spriebsch/domain-event",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spriebsch/event-generator.git",
-                "reference": "fef4da21551fe00c988ff486415db99e1a3b393c"
+                "url": "https://github.com/spriebsch/domain-event.git",
+                "reference": "6ee2b1fc0609b4813fdc823d2919ca663aa4561b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/event-generator/zipball/fef4da21551fe00c988ff486415db99e1a3b393c",
-                "reference": "fef4da21551fe00c988ff486415db99e1a3b393c",
+                "url": "https://api.github.com/repos/spriebsch/domain-event/zipball/6ee2b1fc0609b4813fdc823d2919ca663aa4561b",
+                "reference": "6ee2b1fc0609b4813fdc823d2919ca663aa4561b",
                 "shasum": ""
             },
             "require": {
-                "ext-sqlite3": "*",
-                "nikic/php-parser": "^5.0",
-                "php": "^8.4",
-                "spriebsch/eventstore": "^2.0",
+                "crell/serde": "^1.6",
+                "php": ">=8.5",
                 "spriebsch/filesystem": "^1.0",
-                "spriebsch/sqlite": "^2.0",
+                "spriebsch/money": "^2.1",
                 "spriebsch/timestamp": "^1.1",
-                "spriebsch/uuid": "^1.0"
+                "spriebsch/uuid": "^2.0"
             },
             "bin": [
-                "src/generate-events.php"
+                "bin/generate-topic-map"
             ],
             "type": "library",
             "autoload": {
@@ -151,82 +296,31 @@
                 {
                     "name": "Stefan Priebsch",
                     "email": "stefan@priebsch.de",
-                    "homepage": "https://priebsch.de",
-                    "role": "Developer"
+                    "homepage": "https://priebsch.de"
                 }
             ],
-            "description": "Code generator for domain events.",
+            "description": "Domain Events, Done Right.",
             "support": {
-                "issues": "https://github.com/spriebsch/event-generator/issues",
-                "source": "https://github.com/spriebsch/event-generator/tree/2.0.0"
+                "issues": "https://github.com/spriebsch/domain-event/issues",
+                "source": "https://github.com/spriebsch/domain-event/tree/2.0.2"
             },
-            "time": "2025-04-29T15:29:36+00:00"
-        },
-        {
-            "name": "spriebsch/eventstore",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spriebsch/eventstore.git",
-                "reference": "6aa32838d850847aff26bfeb296ba6516269611e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/eventstore/zipball/6aa32838d850847aff26bfeb296ba6516269611e",
-                "reference": "6aa32838d850847aff26bfeb296ba6516269611e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-sqlite3": "*",
-                "php": "^8.4",
-                "spriebsch/sqlite": "^2.0",
-                "spriebsch/timestamp": "^1.1",
-                "spriebsch/uuid": "^1.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Stefan Priebsch",
-                    "email": "stefan@priebsch.de",
-                    "homepage": "https://priebsch.de",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Lightweight Sqlite-based Event Store.",
-            "support": {
-                "issues": "https://github.com/spriebsch/eventstore/issues",
-                "source": "https://github.com/spriebsch/eventstore/tree/2.0.0"
-            },
-            "time": "2025-04-29T15:06:07+00:00"
+            "time": "2026-07-14T21:22:12+00:00"
         },
         {
             "name": "spriebsch/filesystem",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/filesystem.git",
-                "reference": "c94acb00d9c22a53a6f32f9a91379c903451c8f4"
+                "reference": "90c5a81b2e7dfbf4aa9405afebd6e0ea89a73180"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/filesystem/zipball/c94acb00d9c22a53a6f32f9a91379c903451c8f4",
-                "reference": "c94acb00d9c22a53a6f32f9a91379c903451c8f4",
+                "url": "https://api.github.com/repos/spriebsch/filesystem/zipball/90c5a81b2e7dfbf4aa9405afebd6e0ea89a73180",
+                "reference": "90c5a81b2e7dfbf4aa9405afebd6e0ea89a73180",
                 "shasum": ""
             },
             "require": {
-                "ext-sqlite3": "*",
                 "php": "^8.3"
             },
             "type": "library",
@@ -250,34 +344,27 @@
             "description": "Lightweight object-oriented API to the filesystem.",
             "support": {
                 "issues": "https://github.com/spriebsch/filesystem/issues",
-                "source": "https://github.com/spriebsch/filesystem/tree/1.0.7"
+                "source": "https://github.com/spriebsch/filesystem/tree/1.0.8"
             },
-            "time": "2025-04-10T17:27:39+00:00"
+            "time": "2026-03-12T15:36:11+00:00"
         },
         {
-            "name": "spriebsch/identifier-generator",
-            "version": "2.0.0",
+            "name": "spriebsch/money",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spriebsch/identifier-generator.git",
-                "reference": "33c5347ebd8ea4e2fb5b2a84695370e9435b48a2"
+                "url": "https://github.com/spriebsch/money.git",
+                "reference": "322138d582c2d1c0d2aaa68880f97ddaf0ebc260"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/identifier-generator/zipball/33c5347ebd8ea4e2fb5b2a84695370e9435b48a2",
-                "reference": "33c5347ebd8ea4e2fb5b2a84695370e9435b48a2",
+                "url": "https://api.github.com/repos/spriebsch/money/zipball/322138d582c2d1c0d2aaa68880f97ddaf0ebc260",
+                "reference": "322138d582c2d1c0d2aaa68880f97ddaf0ebc260",
                 "shasum": ""
             },
             "require": {
-                "ext-sqlite3": "*",
-                "php": "^8.4",
-                "spriebsch/eventstore": "^2.0",
-                "spriebsch/filesystem": "^1.0",
-                "spriebsch/uuid": "^1.0"
+                "php": ">=8.5"
             },
-            "bin": [
-                "src/generate-identifiers.php"
-            ],
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -285,36 +372,69 @@
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
             "authors": [
                 {
                     "name": "Stefan Priebsch",
                     "email": "stefan@priebsch.de",
-                    "homepage": "https://priebsch.de",
-                    "role": "Developer"
+                    "homepage": "https://www.priebsch.de"
                 }
             ],
-            "description": "Code generator for UUID-based indentifier value objects.",
+            "description": "Money, modeled correctly.",
             "support": {
-                "issues": "https://github.com/spriebsch/identifier-generator/issues",
-                "source": "https://github.com/spriebsch/identifier-generator/tree/2.0.0"
+                "issues": "https://github.com/spriebsch/money/issues",
+                "source": "https://github.com/spriebsch/money/tree/2.2.0"
             },
-            "time": "2025-04-29T15:30:48+00:00"
+            "time": "2026-07-14T20:04:56+00:00"
         },
         {
-            "name": "spriebsch/sqlite",
-            "version": "2.0.0",
+            "name": "spriebsch/sequora",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spriebsch/sqlite.git",
-                "reference": "e46d70767783b42c613b6bfea3f308759cee5259"
+                "url": "https://github.com/spriebsch/sequora.git",
+                "reference": "d4e9c0ab07913d7d8f113f153da19d1aeca6c766"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/e46d70767783b42c613b6bfea3f308759cee5259",
-                "reference": "e46d70767783b42c613b6bfea3f308759cee5259",
+                "url": "https://api.github.com/repos/spriebsch/sequora/zipball/d4e9c0ab07913d7d8f113f153da19d1aeca6c766",
+                "reference": "d4e9c0ab07913d7d8f113f153da19d1aeca6c766",
+                "shasum": ""
+            },
+            "require": {
+                "ext-sqlite3": "*",
+                "php": ">=8.5",
+                "spriebsch/domain-event": "^2.0",
+                "spriebsch/sqlite": "^2.1"
+            },
+            "bin": [
+                "bin/sequora-dump"
+            ],
+            "type": "project",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "A simple, reliable SQLite-backed event store for PHP domain events",
+            "support": {
+                "issues": "https://github.com/spriebsch/sequora/issues",
+                "source": "https://github.com/spriebsch/sequora/tree/1.3.0"
+            },
+            "time": "2026-07-14T21:29:22+00:00"
+        },
+        {
+            "name": "spriebsch/sqlite",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spriebsch/sqlite.git",
+                "reference": "609f4bda497ef62b583f24f2aa1f65f9ee58a52d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spriebsch/sqlite/zipball/609f4bda497ef62b583f24f2aa1f65f9ee58a52d",
+                "reference": "609f4bda497ef62b583f24f2aa1f65f9ee58a52d",
                 "shasum": ""
             },
             "require": {
@@ -342,9 +462,9 @@
             "description": "Lightweight Sqlite wrapper with lazy connection and schema creation.",
             "support": {
                 "issues": "https://github.com/spriebsch/sqlite/issues",
-                "source": "https://github.com/spriebsch/sqlite/tree/2.0.0"
+                "source": "https://github.com/spriebsch/sqlite/tree/2.1.0"
             },
-            "time": "2025-04-29T14:58:44+00:00"
+            "time": "2025-11-02T12:53:33+00:00"
         },
         {
             "name": "spriebsch/timestamp",
@@ -390,16 +510,16 @@
         },
         {
             "name": "spriebsch/uuid",
-            "version": "1.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/UUID.git",
-                "reference": "75325ce64ef16a005cbb9cd63d6d5c1a389b95f8"
+                "reference": "7dad6af3d70c42a0596e8cc40904a29b24c79fbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/UUID/zipball/75325ce64ef16a005cbb9cd63d6d5c1a389b95f8",
-                "reference": "75325ce64ef16a005cbb9cd63d6d5c1a389b95f8",
+                "url": "https://api.github.com/repos/spriebsch/UUID/zipball/7dad6af3d70c42a0596e8cc40904a29b24c79fbb",
+                "reference": "7dad6af3d70c42a0596e8cc40904a29b24c79fbb",
                 "shasum": ""
             },
             "require": {
@@ -419,16 +539,15 @@
                 {
                     "name": "Stefan Priebsch",
                     "email": "stefan@priebsch.de",
-                    "homepage": "https://priebsch.de",
-                    "role": "Developer"
+                    "homepage": "https://priebsch.de"
                 }
             ],
             "description": "A fast and simple no-frills UUIDv4 implementation.",
             "support": {
                 "issues": "https://github.com/spriebsch/UUID/issues",
-                "source": "https://github.com/spriebsch/UUID/tree/1.0.3"
+                "source": "https://github.com/spriebsch/UUID/tree/2.0.0"
             },
-            "time": "2024-09-09T20:59:41+00:00"
+            "time": "2025-10-02T12:02:35+00:00"
         }
     ],
     "packages-dev": [],
@@ -438,12 +557,12 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.4",
+        "php": "^8.5",
         "ext-sqlite3": "*"
     },
     "platform-dev": {},
     "platform-overrides": {
-        "php": "8.4"
+        "php": "8.5"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

@@ -12,11 +12,11 @@
 namespace spriebsch\longbow;
 
 use RuntimeException;
-use spriebsch\uuid\UUID;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 
 final class FailedToResetStreamPositionException extends RuntimeException implements LongbowException
 {
-    public function __construct(UUID $handler)
+    public function __construct(EventStreamProcessorId $handler)
     {
         parent::__construct(
             sprintf(

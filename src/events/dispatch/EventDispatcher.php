@@ -11,9 +11,9 @@
 
 namespace spriebsch\longbow\events;
 
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 
 interface EventDispatcher
 {
-    public function dispatch(Event $event): void;
+    public function dispatch(DomainEvent $event): void;
 }

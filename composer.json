@@ -1,5 +1,7 @@
 {
   "name": "spriebsch/longbow",
+  "description": "An event framework for PHP domain events",
+  "license": "BSD-3-Clause",
   "autoload": {
     "classmap": [
       "src"
@@ -12,39 +14,33 @@
   },
   "config": {
     "platform": {
-      "php": "8.4"
+      "php": "8.5"
     },
     "optimize-autoloader": true,
     "sort-packages": true
   },
   "prefer-stable": true,
   "require": {
-    "php": ">=8.4",
+    "php": "^8.5",
     "ext-sqlite3": "*",
-    "spriebsch/di": "^1.6",
-    "spriebsch/event-generator": "^2.0",
-    "spriebsch/eventstore": "^2.0",
+    "spriebsch/di": "^2.0",
+    "spriebsch/domain-event": "^2.0",
     "spriebsch/filesystem": "^1.0",
-    "spriebsch/identifier-generator": "^2.0",
-    "spriebsch/sqlite": "^2.0",
-    "spriebsch/uuid": "^1.0"
+    "spriebsch/sequora": "^1.3",
+    "spriebsch/sqlite": "^2.1",
+    "spriebsch/timestamp": "^1.1"
   },
   "repositories": [
   ],
   "scripts": {
-    "post-autoload-dump": "composer generate-autoloader",
-    "generate-autoloader": [
-      "tools/phpab --output tests/unit/autoload.php tests/stubs tests/fixtures",
-      "tools/phpab --output tests/integration/autoload.php tests/integration/exampleApplication"
-    ],
-    "test": "tools/phpunit",
+    "test": "phpunit",
     "code-coverage": [
       "@putenv XDEBUG_MODE=coverage",
-      "tools/phpunit --coverage-html build/code-coverage"
+      "phpunit --coverage-html build/code-coverage"
     ],
     "path-coverage": [
       "@putenv XDEBUG_MODE=coverage",
-      "tools/phpunit --coverage-html build/code-coverage --path-coverage"
+      "phpunit --coverage-html build/code-coverage --path-coverage"
     ],
     "show-coverage": "gio open build/code-coverage/index.html",
     "update-tools": "phive update"

@@ -14,7 +14,7 @@ namespace spriebsch\longbow\commands;
 use Exception;
 use ReflectionClass;
 use ReflectionMethod;
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\filesystem\Directory;
 use spriebsch\longbow\orchestration\ExportOrchestration;
 use spriebsch\longbow\orchestration\LongbowPHPArraySerializer;
@@ -107,8 +107,6 @@ final class LongbowOrchestrateCommandHandlers implements OrchestrateCommandHandl
         if ($this->commandClass === null) {
             throw new NoCommandSpecifiedException($commandHandlerClass);
         }
-
-        assert($this->commandClass !== null);
     }
 
     private function ensureCommandHandlerClassExists(string $class): void
@@ -145,7 +143,7 @@ final class LongbowOrchestrateCommandHandlers implements OrchestrateCommandHandl
         }
     }
 
-    private function ensureHandleMethodHasExactlyOneParameter(string $class)
+    private function ensureHandleMethodHasExactlyOneParameter(string $class): void
     {
         if (count($this->reflectHandleMethodParameters($class)) !== 1) {
             throw new CommandHandlerHandleMethodDoesNotHaveExactlyOneParameterException($class);
@@ -171,7 +169,9 @@ final class LongbowOrchestrateCommandHandlers implements OrchestrateCommandHandl
 
     private function ensureHandleMethodReturnsAnEvent(string $class): void
     {
-        if ($this->reflectHandleMethod($class)->getReturnType()->getName() !== Event::class) {
+        $returnType = $this->reflectHandleMethod($class)->getReturnType();
+
+        if (!$returnType instanceof \ReflectionNamedType || $returnType->getName() !== DomainEvent::class) {
             throw new CommandHandlerDoesNotReturnEventException($class);
         }
     }

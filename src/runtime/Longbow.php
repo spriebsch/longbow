@@ -11,34 +11,29 @@
 
 namespace spriebsch\longbow;
 
-use spriebsch\diContainer\Configuration;
 use spriebsch\diContainer\Container;
 use spriebsch\diContainer\DIContainer;
-use spriebsch\eventstore\Event;
-use spriebsch\eventstore\EventFactory;
-use spriebsch\filesystem\File;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\longbow\commands\Command;
 use spriebsch\longbow\commands\CommandDispatcher;
 use spriebsch\longbow\eventStreams\EventStreamDispatcher;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 use spriebsch\longbow\orchestration\LongbowHasAlreadyBeenConfiguredException;
-use spriebsch\uuid\UUID;
 
 final class Longbow
 {
     private static ?Container $container = null;
-    private static $exceptions = [];
+    /** @var list<\Throwable> */
+    private static array $exceptions = [];
 
     public static function configure(
-        Configuration $configuration,
-        File          $eventMap,
-        string        $factoryClass,
+        LongbowConfiguration $configuration,
+        string $factoryClass,
     ): void
     {
         if (self::$container !== null) {
             throw new LongbowHasAlreadyBeenConfiguredException;
         }
-
-        EventFactory::configureWith($eventMap->require());
 
         self::$container = new DIContainer(
             $configuration,
@@ -58,27 +53,34 @@ final class Longbow
 
     public static function reset(): void
     {
-        EventFactory::reset();
         self::$container = null;
+        self::$exceptions = [];
     }
 
-    public static function handleCommand(Command $command): Event
+    public static function handleCommand(Command $command): DomainEvent
     {
-        return self::$container->get(CommandDispatcher::class)->handle($command);
+        $dispatcher = self::container()->get(CommandDispatcher::class);
+        assert($dispatcher instanceof CommandDispatcher);
+
+        return $dispatcher->handle($command);
     }
 
     public static function processEvents(): void
     {
         /** @var EventStreamDispatcher $dispatcher */
-        $dispatcher = self::$container->get(EventStreamDispatcher::class);
+        $dispatcher = self::container()->get(EventStreamDispatcher::class);
+        assert($dispatcher instanceof EventStreamDispatcher);
         self::$exceptions = $dispatcher->run();
     }
 
-    public static function resetEventStreamProcessor(UUID $id): void
+    public static function resetEventStreamProcessor(EventStreamProcessorId $id): void
     {
-        self::$container->get(StreamPosition::class)->resetPosition($id);
+        $streamPosition = self::container()->get(StreamPosition::class);
+        assert($streamPosition instanceof StreamPosition);
+        $streamPosition->resetPosition($id);
     }
 
+    /** @return list<\Throwable> */
     public static function exceptions(): array
     {
         return self::$exceptions;

@@ -12,7 +12,6 @@
 namespace spriebsch\longbow\eventStreams;
 
 use spriebsch\diContainer\Container;
-use spriebsch\eventstore\EventStream;
 use spriebsch\longbow\StreamPosition;
 use Throwable;
 
@@ -30,6 +29,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
     public function run(?int $limit = null): array
     {
         $this->limit = $limit;
+        $this->exceptions = [];
 
         foreach ($this->streamProcessorMap->streams() as $eventStreamClass => $processors) {
 
@@ -59,23 +59,19 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
     public function runEventStreamProcessor(EventStreamProcessor $processor, EventStream $stream): void
     {
         $this->streamPosition->acquireLock($processor::id());
-        $position = $this->streamPosition->readPosition($processor::id());
-
-        if ($this->limit !== null) {
-            $stream->limitNextQuery($this->limit);
-        }
 
         try {
-            foreach ($stream->queued($position) as $event) {
-                new EventStreamProcessorWrapper($processor)->process($event);
-                $this->streamPosition->writePosition($processor::id(), $event->id());
+            $position = $this->streamPosition->readPosition($processor::id());
+            $events = $stream->eventsAfter($position, $this->limit);
+
+            foreach ($events->envelopes() as $envelope) {
+                new EventStreamProcessorWrapper($processor)->process($envelope->event());
+                $this->streamPosition->writePosition($processor::id(), $envelope->eventId());
             }
-        }
-
-        catch (Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->exceptions[] = $exception;
+        } finally {
+            $this->streamPosition->releaseLock($processor::id());
         }
-
-        $this->streamPosition->releaseLock($processor::id());
     }
 }

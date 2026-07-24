@@ -13,13 +13,13 @@ namespace spriebsch\longbow\eventStreams;
 
 use ReflectionClass;
 use ReflectionMethod;
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 
 final readonly class EventStreamProcessorWrapper
 {
     public function __construct(private EventStreamProcessor $eventStreamProcessor) {}
 
-    public function process(Event $event): void
+    public function process(DomainEvent $event): void
     {
         $method = $this->onEventMethodNameFor($event);
 
@@ -51,7 +51,7 @@ final readonly class EventStreamProcessorWrapper
     private function ensureMethodParameterIsTheEvent(
         EventStreamProcessor $eventStreamProcessor,
         string               $method,
-        Event                $event,
+        DomainEvent          $event,
     ): void
     {
         if ($this->reflectMethodParameterType($eventStreamProcessor, $method) !== $event::class) {
@@ -78,7 +78,7 @@ final readonly class EventStreamProcessorWrapper
         return (new ReflectionClass($eventHandler))->getMethod($method);
     }
 
-    private function onEventMethodNameFor(Event $event): string
+    private function onEventMethodNameFor(DomainEvent $event): string
     {
         return 'on' . (new ReflectionClass($event))->getShortName();
     }

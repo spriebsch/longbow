@@ -1,74 +1,29 @@
 <?php declare(strict_types=1);
 
-/*
- * This file is part of Longbow.
- *
- * (c) Stefan Priebsch <stefan@priebsch.de>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace spriebsch\longbow\example;
 
-use spriebsch\eventstore\CorrelationId;
-use spriebsch\eventstore\Event;
-use spriebsch\eventstore\EventId;
-use spriebsch\eventstore\EventTrait;
-use spriebsch\eventstore\Json;
-use spriebsch\eventstore\SerializableEventTrait;
-use spriebsch\timestamp\Timestamp;
+use spriebsch\DomainEvent\DomainEvent;
+use spriebsch\DomainEvent\MapToTopic;
+use spriebsch\DomainEvent\UseAsCorrelationId;
 
-final class SomeEvent implements Event
+#[MapToTopic('spriebsch.longbow.example-application.some-event')]
+final readonly class SomeEvent implements DomainEvent
 {
-    use SerializableEventTrait;
-    use EventTrait;
-
-    private readonly string $payload;
-
     public static function from(SomeId $someId, string $payload): self
     {
-        return new self(EventId::generate(), $someId, Timestamp::generate(), $payload);
-    }
-
-    public static function fromJson(Json $json): self
-    {
-        return new self(
-            EventId::from($json->get('id')),
-            SomeId::from($json->get('correlationId')),
-            Timestamp::from($json->get('timestamp')),
-            $json->get('payload')
-        );
+        return new self($someId, $payload);
     }
 
     private function __construct(
-        EventId       $id,
-        CorrelationId $correlationId,
-        Timestamp     $timestamp,
-        string        $payload
-    )
-    {
-        $this->id = $id;
-        $this->correlationId = $correlationId;
-        $this->timestamp = $timestamp;
-        $this->payload = $payload;
+        private SomeId $someId,
+        private string $payload,
+    ) {
     }
 
-    public function serialize(): array
-    {
-        return [
-            'payload' => $this->payload
-        ];
-    }
-
-    public static function topic(): string
-    {
-        return 'spriebsch.longbow.exampleApplication';
-    }
-
+    #[UseAsCorrelationId]
     public function someId(): SomeId
     {
-        return $this->correlationId;
+        return $this->someId;
     }
 
     public function payload(): string

@@ -5,5 +5,5 @@ namespace spriebsch\longbow\example;
 use spriebsch\longbow\DispatchTestEvent;
 
 return [
-    'the-topic' => DispatchTestEvent::class
+    'spriebsch.longbow.tests.dispatch-test-event' => DispatchTestEvent::class,
 ];

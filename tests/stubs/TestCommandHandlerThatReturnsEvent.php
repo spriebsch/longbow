@@ -11,19 +11,19 @@
 
 namespace spriebsch\longbow\tests;
 
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\longbow\commands\CommandHandler;
 
-class TestCommandHandlerThatReturnsEvent implements CommandHandler
+final class TestCommandHandlerThatReturnsEvent implements CommandHandler
 {
-    private static Event $event;
+    private static DomainEvent $event;
 
-    public static function willReturn(Event $event): void
+    public static function willReturn(DomainEvent $event): void
     {
         self::$event = $event;
     }
 
-    public function handle(TestCommand $command): Event
+    public function handle(TestCommand $command): DomainEvent
     {
         return self::$event;
     }

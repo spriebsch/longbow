@@ -11,7 +11,7 @@
 
 namespace spriebsch\longbow\commands;
 
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\longbow\Exception;
 
 final class CommandHandlerDoesNotReturnEventException extends Exception
@@ -22,7 +22,7 @@ final class CommandHandlerDoesNotReturnEventException extends Exception
             sprintf(
                 'Command handler %s does not return an instance of %s',
                 $class,
-                Event::class
+                DomainEvent::class
             )
         );
     }

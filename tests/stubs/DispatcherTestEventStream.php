@@ -11,12 +11,12 @@
 
 namespace spriebsch\longbow\tests;
 
-use spriebsch\eventstore\AbstractEventStream;
+use spriebsch\longbow\eventStreams\EventStream;
 
-class DispatcherTestEventStream extends AbstractEventStream
+final readonly class DispatcherTestEventStream extends EventStream
 {
     protected function topics(): array
     {
-        return [TestEvent::topic()];
+        return [\spriebsch\DomainEvent\Topic::fromString('spriebsch.longbow.tests.dispatch-test-event')];
     }
 }

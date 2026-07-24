@@ -1,42 +1,14 @@
 <?php declare(strict_types=1);
 
-/*
- * This file is part of Longbow.
- *
- * (c) Stefan Priebsch <stefan@priebsch.de>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace spriebsch\longbow\tests;
 
-use spriebsch\eventstore\CorrelationId;
-use spriebsch\eventstore\EventId;
-use spriebsch\eventstore\Events;
-use spriebsch\eventstore\EventStream;
+use spriebsch\DomainEvent\Topic;
+use spriebsch\longbow\eventStreams\EventStream;
 
-class TestEventStream implements EventStream
+final readonly class TestEventStream extends EventStream
 {
-    public function limitNextQuery(int $limit): void {}
-
-    public function source(EventId $position, ?CorrelationId $correlationId = null): Events
+    protected function topics(): array
     {
-        return Events::from();
-    }
-
-    public function queued(?EventId $position, ?CorrelationId $correlationId = null): Events
-    {
-        return Events::from();
-    }
-
-    public function all(?CorrelationId $correlationId = null): Events
-    {
-        return Events::from();
-    }
-
-    public function lastEvent(): ?EventId
-    {
-        return EventId::generate();
+        return [Topic::fromString('spriebsch.longbow.tests.test-event')];
     }
 }

@@ -12,12 +12,12 @@
 namespace spriebsch\longbow\tests;
 
 use RuntimeException;
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\longbow\commands\CommandHandler;
 
-class TestCommandHandlerThatThrowsException implements CommandHandler
+final class TestCommandHandlerThatThrowsException implements CommandHandler
 {
-    public function handle(TestCommand $command): Event
+    public function handle(TestCommand $command): DomainEvent
     {
         throw new RuntimeException;
     }

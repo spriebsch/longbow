@@ -2,58 +2,29 @@
 
 namespace spriebsch\longbow;
 
-use spriebsch\eventstore\CorrelationId;
-use spriebsch\eventstore\Event;
-use spriebsch\eventstore\EventId;
-use spriebsch\eventstore\EventTrait;
-use spriebsch\eventstore\Json;
-use spriebsch\eventstore\SerializableEventTrait;
+use spriebsch\DomainEvent\DomainEvent;
+use spriebsch\DomainEvent\MapToTopic;
+use spriebsch\DomainEvent\UseAsCorrelationId;
 use spriebsch\longbow\tests\TestCorrelationId;
-use spriebsch\timestamp\Timestamp;
 
-final readonly class DispatchTestEvent implements Event
+#[MapToTopic('spriebsch.longbow.tests.dispatch-test-event')]
+final readonly class DispatchTestEvent implements DomainEvent
 {
-    use SerializableEventTrait;
-    use EventTrait;
-
-    private string $payload;
-
-    private function __construct(EventId $id, CorrelationId $correlationId, Timestamp $timestamp, string $payload)
-    {
-        $this->id = $id;
-        $this->correlationId = $correlationId;
-        $this->timestamp = $timestamp;
-        $this->payload = $payload;
-    }
-
-    public static function fromJson(Json $json): self
-    {
-        return new self(
-            EventId::from($json->get('id')),
-            TestCorrelationId::from($json->get('correlationId')),
-            Timestamp::from($json->get('timestamp')),
-            $json->get('payload')
-        );
-    }
-
     public static function from(TestCorrelationId $id, string $payload): self
     {
-        return new self(EventId::generate(), $id, Timestamp::generate(), $payload);
+        return new self($id, $payload);
     }
 
-    public static function topic(): string
-    {
-        return 'the-topic';
+    private function __construct(
+        private TestCorrelationId $testCorrelationId,
+        private string $payload,
+    ) {
     }
 
-    public function serialize(): array
-    {
-        return ['payload' => $this->payload];
-    }
-
+    #[UseAsCorrelationId]
     public function testCorrelationId(): TestCorrelationId
     {
-        return $this->correlationId;
+        return $this->testCorrelationId;
     }
 
     public function payload(): string

@@ -3,5 +3,5 @@
 namespace spriebsch\longbow\example;
 
 return [
-    'spriebsch.longbow.exampleApplication' => SomeEvent::class
+    'spriebsch.longbow.example-application.some-event' => SomeEvent::class,
 ];

@@ -1,0 +1,114 @@
+# Containerization
+
+PHP and development tools are installed in a container.
+
+Use
+
+```bash
+php-devbox php <script>
+```
+
+to execute PHP scripts inside the container.
+
+# Running PHP Code
+
+To run PHP code at the command line, use 
+
+```bash
+php-devbox php <script.php>
+```
+
+# Update Autoloaders
+
+Use 
+
+```bash
+php-devbox composer dump
+```
+
+to update autoloaders.
+
+## Run unit tests
+
+After each task, run all unit tests.
+If there are failing tests, fix the production code.
+
+To run all unit tests, use 
+
+```bash
+php-devbox phpunit
+```
+
+# Static Code Analysis
+
+After each task, run 
+
+```bash
+php-devbox phpstan
+```
+
+to perform static code analysis with PHPStan.
+If errors occur, fix them. 
+
+# Code Coverage Analysis
+
+After each task, run
+
+```bash
+php-devbox code-coverage
+```
+
+to perform code coverage analysis with PHPUnit and write
+results to build/code-coverage.
+Fix any errors related to missing @covers or @uses annotations.
+Add missing tests to achieve 100% code coverage.
+
+# Coding Guidelines
+
+## Project Structure
+
+Source code is located in `src/` directory
+Test files are located in `tests/` directory
+
+Never edit files the vendor directory.
+Never edit .gitignore.
+Never edit .gitattributes.
+Never edit composer.lock.
+Never edit composer.json without asking.
+Never edit phpunit.xml without asking.
+Never edit phpstan.neon without asking.
+
+## Code Quality
+
+Make every concrete class final.
+Make classes readonly whenever possible.
+
+Minimum visibility: make every method private by default.
+Only make methods public that need to be called from the outside.
+
+Avoid variable expansion, use sprintf instead.
+
+## Naming
+
+Use descriptive test method names.
+
+## Documentation
+
+Prefer attributes over docblocks.
+Do not create docblocks that are redundant with the type hints.
+Only use docblocks to document exceptions thrown.
+
+## Testing
+
+Test edge cases and error conditions.
+
+Use the most specific assertion possible.
+Use one logical assertion per test method.
+
+Avoid test dependencies.
+
+Do not name tests starting with "it".
+Use test_ name prefix, not a #[Test] attribute.
+Do not use static assertion calls (self::), instead call the instance methods ($this->).
+
+When no expectations are configured in a unit test, create stubs with $this->createStub() instead of mocks with $this->createMock().

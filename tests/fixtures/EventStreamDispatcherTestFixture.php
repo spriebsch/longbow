@@ -2,8 +2,9 @@
 
 namespace spriebsch\longbow\eventStreams;
 
-use spriebsch\eventstore\Events;
-use spriebsch\eventstore\EventWriter;
+use spriebsch\sequora\EventWriter;
+use spriebsch\sequora\EventQuery;
+use spriebsch\sequora\EventReader;
 use spriebsch\filesystem\Filesystem;
 use spriebsch\longbow\DispatchTestEvent;
 use spriebsch\longbow\example\LongbowConfiguration;
@@ -17,6 +18,7 @@ use spriebsch\longbow\tests\TestEventStreamProcessor;
 final readonly class EventStreamDispatcherTestFixture
 {
     public array $events;
+    public array $eventIds;
 
     public function __construct()
     {
@@ -38,7 +40,8 @@ final readonly class EventStreamDispatcherTestFixture
         $configuration = LongbowConfiguration::fromArray(
             [
                 'orchestrationDirectory' => $orchestrationDirectory,
-                'eventStore' => ':memory:',
+                'topicMap' => $eventMap,
+                'sequoraDatabase' => ':memory:',
                 'longbowDatabase' => ':memory:',
             ]
         );
@@ -46,7 +49,6 @@ final readonly class EventStreamDispatcherTestFixture
         Longbow::reset();
         Longbow::configure(
             $configuration,
-            $eventMap,
             TestApplicationFactory::class,
         );
 
@@ -57,6 +59,13 @@ final readonly class EventStreamDispatcherTestFixture
         ];
 
         $eventWriter = Longbow::container()->get(EventWriter::class);
-        $eventWriter->store(Events::from(...$this->events));
+        $eventWriter->store(...$this->events);
+
+        /** @var EventReader $eventReader */
+        $eventReader = Longbow::container()->get(EventReader::class);
+        $this->eventIds = array_map(
+            static fn($envelope) => $envelope->eventId(),
+            $eventReader->query(EventQuery::from())->envelopes(),
+        );
     }
 }

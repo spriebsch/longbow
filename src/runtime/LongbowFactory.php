@@ -12,11 +12,6 @@
 namespace spriebsch\longbow;
 
 use spriebsch\diContainer\AbstractFactory;
-use spriebsch\eventstore\EventReader;
-use spriebsch\eventstore\EventWriter;
-use spriebsch\eventstore\SqliteEventReader;
-use spriebsch\eventstore\SqliteEventStoreSchema;
-use spriebsch\eventstore\SqliteEventWriter;
 use spriebsch\longbow\commands\CommandDispatcher;
 use spriebsch\longbow\commands\CommandHandlerMap;
 use spriebsch\longbow\commands\LongbowCommandDispatcher;
@@ -30,18 +25,28 @@ use spriebsch\longbow\eventStreams\EventStreamProcessorMap;
 use spriebsch\longbow\eventStreams\LongbowEventStreamDispatcher;
 use spriebsch\longbow\eventStreams\OrchestrateEventStreamProcessors;
 use spriebsch\sqlite\SqliteConnection;
+use spriebsch\sequora\EventReader;
+use spriebsch\sequora\EventWriter;
+use spriebsch\sequora\SequoraReader;
+use spriebsch\sequora\SequoraWriter;
+use spriebsch\sequora\SqliteDatabaseReader;
+use spriebsch\sequora\SqliteDatabaseWriter;
+use spriebsch\sequora\SqliteSequoraSchema;
 
 final readonly class LongbowFactory extends AbstractFactory
 {
     public function CommandDispatcher(): CommandDispatcher
     {
-        return $this->container->get(LongbowCommandDispatcher::class);
+        $dispatcher = $this->container->get(LongbowCommandDispatcher::class);
+        assert($dispatcher instanceof CommandDispatcher);
+
+        return $dispatcher;
     }
 
     public function CommandHandlerMap(): CommandHandlerMap
     {
         return CommandHandlerMap::fromFile(
-            $this->configuration()->orchestrationDirectory()
+            $this->longbowConfiguration()->orchestrationDirectory()
                 ->file(OrchestrateCommandHandlers::SERIALIZATION_FILE),
         );
     }
@@ -49,7 +54,7 @@ final readonly class LongbowFactory extends AbstractFactory
     public function EventHandlerMap(): EventHandlerMap
     {
         return EventHandlerMap::fromFile(
-            $this->configuration()->orchestrationDirectory()
+            $this->longbowConfiguration()->orchestrationDirectory()
                 ->file(OrchestrateEventHandlers::SERIALIZATION_FILE),
         );
     }
@@ -57,28 +62,34 @@ final readonly class LongbowFactory extends AbstractFactory
     public function EventStreamProcessorMap(): EventStreamProcessorMap
     {
         return EventStreamProcessorMap::fromFile(
-            $this->configuration()->orchestrationDirectory()
+            $this->longbowConfiguration()->orchestrationDirectory()
                 ->file(OrchestrateEventStreamProcessors::SERIALIZATION_FILE),
         );
     }
 
     public function EventReader(): EventReader
     {
-        return SqliteEventReader::from(
-            $this->container->get('eventStoreConnection'),
+        return SequoraReader::from(
+            SqliteDatabaseReader::from(
+                $this->sequoraConnection(),
+                $this->topicMap(),
+            ),
         );
     }
 
     public function EventWriter(): EventWriter
     {
-        return SqliteEventWriter::from(
-            $this->container->get('eventStoreConnection'),
+        return SequoraWriter::from(
+            SqliteDatabaseWriter::from($this->sequoraConnection()),
         );
     }
 
     public function EventDispatcher(): EventDispatcher
     {
-        return $this->container->get(LongbowEventDispatcher::class);
+        $dispatcher = $this->container->get(LongbowEventDispatcher::class);
+        assert($dispatcher instanceof EventDispatcher);
+
+        return $dispatcher;
     }
 
     public function EventStreamDispatcher(): EventStreamDispatcher
@@ -92,22 +103,50 @@ final readonly class LongbowFactory extends AbstractFactory
 
     public function StreamPosition(): StreamPosition
     {
-        return new SqliteStreamPosition($this->container->get('longbowDatabaseConnection'));
+        $connection = $this->container->get('longbowDatabaseConnection');
+        assert($connection instanceof SqliteConnection);
+
+        return new SqliteStreamPosition($connection);
     }
 
     public function longbowDatabaseConnection(): SqliteConnection
     {
-        $connection = SqliteConnection::from($this->configuration()->longbowDatabase());
+        $connection = SqliteConnection::from($this->longbowConfiguration()->longbowDatabase());
         LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
         return $connection;
     }
 
-    public function eventStoreConnection(): SqliteConnection
+    public function sequoraDatabaseConnection(): SqliteConnection
     {
-        $connection = SqliteConnection::from($this->configuration()->eventStore());
-        SqliteEventStoreSchema::from($connection)->createIfNotExists();
+        $connection = SqliteConnection::from($this->longbowConfiguration()->sequoraDatabase());
+        SqliteSequoraSchema::from($connection)->createIfNotExists();
 
         return $connection;
+    }
+
+    private function longbowConfiguration(): LongbowConfiguration
+    {
+        assert($this->configuration instanceof LongbowConfiguration);
+
+        return $this->configuration;
+    }
+
+    private function sequoraConnection(): SqliteConnection
+    {
+        $connection = $this->container->get('sequoraDatabaseConnection');
+        assert($connection instanceof SqliteConnection);
+
+        return $connection;
+    }
+
+    /** @return array<string, string> */
+    private function topicMap(): array
+    {
+        $topicMap = $this->longbowConfiguration()->topicMap()->require();
+        assert(is_array($topicMap));
+
+        /** @var array<string, string> $topicMap */
+        return $topicMap;
     }
 }

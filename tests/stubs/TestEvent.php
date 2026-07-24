@@ -1,58 +1,26 @@
 <?php declare(strict_types=1);
 
-/*
- * This file is part of Longbow.
- *
- * (c) Stefan Priebsch <stefan@priebsch.de>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace spriebsch\longbow\tests;
 
-use spriebsch\eventstore\CorrelationId;
-use spriebsch\eventstore\Event;
-use spriebsch\eventstore\EventId;
-use spriebsch\eventstore\Json;
-use spriebsch\timestamp\Timestamp;
+use spriebsch\DomainEvent\DomainEvent;
+use spriebsch\DomainEvent\MapToTopic;
+use spriebsch\DomainEvent\UseAsCorrelationId;
 
-class TestEvent implements Event
+#[MapToTopic('spriebsch.longbow.tests.test-event')]
+final readonly class TestEvent implements DomainEvent
 {
-    public readonly EventId $id;
-
-    public static function fromJson(Json $json): Event
+    public function __construct(private ?TestCorrelationId $correlationId = null)
     {
-        return new self;
     }
 
-    public function __construct()
+    public static function create(): self
     {
-        $this->id = EventId::generate();
+        return new self(TestCorrelationId::generate());
     }
 
-    public static function topic(): string
+    #[UseAsCorrelationId]
+    public function correlationId(): TestCorrelationId
     {
-        return 'the-topic';
-    }
-
-    public function id(): EventId
-    {
-        return $this->id;
-    }
-
-    public function timestamp(): Timestamp
-    {
-        return Timestamp::generate();
-    }
-
-    public function correlationId(): CorrelationId
-    {
-        return TestCorrelationId::generate();
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [];
+        return $this->correlationId ?? TestCorrelationId::generate();
     }
 }

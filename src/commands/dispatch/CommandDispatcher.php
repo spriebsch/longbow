@@ -11,9 +11,9 @@
 
 namespace spriebsch\longbow\commands;
 
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 
 interface CommandDispatcher
 {
-    public function handle(Command $command): Event;
+    public function handle(Command $command): DomainEvent;
 }

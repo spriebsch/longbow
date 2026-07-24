@@ -11,12 +11,13 @@
 
 namespace spriebsch\longbow\example;
 
-use spriebsch\eventstore\AbstractEventStream;
+use spriebsch\longbow\eventStreams\EventStream;
+use spriebsch\DomainEvent\Topic;
 
-final class SomeEventStream extends AbstractEventStream
+final readonly class SomeEventStream extends EventStream
 {
     protected function topics(): array
     {
-        return [SomeEvent::topic()];
+        return [Topic::fromString('spriebsch.longbow.example-application.some-event')];
     }
 }

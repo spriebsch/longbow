@@ -12,15 +12,15 @@
 namespace spriebsch\longbow\example;
 
 use spriebsch\longbow\eventStreams\EventStreamProcessor;
-use spriebsch\uuid\UUID;
+use spriebsch\longbow\eventStreams\EventStreamProcessorId;
 
 final class SomeEventStreamProcessor implements EventStreamProcessor
 {
     public function __construct(private readonly EventStreamProcessorSideEffect $sideEffect) {}
 
-    public static function id(): UUID
+    public static function id(): EventStreamProcessorId
     {
-        return UUID::from('11111111-47d5-44f6-a699-e382937ffbd9');
+        return EventStreamProcessorId::from('11111111-47d5-44f6-a699-e382937ffbd9');
     }
 
     public function onSomeEvent(SomeEvent $event): void

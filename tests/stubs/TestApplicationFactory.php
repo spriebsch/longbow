@@ -13,6 +13,6 @@ namespace spriebsch\longbow\tests;
 
 use spriebsch\diContainer\AbstractFactory;
 
-readonly class TestApplicationFactory extends AbstractFactory
+final readonly class TestApplicationFactory extends AbstractFactory
 {
 }

@@ -12,7 +12,7 @@
 namespace spriebsch\longbow\events;
 
 use spriebsch\diContainer\Container;
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 
 final readonly class LongbowEventDispatcher implements EventDispatcher
 {
@@ -21,10 +21,12 @@ final readonly class LongbowEventDispatcher implements EventDispatcher
         private Container       $container,
     ) {}
 
-    public function dispatch(Event $event): void
+    public function dispatch(DomainEvent $event): void
     {
         foreach ($this->eventHandlerMap->handlerClassesFor($event) as $handlerClass) {
-            $handler = $this->container->get($handlerClass)->handle($event);
+            $handler = $this->container->get($handlerClass);
+            assert(method_exists($handler, 'handle'));
+            $handler->handle($event);
         }
     }
 }

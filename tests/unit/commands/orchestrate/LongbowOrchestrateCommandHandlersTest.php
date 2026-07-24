@@ -15,7 +15,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use spriebsch\eventstore\Event;
+use spriebsch\DomainEvent\DomainEvent;
 use spriebsch\filesystem\FakeDirectory;
 use spriebsch\filesystem\FakeFile;
 use spriebsch\filesystem\File;
@@ -135,8 +135,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function handle_method_of_command_handler_must_be_public(): void
     {
-        $event = $this->createStub(Event::class);
-
+        $event = $this->createStub(DomainEvent::class);
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
         $this->expectException(FailedToConfigureCommandHandlerException::class);
@@ -151,7 +150,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function handle_method_of_command_handler_must_have_one_parameter(): void
     {
-        $event = $this->createStub(Event::class);
+        $event = $this->createStub(DomainEvent::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
@@ -169,8 +168,6 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function handle_method_of_command_handler_must_return_event(): void
     {
-        $event = $this->createStub(Event::class);
-
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
         $this->expectException(FailedToConfigureCommandHandlerException::class);
@@ -179,7 +176,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
         $orchestration
             ->command(TestCommand::class)
             ->isHandledBy(
-                $this->handlerWithoutReturnTypeToHandleMethod($event)::class
+                $this->handlerWithoutReturnTypeToHandleMethod()::class
             );
     }
 
@@ -187,14 +184,14 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function command_handler_must_handle_command(): void
     {
-        $event = $this->createStub(Event::class);
+        $event = $this->createStub(DomainEvent::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
         $handlerWithOutHandleMethod = new class($event) implements CommandHandler {
-            public function __construct(private Event $event) {}
+            public function __construct(private DomainEvent $event) {}
 
-            public function handle($notTheCommand): Event
+            public function handle($notTheCommand): DomainEvent
             {
                 return $this->event;
             }
@@ -228,14 +225,14 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function only_one_handler_can_be_configured_for_a_command(): void
     {
-        $event = $this->createStub(Event::class);
+        $event = $this->createStub(DomainEvent::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
         $handlerWithOutHandleMethod = new class($event) implements CommandHandler {
-            public function __construct(private Event $event) {}
+            public function __construct(private DomainEvent $event) {}
 
-            public function handle(TestCommand $command): Event
+            public function handle(TestCommand $command): DomainEvent
             {
                 return $this->event;
             }
@@ -269,12 +266,12 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
         return $directory->file(OrchestrateCommandHandlers::SERIALIZATION_FILE);
     }
 
-    private function handlerWithoutHandleMethod(Event $event): CommandHandler
+    private function handlerWithoutHandleMethod(DomainEvent $event): CommandHandler
     {
         return new class($event) implements CommandHandler {
-            public function __construct(private Event $event) {}
+            public function __construct(private DomainEvent $event) {}
 
-            protected function handle(TestCommand $command): Event
+            protected function handle(TestCommand $command): DomainEvent
             {
                 return $this->event;
             }
@@ -290,12 +287,12 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
         };
     }
 
-    private function handlerWithAdditionalParameterToHandleMethod(Event $event): CommandHandler
+    private function handlerWithAdditionalParameterToHandleMethod(DomainEvent $event): CommandHandler
     {
         return new class($event) implements CommandHandler {
-            public function __construct(private Event $event) {}
+            public function __construct(private DomainEvent $event) {}
 
-            public function handle(TestCommand $command, $anotherParameter): Event
+            public function handle(TestCommand $command, $anotherParameter): DomainEvent
             {
                 return $this->event;
             }

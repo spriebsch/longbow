@@ -21,7 +21,7 @@ final class EventStreamProcessorIDMismatch extends Exception
             sprintf(
                 'Event stream processor %s ID %s does not match %s',
                 $eventStreamProcessor::class,
-                $eventStreamProcessor::class::id(),
+                $eventStreamProcessor::class::id()->asString(),
                 $id
             )
         );

@@ -12,5 +12,3 @@
 namespace spriebsch\longbow;
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/unit/autoload.php';
-require __DIR__ . '/integration/autoload.php';
