@@ -46,12 +46,12 @@ class LongbowCommandDispatcherTest extends TestCase
         $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
         TestCommandHandlerThatReturnsEvent::willReturn($event);
 
         $map = CommandHandlerMap::fromArray([$command::class => TestCommandHandlerThatReturnsEvent::class]);
 
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher = $this->createStub(EventDispatcher::class);
 
         $dispatcher = new LongbowCommandDispatcher($map, $container, $eventDispatcher);
 
@@ -72,11 +72,11 @@ class LongbowCommandDispatcherTest extends TestCase
         $container = new DiContainer($configuration, ApplicationFactory::class);
 
         $command = new TestCommand;
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
 
         $map = CommandHandlerMap::fromArray([]);
 
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher = $this->createStub(EventDispatcher::class);
 
         $dispatcher = new LongbowCommandDispatcher(
             $map,
@@ -110,7 +110,7 @@ class LongbowCommandDispatcherTest extends TestCase
             $commandHandler,
         );
 
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher = $this->createStub(EventDispatcher::class);
 
         $dispatcher = new LongbowCommandDispatcher(
             $map,
@@ -144,10 +144,10 @@ class LongbowCommandDispatcherTest extends TestCase
             $commandHandler,
         );
 
-        $eventWriter = $this->createMock(EventWriter::class);
+        $eventWriter = $this->createStub(EventWriter::class);
         $eventWriter->method('store')->willThrowException(new RuntimeException);
 
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher = $this->createStub(EventDispatcher::class);
 
         $dispatcher = new LongbowCommandDispatcher(
             $map,
@@ -181,10 +181,10 @@ class LongbowCommandDispatcherTest extends TestCase
             $commandHandler,
         );
 
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher = $this->createStub(EventDispatcher::class);
         $eventDispatcher->method('dispatch')->willThrowException(new RuntimeException);
 
-        $eventDispatcher = $this->createMock(EventDispatcher::class);
+        $eventDispatcher = $this->createStub(EventDispatcher::class);
 
         $dispatcher = new LongbowCommandDispatcher(
             $map,

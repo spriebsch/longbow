@@ -37,7 +37,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('feature')]
     public function EventHandler_can_be_configured(): void
     {
-        $directory = $this->createMock(Directory::class);
+        $directory = $this->createStub(Directory::class);
         $serializer = $this->createMock(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
@@ -59,7 +59,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function Event_must_be_set_before_configuring_EventHandler(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $this->expectException(NoEventSpecifiedException::class);
@@ -71,7 +71,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function event_class_must_exist(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $this->expectException(EventClassDoesNotExistException::class);
@@ -83,7 +83,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function event_must_implement_Event_interface(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $this->expectException(ClassDoesNotImplementEventInterfaceException::class);
@@ -95,7 +95,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function event_handler_class_must_exist(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $this->expectException(EventHandlerClassDoesNotExistException::class);
@@ -109,7 +109,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function event_handler_must_implement_event_handler_interface(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $this->expectException(ClassDoesNotImplementEventHandlerInterfaceException::class);
@@ -123,7 +123,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function event_handler_has_no_handle_method(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $handler = new class() implements EventHandler {
@@ -155,7 +155,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function EventHandler_handle_method_must_have_exactly_one_parameter(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $handler = new class() implements EventHandler {
@@ -173,7 +173,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('exception')]
     public function EventHandler_handle_method_parameter_must_be_the_specific_event(): void
     {
-        $serializer = $this->createMock(PHPArraySerializer::class);
+        $serializer = $this->createStub(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 
         $handler = new class() implements EventHandler {
@@ -191,7 +191,7 @@ class LongbowOrchestrateEventHandlersTest extends TestCase
     #[Group('feature')]
     public function event_handler_map_can_be_exported(): void
     {
-        $directory = $this->createMock(Directory::class);
+        $directory = $this->createStub(Directory::class);
         $serializer = $this->createMock(PHPArraySerializer::class);
         $orchestration = new LongbowOrchestrateEventHandlers($serializer);
 

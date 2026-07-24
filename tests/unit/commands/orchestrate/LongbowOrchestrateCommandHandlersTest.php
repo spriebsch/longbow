@@ -135,7 +135,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function handle_method_of_command_handler_must_be_public(): void
     {
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
@@ -151,7 +151,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function handle_method_of_command_handler_must_have_one_parameter(): void
     {
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
@@ -169,7 +169,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function handle_method_of_command_handler_must_return_event(): void
     {
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
@@ -187,7 +187,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function command_handler_must_handle_command(): void
     {
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 
@@ -228,7 +228,7 @@ class LongbowOrchestrateCommandHandlersTest extends TestCase
     #[Group('exception')]
     public function only_one_handler_can_be_configured_for_a_command(): void
     {
-        $event = $this->createMock(Event::class);
+        $event = $this->createStub(Event::class);
 
         $orchestration = new LongbowOrchestrateCommandHandlers;
 

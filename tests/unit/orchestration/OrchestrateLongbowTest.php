@@ -89,7 +89,7 @@ class OrchestrateLongbowTest extends TestCase
             $orchestrateEventStreamProcessors
         );
 
-        $directory = $this->createMock(Directory::class);
+        $directory = $this->createStub(Directory::class);
         $orchestrateLongbow->exportOrchestrationTo($directory);
 
         $this->assertSame($directory, $orchestrateCommandHandlers->directory);
