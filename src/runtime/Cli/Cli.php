@@ -20,31 +20,83 @@ final class Cli
     public static function run(array $arguments): void
     {
         $projectDirectory = getcwd();
-        $sourceDirectory = $projectDirectory . '/src';
-        $vendorDirectory = $projectDirectory . '/vendor';
 
-        // detect when CLI is not run from project directory, if so show error message
-        
-        // load autoloader from vendor/autoload.php
+        if (!file_exists($projectDirectory . '/vendor/autoload.php')) {
+            throw new \RuntimeException('Not in a project directory (vendor/autoload.php not found)');
+        }
 
-        // recursively search src/ for a class implementing spriebsch\longbow;\LongbowFactory: this is the configuration
+        $autoload = require_once $projectDirectory . '/vendor/autoload.php';
 
-        // recursively search src/ for a class extending spriebsch\diContainer\AbstractFactory: this is the factory
+        $configurationClass = null;
+        $factoryClass = null;
+        $topicMapFile = null;
 
-        // recursively search src/folder for the file TopicMap.php
+        $directory = new \RecursiveDirectoryIterator($projectDirectory . '/src');
+        $iterator = new \RecursiveIteratorIterator($directory);
+
+        foreach ($iterator as $file) {
+            if ($file->isDir()) {
+                continue;
+            }
+
+            if ($file->getFilename() === 'TopicMap.php') {
+                $topicMapFile = $file->getPathname();
+            }
+
+            if ($file->getExtension() !== 'php') {
+                continue;
+            }
+
+            require_once $file->getPathname();
+
+            $classes = get_declared_classes();
+            foreach ($classes as $fullClassName) {
+                $reflection = new \ReflectionClass($fullClassName);
+                if ($reflection->isInternal()) {
+                    continue;
+                }
+
+                if ($reflection->getFileName() !== $file->getPathname()) {
+                    continue;
+                }
+
+                if ($reflection->implementsInterface(LongbowConfiguration::class)) {
+                    $configurationClass = $fullClassName;
+                }
+                if ($reflection->isSubclassOf(\spriebsch\diContainer\AbstractFactory::class) && $fullClassName !== LongbowFactory::class) {
+                    $factoryClass = $fullClassName;
+                }
+            }
+        }
+
+        if ($configurationClass === null) {
+            throw new \RuntimeException('No class implementing LongbowConfiguration found in src/');
+        }
+
+        if ($factoryClass === null) {
+            throw new \RuntimeException('No class extending AbstractFactory found in src/');
+        }
+
+        if ($topicMapFile === null) {
+            throw new \RuntimeException('TopicMap.php not found in src/');
+        }
 
         $orchestrationDirectory = Filesystem::from($projectDirectory . '/data');
         assert($orchestrationDirectory instanceof Directory);
         $topicMap = Filesystem::from($topicMapFile);
         assert($topicMap instanceof File);
 
-        $configuration = LongbowConfiguration::fromArray(
-            $orchestrationDirectory,
-            $topicMap,
-            __DIR__ . '/data/sequora.db',
-            __DIR__ . '/data/longbow.db',
-        );
+        var_dump($orchestrationDirectory, $topicMap);
 
-        Longbow::configure($configuration, LongbowFactory::class);
+        $configuration = $configurationClass::fromArray([
+            'orchestrationDirectory' => $orchestrationDirectory,
+            'topicMap' => $topicMap,
+            'sequoraDatabase' => $projectDirectory . '/db/sequora.db',
+            'longbowDatabase' => $projectDirectory . '/db/longbow.db',
+        ]);
+
+        var_dump($configuration);die;
+
+        Longbow::configure($configuration, $factoryClass);
     }
 }

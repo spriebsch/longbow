@@ -20,6 +20,9 @@
     "sort-packages": true
   },
   "prefer-stable": true,
+  "bin": [
+    "bin/longbow"
+  ],
   "require": {
     "php": "^8.5",
     "ext-sqlite3": "*",
