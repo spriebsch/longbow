@@ -28,7 +28,7 @@ final class Longbow
 
     public static function configure(
         LongbowConfiguration $configuration,
-        string $factoryClass,
+        string ...$factoryClasses
     ): void
     {
         if (self::$container !== null) {
@@ -37,8 +37,7 @@ final class Longbow
 
         self::$container = new DIContainer(
             $configuration,
-            $factoryClass,
-            LongbowFactory::class
+            ...array_merge($factoryClasses, [LongbowFactory::class])
         );
     }
 
