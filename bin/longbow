@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+
+namespace spriebsch\longbow;
+
+use RuntimeException;
+
+$autoload = $GLOBALS['_composer_autoload_path'] ?? '';
+
+if (!$autoload || !file_exists($autoload)) {
+    $autoload = __DIR__ . '/../vendor/autoload.php';
+}
+
+if (!file_exists($autoload)) {
+    $autoload = __DIR__ . '/../../../autoload.php';
+}
+
+if (!file_exists($autoload)) {
+    fwrite(STDERR, 'Unable to find Composer autoloader' . PHP_EOL);
+    exit(1);
+}
+
+require $autoload;
+
+try {
+    Cli::run($argv);
+} catch (RuntimeException $e) {
+    fwrite(STDERR, $e->getMessage() . PHP_EOL);
+    exit(1);
+}
