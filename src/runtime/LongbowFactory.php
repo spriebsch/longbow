@@ -114,6 +114,10 @@ final readonly class LongbowFactory extends AbstractFactory
         $connection = SqliteConnection::from($this->longbowConfiguration()->longbowDatabase());
         LongbowDatabaseSchema::from($connection)->createIfNotExists();
 
+        if (!$connection->isInMemoryDatabase() && is_file($connection->database())) {
+            chmod($connection->database(), 0666);
+        }
+
         return $connection;
     }
 
@@ -121,6 +125,10 @@ final readonly class LongbowFactory extends AbstractFactory
     {
         $connection = SqliteConnection::from($this->longbowConfiguration()->sequoraDatabase());
         SqliteSequoraSchema::from($connection)->createIfNotExists();
+
+        if (!$connection->isInMemoryDatabase() && is_file($connection->database())) {
+            chmod($connection->database(), 0666);
+        }
 
         return $connection;
     }
