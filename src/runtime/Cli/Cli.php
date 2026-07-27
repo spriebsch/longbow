@@ -95,8 +95,6 @@ final class Cli
             'longbowDatabase' => $projectDirectory . '/db/longbow.db',
         ]);
 
-        var_dump($configuration);die;
-
         Longbow::configure($configuration, $factoryClass);
     }
 }
