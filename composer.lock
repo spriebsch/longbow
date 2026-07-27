@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "997a9f471b93faa1c928955994b215c7",
+    "content-hash": "7b4dc167a90fd8c501a55125d332a0c2",
     "packages": [
         {
             "name": "crell/attributeutils",
@@ -218,19 +218,20 @@
         },
         {
             "name": "spriebsch/di",
-            "version": "2.0.4",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/diContainer.git",
-                "reference": "ca4304ed423b2c7d356c4e3f2f6735886bc70c8b"
+                "reference": "9a843cca20907ed8b6e9bf7f5b61f3a28dbf21db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/ca4304ed423b2c7d356c4e3f2f6735886bc70c8b",
-                "reference": "ca4304ed423b2c7d356c4e3f2f6735886bc70c8b",
+                "url": "https://api.github.com/repos/spriebsch/diContainer/zipball/9a843cca20907ed8b6e9bf7f5b61f3a28dbf21db",
+                "reference": "9a843cca20907ed8b6e9bf7f5b61f3a28dbf21db",
                 "shasum": ""
             },
             "require": {
+                "ext-sqlite3": "*",
                 "php": "^8.5"
             },
             "type": "library",
@@ -253,9 +254,9 @@
             "description": "A lightweight, smart and fast DI container with autowiring.",
             "support": {
                 "issues": "https://github.com/spriebsch/diContainer/issues",
-                "source": "https://github.com/spriebsch/diContainer/tree/2.0.4"
+                "source": "https://github.com/spriebsch/diContainer/tree/2.1.2"
             },
-            "time": "2026-07-16T07:49:06+00:00"
+            "time": "2026-07-27T13:03:03+00:00"
         },
         {
             "name": "spriebsch/domain-event",
@@ -388,16 +389,16 @@
         },
         {
             "name": "spriebsch/sequora",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spriebsch/sequora.git",
-                "reference": "d4e9c0ab07913d7d8f113f153da19d1aeca6c766"
+                "reference": "86ed9604c87a7638ee6c3fe98e04b555d57da60a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spriebsch/sequora/zipball/d4e9c0ab07913d7d8f113f153da19d1aeca6c766",
-                "reference": "d4e9c0ab07913d7d8f113f153da19d1aeca6c766",
+                "url": "https://api.github.com/repos/spriebsch/sequora/zipball/86ed9604c87a7638ee6c3fe98e04b555d57da60a",
+                "reference": "86ed9604c87a7638ee6c3fe98e04b555d57da60a",
                 "shasum": ""
             },
             "require": {
@@ -419,9 +420,9 @@
             "description": "A simple, reliable SQLite-backed event store for PHP domain events",
             "support": {
                 "issues": "https://github.com/spriebsch/sequora/issues",
-                "source": "https://github.com/spriebsch/sequora/tree/1.3.0"
+                "source": "https://github.com/spriebsch/sequora/tree/1.3.1"
             },
-            "time": "2026-07-14T21:29:22+00:00"
+            "time": "2026-07-27T09:22:30+00:00"
         },
         {
             "name": "spriebsch/sqlite",
@@ -558,7 +559,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^8.5",
-        "ext-sqlite3": "*"
+        "ext-sqlite3": "*",
+        "ext-posix": "*"
     },
     "platform-dev": {},
     "platform-overrides": {
