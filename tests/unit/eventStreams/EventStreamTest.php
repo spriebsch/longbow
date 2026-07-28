@@ -9,6 +9,7 @@ use spriebsch\DomainEvent\Topic;
 use spriebsch\sequora\EventQuery;
 use spriebsch\sequora\EventReader;
 use spriebsch\sequora\Events;
+use spriebsch\uuid\UUIDv4;
 
 #[CoversClass(EventStream::class)]
 final class EventStreamTest extends TestCase
@@ -59,6 +60,36 @@ final class EventStreamTest extends TestCase
 
         $stream = $this->stream($reader);
         $stream->withLimit(10);
+
+        $stream->eventsAfter();
+    }
+
+    public function test_queries_all_events(): void
+    {
+        $events = Events::from();
+        $reader = $this->createStub(EventReader::class);
+        $reader->method('query')->willReturn($events);
+
+        $this->assertSame($events, $this->stream($reader)->allEvents());
+    }
+
+    public function test_queries_by_correlation_id(): void
+    {
+        $correlationId = UUIDv4::generate();
+        $reader = $this->createStub(EventReader::class);
+        $reader->method('query')->willReturnCallback(
+            function (EventQuery $query) use ($correlationId): Events {
+                $this->assertSame(
+                    $correlationId->asString(),
+                    $query->criteria()->correlationIds()[0]->asString(),
+                );
+
+                return Events::from();
+            },
+        );
+
+        $stream = $this->stream($reader);
+        $stream->withCorrelationId($correlationId);
 
         $stream->eventsAfter();
     }
