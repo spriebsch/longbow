@@ -62,7 +62,9 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
 
         try {
             $position = $this->streamPosition->readPosition($processor::id());
-            $stream->withLimit($this->limit);
+            if ($this->limit !== null) {
+                $stream->withLimit($this->limit);
+            }
             $events = $stream->eventsAfter($position);
 
             foreach ($events->envelopes() as $envelope) {
