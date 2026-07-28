@@ -57,12 +57,15 @@ final class EventStreamTest extends TestCase
             },
         );
 
-        $this->stream($reader)->eventsAfter(limit: 10);
+        $stream = $this->stream($reader);
+        $stream->withLimit(10);
+
+        $stream->eventsAfter();
     }
 
     private function stream(EventReader $reader): EventStream
     {
-        return new readonly class($reader) extends EventStream {
+        return new class($reader) extends EventStream {
             protected function topics(): array
             {
                 return [Topic::fromString('spriebsch.longbow.tests.stream')];

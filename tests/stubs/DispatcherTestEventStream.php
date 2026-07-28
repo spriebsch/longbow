@@ -13,7 +13,7 @@ namespace spriebsch\longbow\tests;
 
 use spriebsch\longbow\eventStreams\EventStream;
 
-final readonly class DispatcherTestEventStream extends EventStream
+final class DispatcherTestEventStream extends EventStream
 {
     protected function topics(): array
     {

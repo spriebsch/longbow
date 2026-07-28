@@ -14,7 +14,7 @@ namespace spriebsch\longbow\example;
 use spriebsch\longbow\eventStreams\EventStream;
 use spriebsch\DomainEvent\Topic;
 
-final readonly class SomeEventStream extends EventStream
+final class SomeEventStream extends EventStream
 {
     protected function topics(): array
     {
