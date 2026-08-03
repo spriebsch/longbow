@@ -11,6 +11,7 @@
 
 namespace spriebsch\longbow;
 
+use InvalidArgumentException;
 use spriebsch\diContainer\AbstractFactory;
 use spriebsch\longbow\commands\CommandDispatcher;
 use spriebsch\longbow\commands\CommandHandlerMap;
@@ -21,9 +22,11 @@ use spriebsch\longbow\events\EventHandlerMap;
 use spriebsch\longbow\events\LongbowEventDispatcher;
 use spriebsch\longbow\events\OrchestrateEventHandlers;
 use spriebsch\longbow\eventStreams\EventStreamDispatcher;
+use spriebsch\longbow\eventStreams\EventStreamProcessorFailures;
 use spriebsch\longbow\eventStreams\EventStreamProcessorMap;
 use spriebsch\longbow\eventStreams\LongbowEventStreamDispatcher;
 use spriebsch\longbow\eventStreams\OrchestrateEventStreamProcessors;
+use spriebsch\longbow\eventStreams\SqliteEventStreamProcessorFailures;
 use spriebsch\sqlite\SqliteConnection;
 use spriebsch\sequora\EventReader;
 use spriebsch\sequora\EventWriter;
@@ -97,22 +100,36 @@ final readonly class LongbowFactory extends AbstractFactory
         return new LongbowEventStreamDispatcher(
             $this->EventStreamProcessorMap(),
             $this->StreamPosition(),
+            $this->EventStreamProcessorFailures(),
             $this->container,
         );
     }
 
+    public function EventStreamProcessorFailures(): EventStreamProcessorFailures
+    {
+        $connection = $this->container->get(SqliteConnection::class, 'longbow');
+        assert($connection instanceof SqliteConnection);
+
+        return new SqliteEventStreamProcessorFailures($connection);
+    }
+
     public function StreamPosition(): StreamPosition
     {
-        $connection = $this->container->get('longbowDatabaseConnection');
+        $connection = $this->container->get(SqliteConnection::class, 'longbow');
         assert($connection instanceof SqliteConnection);
 
         return new SqliteStreamPosition($connection);
     }
 
-    public function longbowDatabaseConnection(): SqliteConnection
+    public function SqliteConnection(string $database): SqliteConnection
     {
-        $connection = SqliteConnection::from($this->longbowConfiguration()->longbowDatabase());
-        LongbowDatabaseSchema::from($connection)->createIfNotExists();
+        $connection = match ($database) {
+            'longbow' => $this->createLongbowDatabaseConnection(),
+            'sequora' => $this->createSequoraDatabaseConnection(),
+            default   => throw new InvalidArgumentException(
+                sprintf('Unknown SQLite database %s', $database),
+            ),
+        };
 
         if (!$connection->isInMemoryDatabase() && is_file($connection->database()) && fileowner($connection->database()) === posix_getuid()) {
             chmod($connection->database(), 0666);
@@ -121,14 +138,18 @@ final readonly class LongbowFactory extends AbstractFactory
         return $connection;
     }
 
-    public function sequoraDatabaseConnection(): SqliteConnection
+    private function createLongbowDatabaseConnection(): SqliteConnection
+    {
+        $connection = SqliteConnection::from($this->longbowConfiguration()->longbowDatabase());
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
+
+        return $connection;
+    }
+
+    private function createSequoraDatabaseConnection(): SqliteConnection
     {
         $connection = SqliteConnection::from($this->longbowConfiguration()->sequoraDatabase());
         SqliteSequoraSchema::from($connection)->createIfNotExists();
-
-        if (!$connection->isInMemoryDatabase() && is_file($connection->database()) && fileowner($connection->database()) === posix_getuid()) {
-            chmod($connection->database(), 0666);
-        }
 
         return $connection;
     }
@@ -142,7 +163,7 @@ final readonly class LongbowFactory extends AbstractFactory
 
     private function sequoraConnection(): SqliteConnection
     {
-        $connection = $this->container->get('sequoraDatabaseConnection');
+        $connection = $this->container->get(SqliteConnection::class, 'sequora');
         assert($connection instanceof SqliteConnection);
 
         return $connection;

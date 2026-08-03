@@ -21,9 +21,10 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
     private array $exceptions = [];
 
     public function __construct(
-        private readonly EventStreamProcessorMap $streamProcessorMap,
-        private readonly StreamPosition          $streamPosition,
-        private readonly Container               $container,
+        private readonly EventStreamProcessorMap      $streamProcessorMap,
+        private readonly StreamPosition               $streamPosition,
+        private readonly EventStreamProcessorFailures $processorFailures,
+        private readonly Container                    $container,
     ) {}
 
     public function run(?int $limit = null): array
@@ -59,6 +60,7 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
     public function runEventStreamProcessor(EventStreamProcessor $processor, EventStream $stream): void
     {
         $this->streamPosition->acquireLock($processor::id());
+        $eventId = null;
 
         try {
             $position = $this->streamPosition->readPosition($processor::id());
@@ -68,10 +70,13 @@ final class LongbowEventStreamDispatcher implements EventStreamDispatcher
             $events = $stream->eventsAfter($position);
 
             foreach ($events->envelopes() as $envelope) {
+                $eventId = $envelope->eventId();
                 new EventStreamProcessorWrapper($processor)->process($envelope->event());
-                $this->streamPosition->writePosition($processor::id(), $envelope->eventId());
+                $this->streamPosition->writePosition($processor::id(), $eventId);
+                $this->processorFailures->clear($processor::id());
             }
         } catch (Throwable $exception) {
+            $this->processorFailures->record($processor::id(), $eventId, $exception);
             $this->exceptions[] = $exception;
         } finally {
             $this->streamPosition->releaseLock($processor::id());

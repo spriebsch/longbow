@@ -26,10 +26,12 @@ use spriebsch\longbow\SqliteStreamPosition;
 use spriebsch\longbow\tests\TestEventStreamProcessor;
 
 #[CoversClass(LongbowEventStreamDispatcher::class)]
-#[UsesClass(Longbow::class)]
+#[CoversClass(Longbow::class)]
 #[UsesClass(LongbowDatabaseSchema::class)]
 #[UsesClass(LongbowFactory::class)]
 #[UsesClass(SqliteStreamPosition::class)]
+#[UsesClass(EventStreamProcessorFailure::class)]
+#[UsesClass(SqliteEventStreamProcessorFailures::class)]
 #[UsesClass(LongbowOrchestrateCommandHandlers::class)]
 #[UsesClass(EventStreamProcessorMap::class)]
 #[UsesClass(EventStreamProcessorWrapper::class)]
@@ -38,7 +40,7 @@ use spriebsch\longbow\tests\TestEventStreamProcessor;
 #[UsesClass(LongbowOrchestrateEventHandlers::class)]
 #[UsesClass(LongbowOrchestration::class)]
 #[UsesClass(LongbowPHPArraySerializer::class)]
-class LongbowEventStreamDispatcherTest extends TestCase
+final class LongbowEventStreamDispatcherTest extends TestCase
 {
     public function test_processes_all_events_successfully(): void
     {
@@ -137,5 +139,49 @@ class LongbowEventStreamDispatcherTest extends TestCase
 
         $this->assertCount(3, $processedEventsAfterSecondRun);
         $this->assertSame($fixture->eventIds[2]->asString(), $finalPosition->asString());
+    }
+
+    public function test_processor_failure_is_recorded_for_failed_event(): void
+    {
+        $fixture = new EventStreamDispatcherTestFixture;
+        $processor = $this->processor();
+        $processor->failOn(2);
+
+        Longbow::processEvents();
+
+        $failure = $this->processorFailures()->failureOf(TestEventStreamProcessor::id());
+
+        $this->assertTrue($fixture->eventIds[1]->equals($failure?->eventId()));
+    }
+
+    public function test_processor_failure_is_cleared_after_successful_retry(): void
+    {
+        new EventStreamDispatcherTestFixture;
+        $processor = $this->processor();
+        $processor->failOn(2);
+        Longbow::processEvents();
+        $processor->failOn(999);
+
+        Longbow::processEvents();
+
+        $this->assertNull(
+            $this->processorFailures()->failureOf(TestEventStreamProcessor::id()),
+        );
+    }
+
+    private function processor(): TestEventStreamProcessor
+    {
+        $processor = Longbow::container()->get(TestEventStreamProcessor::class);
+
+        if (!$processor instanceof TestEventStreamProcessor) {
+            throw new RuntimeException('Test event stream processor is not configured');
+        }
+
+        return $processor;
+    }
+
+    private function processorFailures(): EventStreamProcessorFailures
+    {
+        return Longbow::processorFailures();
     }
 }

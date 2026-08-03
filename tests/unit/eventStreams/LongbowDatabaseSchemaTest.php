@@ -51,4 +51,36 @@ class LongbowDatabaseSchemaTest extends TestCase
             $connection->query('SELECT sql FROM sqlite_master WHERE name="positions";')->fetchArray()[0]
         );
     }
+
+    public function test_creates_processor_failures_table(): void
+    {
+        $connection = SqliteConnection::memory();
+
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
+
+        $this->assertStringContainsString(
+            'CREATE TABLE `processorFailures`',
+            $connection->query('SELECT sql FROM sqlite_master WHERE name="processorFailures";')->fetchArray()[0],
+        );
+    }
+
+    public function test_adds_processor_failures_table_to_existing_database(): void
+    {
+        $connection = SqliteConnection::memory();
+        $connection->exec(
+            'CREATE TABLE `positions` (
+                `id` INTEGER PRIMARY KEY,
+                `handlerId` TEXT UNIQUE,
+                `eventId` TEXT,
+                `timestamp` TEXT
+            );',
+        );
+
+        LongbowDatabaseSchema::from($connection)->createIfNotExists();
+
+        $this->assertStringContainsString(
+            'CREATE TABLE `processorFailures`',
+            $connection->query('SELECT sql FROM sqlite_master WHERE name="processorFailures";')->fetchArray()[0],
+        );
+    }
 }

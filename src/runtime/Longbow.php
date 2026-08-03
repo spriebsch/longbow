@@ -18,6 +18,7 @@ use spriebsch\longbow\commands\Command;
 use spriebsch\longbow\commands\CommandDispatcher;
 use spriebsch\longbow\eventStreams\EventStreamDispatcher;
 use spriebsch\longbow\eventStreams\EventStreamProcessorId;
+use spriebsch\longbow\eventStreams\EventStreamProcessorFailures;
 use spriebsch\longbow\orchestration\LongbowHasAlreadyBeenConfiguredException;
 
 final class Longbow
@@ -77,6 +78,11 @@ final class Longbow
         $streamPosition = self::container()->get(StreamPosition::class);
         assert($streamPosition instanceof StreamPosition);
         $streamPosition->resetPosition($id);
+    }
+
+    public static function processorFailures(): EventStreamProcessorFailures
+    {
+        return self::container()->get(EventStreamProcessorFailures::class);
     }
 
     /** @return list<\Throwable> */

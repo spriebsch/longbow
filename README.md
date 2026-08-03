@@ -88,6 +88,12 @@ Processors implement `EventStreamProcessor` and return an
 events to processor methods, and stores the envelope event ID as the processor
 position.
 
+When a processor fails, Longbow leaves its successful position unchanged and
+persists the failed event ID, timestamp, exception class, and exception message.
+Applications can use `Longbow::processorFailures()` to distinguish a processor
+that has not started from one that failed. A successful retry clears the
+persisted failure.
+
 ## Upgrading
 
 Longbow 7 is a breaking release. It requires PHP 8.5 and does not migrate
